@@ -1,5 +1,6 @@
 package maliwan.mcbl
 
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -8,6 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin
 class MCBorderlandsPlugin : JavaPlugin() {
 
     override fun onEnable() {
+        val a: Player = 3 as Player
+
         logger.info("Enabled!")
     }
 
