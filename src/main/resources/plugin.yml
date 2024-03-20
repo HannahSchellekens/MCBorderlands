@@ -1,0 +1,6 @@
+name: MCBorderlands
+main: maliwan.mcbl.MCBorderlandsPlugin
+version: '0.1'
+author: Hannah Schellekens
+prefix: MCBL
+api-version: '1.20'
