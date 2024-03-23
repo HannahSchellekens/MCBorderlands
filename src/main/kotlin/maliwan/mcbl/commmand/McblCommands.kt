@@ -32,6 +32,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "name",
                 "baseDamage",
                 "accuracy",
+                "recoil",
                 "fireRate",
                 "reloadSpeed",
                 "magazineSize",
@@ -117,6 +118,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "name" -> update { name = value }
             "baseDamage" -> update { baseDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "accuracy" -> update { accuracy = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "recoil" -> update { recoil = value.toDoubleOrNull() ?: error("No double: $value") }
             "fireRate" -> update { fireRate = value.toDoubleOrNull() ?: error("No double: $value") }
             "reloadSpeed" -> update { reloadSpeed = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
             "magazineSize" -> update { magazineSize = value.toIntOrNull() ?: error("No int: $value") }

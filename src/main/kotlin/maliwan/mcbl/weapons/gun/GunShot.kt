@@ -15,6 +15,8 @@ import org.bukkit.util.Vector
 fun LivingEntity.shootBullet(from: Location, direction: Vector, properties: GunProperties): Projectile? {
     val world = from.world ?: return null
 
+    println("Accuracy: ${properties.accuracy}")
+
     val accuracyModifier = (1.0 - properties.accuracy.chance) * 0.375
     val newDirection = direction
         .setX(direction.x.modifyRandom(accuracyModifier))

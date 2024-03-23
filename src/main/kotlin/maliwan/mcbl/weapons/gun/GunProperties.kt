@@ -8,6 +8,7 @@ import maliwan.mcbl.Keys
 import maliwan.mcbl.Ticks
 import maliwan.mcbl.weapons.*
 import org.bukkit.ChatColor
+import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -21,81 +22,86 @@ open class GunProperties(
     /**
      * The name of the gun.
      */
-    var name: String = "Gun",
+    open var name: String = "Gun",
 
     /**
      * Damage per shot in half hearts.
      */
-    var baseDamage: Damage = Damage(1.5),
+    open var baseDamage: Damage = Damage(1.0),
 
     /**
      * Shot direction accuracy percentage.
      *
      * 100% is dead center. 0% is anywhere on screen.
      */
-    var accuracy: Chance = Chance(0.985),
+    open var accuracy: Chance = Chance(0.985),
+
+    /**
+     * With how much to multiply the accuracy after each shot.
+     */
+    open var recoil: Double = 0.995,
 
     /**
      * Amount of shots per second.
      */
-    var fireRate: Double = 1.0,
+    open var fireRate: Double = 2.8,
 
     /**
      * How many ticks it costs for the gun to reload.
      */
-    var reloadSpeed: Ticks = Ticks(20),
+    open var reloadSpeed: Ticks = Ticks(20),
 
     /**
      * The amount of shots per magazine: before reloading.
      */
-    var magazineSize: Int = 8,
+    open var magazineSize: Int = 8,
 
     /**
      * How much ammo is consumed per shot.
      */
-    var ammoPerShot: Int = 1,
+    open var ammoPerShot: Int = 1,
 
     /**
      * Special red text to show on the weapon card, `null` for no text.
      */
-    var redText: String? = null,
+    open var redText: String? = null,
 
     /**
      * Extra lines of information shown on the weapon card.
      * Empty list for no information.
      */
-    val extraInfoText: MutableList<String> = ArrayList(),
+    open val extraInfoText: MutableList<String> = ArrayList(),
 
     /**
      * Which elements bullets fired with this gun apply to the target.
      * Order of application is the order in this list.
      */
-    val elements: MutableList<Elemental> = ArrayList(),
+    open val elements: MutableList<Elemental> = ArrayList(),
 
     /**
      * The chance each element is applied to the target.
      */
-    val elementalChance: MutableMap<Elemental, Chance> = HashMap(),
+    open val elementalChance: MutableMap<Elemental, Chance> = HashMap(),
 
     /**
      * How many ticks each elemental effect lasts when applied.
      */
-    val elementalDuration: MutableMap<Elemental, Ticks> = HashMap(),
+    open val elementalDuration: MutableMap<Elemental, Ticks> = HashMap(),
 
     /**
      * How much damage each elemental effect deals per 0.5 seconds.
      */
-    val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
+    open val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
 
     /**
      * How large the splash damage radius is, 0.0 for no splash damage.
      */
-    var splashRadius: Double = 0.0,
+    open var splashRadius: Double = 0.0,
 
     /**
      * How much splash damage to deal on impact.
      */
-    var splashDamage: Damage = Damage(0.0),
+    open var splashDamage: Damage = Damage(0.0),
 
     /**
      * How much to change the pitch after firing the gun.
@@ -104,48 +110,48 @@ open class GunProperties(
      * `null` for no recoil angle. Disabled by default because it is extremely jarring
      * server side. Only reserve for heavy guns with slow fire rates.
      */
-    var recoilAngle: Double? = null,
+    open var recoilAngle: Double? = null,
 
     /**
      * The manufacturer of this gun.
      */
-    var manufacturer: Manufacturer = Manufacturers.MALIWAN,
+    open var manufacturer: Manufacturer = Manufacturers.MALIWAN,
 
     /**
      * The rarity/grade of this weapon.
      */
-    var rarity: Rarity = Rarities.COMMON,
+    open var rarity: Rarity = Rarities.COMMON,
 
     /**
      * Weapon class of this gun.
      * Determines base properties of each class combined with which ammo reserve to use.
      */
-    var weaponClass: WeaponClass = WeaponClasses.PISTOL,
+    open var weaponClass: WeaponClass = WeaponClasses.PISTOL,
 
     /**
      * How many pellets to fire at once.
      */
-    var pelletCount: Int = 1,
+    open var pelletCount: Int = 1,
 
     /**
      * Speed of the bullets in blocks per second.
      */
-    var bulletSpeed: Double = 90.0,
+    open var bulletSpeed: Double = 90.0,
 
     /**
      * How much damage to apply when dealing melee damage with this gun.
      */
-    var meleeDamage: Damage = Damage(1.0),
+    open var meleeDamage: Damage = Damage(1.0),
 
     /**
      * How many pellets to fire in burst (per shot).
      */
-    var burstCount: Int = 1,
+    open var burstCount: Int = 1,
 
     /**
      * How much delay there must be between each burst pellet.
      */
-    var burstDelay: Ticks = Ticks(2)
+    open var burstDelay: Ticks = Ticks(2)
 ) {
 
     /**
@@ -217,6 +223,66 @@ open class GunProperties(
      */
     fun serialize(): String = GSON.toJson(this)
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is GunProperties) return false
+
+        if (name != other.name) return false
+        if (baseDamage != other.baseDamage) return false
+        if (accuracy != other.accuracy) return false
+        if (fireRate != other.fireRate) return false
+        if (reloadSpeed != other.reloadSpeed) return false
+        if (magazineSize != other.magazineSize) return false
+        if (ammoPerShot != other.ammoPerShot) return false
+        if (redText != other.redText) return false
+        if (extraInfoText != other.extraInfoText) return false
+        if (elements != other.elements) return false
+        if (elementalChance != other.elementalChance) return false
+        if (elementalDuration != other.elementalDuration) return false
+        if (elementalDamage != other.elementalDamage) return false
+        if (splashRadius != other.splashRadius) return false
+        if (splashDamage != other.splashDamage) return false
+        if (recoilAngle != other.recoilAngle) return false
+        if (manufacturer != other.manufacturer) return false
+        if (rarity != other.rarity) return false
+        if (weaponClass != other.weaponClass) return false
+        if (pelletCount != other.pelletCount) return false
+        if (bulletSpeed != other.bulletSpeed) return false
+        if (meleeDamage != other.meleeDamage) return false
+        if (burstCount != other.burstCount) return false
+        if (burstDelay != other.burstDelay) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + baseDamage.hashCode()
+        result = 31 * result + accuracy.hashCode()
+        result = 31 * result + fireRate.hashCode()
+        result = 31 * result + reloadSpeed.hashCode()
+        result = 31 * result + magazineSize
+        result = 31 * result + ammoPerShot
+        result = 31 * result + (redText?.hashCode() ?: 0)
+        result = 31 * result + extraInfoText.hashCode()
+        result = 31 * result + elements.hashCode()
+        result = 31 * result + elementalChance.hashCode()
+        result = 31 * result + elementalDuration.hashCode()
+        result = 31 * result + elementalDamage.hashCode()
+        result = 31 * result + splashRadius.hashCode()
+        result = 31 * result + splashDamage.hashCode()
+        result = 31 * result + (recoilAngle?.hashCode() ?: 0)
+        result = 31 * result + manufacturer.hashCode()
+        result = 31 * result + rarity.hashCode()
+        result = 31 * result + weaponClass.hashCode()
+        result = 31 * result + pelletCount
+        result = 31 * result + bulletSpeed.hashCode()
+        result = 31 * result + meleeDamage.hashCode()
+        result = 31 * result + burstCount
+        result = 31 * result + burstDelay.hashCode()
+        return result
+    }
+
     companion object {
 
         val GSON: Gson = GsonBuilder()
@@ -254,4 +320,12 @@ fun ItemStack.gunProperties(): GunProperties? {
 
     val gunPropertiesJson = dataStore.get(Keys.gunProperties, PersistentDataType.STRING) ?: return null
     return GunProperties.deserialize(gunPropertiesJson)
+}
+
+/**
+ * Get the gun properties of the given item emtotu.
+ * `null` if this item has no gun properties.
+ */
+fun Item.gunProperties(): GunProperties? {
+    return itemStack.gunProperties()
 }
