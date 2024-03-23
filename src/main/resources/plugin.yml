@@ -4,3 +4,11 @@ version: '0.1'
 author: Hannah Schellekens
 prefix: MCBL
 api-version: '1.20'
+website: 'https://hannahschellekens.nl'
+description: >
+             So you wanna hear a story eh?
+
+commands:
+  mcbl:
+    description: MC Borderlands
+    permission: mcbl
