@@ -388,8 +388,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     @EventHandler
     fun dropReload(event: PlayerDropItemEvent) {
         val properties = event.itemDrop.gunProperties() ?: return
+        val execution = obtainGunExecution(event.player, properties)
+
+        // Allow drop when the gun is fully loaded.
+        if (execution.clip >= properties.magazineSize) {
+            return
+        }
+
+        // Otherwise reload the gun.
         event.isCancelled = true
-        reloadGun(event.player, obtainGunExecution(event.player, properties))
+        reloadGun(event.player, execution)
     }
 
     @EventHandler

@@ -1,6 +1,7 @@
 package maliwan.mcbl
 
 import maliwan.mcbl.commmand.McblCommands
+import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.Hud
 import maliwan.mcbl.inventory.InventoryManager
 import maliwan.mcbl.weapons.WeaponEventHandler
@@ -31,6 +32,11 @@ class MCBorderlandsPlugin : JavaPlugin() {
      */
     val hud = Hud(this)
 
+    /**
+     * Shows rarity particles above the gun items on the ground.
+     */
+    val itemParticles = ItemParticles(this)
+
     private fun registerAllEvents() {
         server.pluginManager.apply {
             registerEvents(weaponEventHandler, this@MCBorderlandsPlugin)
@@ -54,9 +60,10 @@ class MCBorderlandsPlugin : JavaPlugin() {
 
         // Handle weapon physics.
         server.scheduler.scheduleSyncRepeatingTask(this, weaponEventHandler, 1L, 1L)
-
         // Update HUD
         server.scheduler.scheduleSyncRepeatingTask(this, hud, 1L, 1L)
+        // Show rarity particles on items.
+        server.scheduler.scheduleSyncRepeatingTask(this, itemParticles, 1L, 1L)
 
         logger.info("Enabled!")
     }
