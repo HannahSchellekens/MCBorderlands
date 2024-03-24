@@ -14,7 +14,7 @@ interface Elemental {
 
     val id: String
     val displayName: String
-    val colourPrefix: String
+    val chatColor: String
     val color: Color
 }
 
@@ -37,7 +37,7 @@ object ElementalTypeAdapter : TypeAdapter<Elemental>() {
  */
 enum class Elements(
     override val displayName: String,
-    override val colourPrefix: String,
+    override val chatColor: String,
     override val color: Color
 ) : Elemental {
 
@@ -97,7 +97,6 @@ enum class EffectivenessType(
             EntityType.POLAR_BEAR,
             EntityType.LLAMA,
             EntityType.VILLAGER,
-            EntityType.TURTLE,
             EntityType.CAT,
             EntityType.PANDA,
             EntityType.PILLAGER,
@@ -138,6 +137,7 @@ enum class EffectivenessType(
             EntityType.AXOLOTL,
             EntityType.GLOW_SQUID,
             EntityType.TADPOLE,
+            EntityType.TURTLE
         ),
         mapOf(
             Elements.PHYSICAL to 1.0,

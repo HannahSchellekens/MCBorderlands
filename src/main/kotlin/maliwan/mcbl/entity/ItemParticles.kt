@@ -43,10 +43,10 @@ open class ItemParticles(
                 }
 
                 repeat(particleCount) {
-                    val loc = item.location.clone().add(0.0, 0.3 + 0.2 * it, 0.0)
+                    val loc = item.location.clone().add(0.0, 0.2 + 0.2 * it, 0.0)
 
                     plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
-                        loc.showElementalParticle(gunProperties.rarity.color, 1, size = 1f - 0.2f * it)
+                        loc.showElementalParticle(gunProperties.rarity.color, 1, size = 1f - 0.15f * it)
                     }, it.toLong())
                 }
             }

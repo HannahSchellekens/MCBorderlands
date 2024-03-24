@@ -201,8 +201,10 @@ open class GunProperties(
         lore += "${ChatColor.GRAY}Magazine Size: ${ChatColor.WHITE}%d".format(magazineSize)
 
         elements.forEach { element ->
-            val damage = if (element in elementalDamage) " " + elementalDamage[element]!!.heartDisplay else ""
-            lore += "${element.colourPrefix}${element.displayName} ${ChatColor.WHITE}(${elementalChance[element]?.percentageDisplay}$damage)"
+            val chance = if (element == Elements.EXPLOSIVE) "" else "${elementalChance[element]?.percentageDisplay}"
+            val damage = if ((elementalDamage[element]?.damage ?: 0.0) > 0.01) " " + elementalDamage[element]!!.heartDisplay else ""
+            val combined = "$chance$damage".trim()
+            lore += "${element.chatColor}${element.displayName} ${ChatColor.GRAY}(${ChatColor.WHITE}$combined${ChatColor.GRAY})"
         }
 
         var separator: () -> Unit = { lore += "" }
@@ -219,20 +221,50 @@ open class GunProperties(
             placeSeparator()
             var text = line
             Elements.entries.forEach {
-                text = text.replace(it.name.lowercase(), it.colourPrefix + it.name.lowercase() + ChatColor.WHITE)
+                text = text.replace(it.name.lowercase(), it.chatColor + it.name.lowercase() + ChatColor.WHITE)
             }
-            lore += "${ChatColor.WHITE}$text"
+            lore += "${ChatColor.WHITE}• $text"
         }
 
         // Melee damage bonus.
         if (meleeDamage.damage > 1.0001) {
             placeSeparator()
-            lore += "${ChatColor.WHITE}+${meleeDamage.heartDisplay} Melee Damage"
+            lore += "${ChatColor.WHITE}• +${meleeDamage.heartDisplay} Melee Damage"
         }
 
+        // Consumes ammo per shot.
         if (ammoPerShot > 1) {
             placeSeparator()
-            lore += "${ChatColor.WHITE}Consumes %d ammo per shot".format(ammoPerShot)
+            lore += "${ChatColor.WHITE}• Consumes %d ammo per shot".format(ammoPerShot)
+        }
+
+        // Bonus elemental damage.
+        if (elementalDamage.values.any { it.damage > 0.01 } && splashDamage.damage > 0.0001) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} bonus elemental damage"
+        }
+
+        // Elemental data info.
+        elements.forEach { element ->
+            when (element) {
+                Elements.CORROSIVE -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Undead"
+                }
+                Elements.INCENDIARY -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Flesh"
+                }
+                Elements.SHOCK -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Armor & Fish"
+                }
+                Elements.SLAG -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Slagged entities take additional"
+                    lore += "${element.chatColor}non-slag damage"
+                }
+            }
         }
 
         itemMeta.lore = lore
