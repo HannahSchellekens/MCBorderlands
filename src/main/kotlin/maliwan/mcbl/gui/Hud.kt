@@ -51,7 +51,7 @@ open class Hud(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // Place the status in the top left corner of the screen (approximately).
         val newLocation = location.clone()
-        newLocation.yaw -= 45.0f
+        newLocation.yaw -= 42.0f
         newLocation.pitch -= 22.0f
         val displayLocation = newLocation.add(newLocation.direction.normalize().multiply(9.0))
 

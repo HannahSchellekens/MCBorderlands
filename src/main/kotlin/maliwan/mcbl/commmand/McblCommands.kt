@@ -1,10 +1,7 @@
 package maliwan.mcbl.commmand
 
 import maliwan.mcbl.*
-import maliwan.mcbl.weapons.Elements
-import maliwan.mcbl.weapons.Manufacturers
-import maliwan.mcbl.weapons.Rarities
-import maliwan.mcbl.weapons.WeaponClasses
+import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.ChatColor
@@ -44,6 +41,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "extraInfoText:removeLast",
                 "element:none",
                 "element:add",
+                "element:policy",
                 "splashRadius",
                 "splashDamage",
                 "recoilAngle:none",
@@ -73,6 +71,10 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         }
         else if ("element:add".equals(args[1], ignoreCase = true)) {
             return Elements.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+        }
+        else if ("element:policy".equals(args[1], ignoreCase = true)) {
+            return ElementalStatusEffects.ApplyPolicy.entries
+                .map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else {
             return null
@@ -150,6 +152,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 elementalDuration[element] = duration
                 elementalDamage[element] = damage
             }
+            "element:policy" -> update { elementalPolicy = ElementalStatusEffects.ApplyPolicy.valueOf(value.uppercase()) }
             "splashRadius" -> update { splashRadius = value.toDoubleOrNull() ?: error("No double: $value") }
             "splashDamage" -> update { splashDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "recoilAngle:none" -> update { recoilAngle = null }

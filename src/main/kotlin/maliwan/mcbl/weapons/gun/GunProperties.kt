@@ -95,6 +95,11 @@ open class GunProperties(
     open val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
 
     /**
+     * What to do when the target already has an elemental effect of the same type.
+     */
+    open var elementalPolicy: ElementalStatusEffects.ApplyPolicy = ElementalStatusEffects.ApplyPolicy.REPLACE,
+
+    /**
      * How large the splash damage radius is, 0.0 for no splash damage.
      */
     open var splashRadius: Double = 0.0,
@@ -171,6 +176,7 @@ open class GunProperties(
             elementalChance = elementalChance,
             elementalDuration = elementalDuration,
             elementalDamage = elementalDamage,
+            elementalPolicy = elementalPolicy,
             splashRadius = splashRadius,
             splashDamage = splashDamage,
             gravity = gravity
@@ -260,6 +266,7 @@ open class GunProperties(
         if (elementalChance != other.elementalChance) return false
         if (elementalDuration != other.elementalDuration) return false
         if (elementalDamage != other.elementalDamage) return false
+        if (elementalPolicy != other.elementalPolicy) return false
         if (splashRadius != other.splashRadius) return false
         if (splashDamage != other.splashDamage) return false
         if (recoilAngle != other.recoilAngle) return false

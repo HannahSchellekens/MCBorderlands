@@ -4,6 +4,7 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import net.md_5.bungee.api.ChatColor
+import org.bukkit.Color
 import org.bukkit.entity.EntityType
 
 /**
@@ -14,6 +15,7 @@ interface Elemental {
     val id: String
     val displayName: String
     val colourPrefix: String
+    val color: Color
 }
 
 /**
@@ -35,15 +37,16 @@ object ElementalTypeAdapter : TypeAdapter<Elemental>() {
  */
 enum class Elements(
     override val displayName: String,
-    override val colourPrefix: String
+    override val colourPrefix: String,
+    override val color: Color
 ) : Elemental {
 
-    PHYSICAL("", ChatColor.WHITE.toString()),
-    EXPLOSIVE("Explosive", ChatColor.YELLOW.toString()),
-    INCENDIARY("Incendiary", ChatColor.GOLD.toString()),
-    SHOCK("Shock", ChatColor.BLUE.toString()),
-    CORROSIVE("Corrosive", ChatColor.GREEN.toString()),
-    SLAG("Slag", ChatColor.DARK_PURPLE.toString())
+    PHYSICAL("", ChatColor.WHITE.toString(), Color.WHITE),
+    EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), Color.YELLOW),
+    INCENDIARY("Incendiary", ChatColor.GOLD.toString(), Color.ORANGE),
+    SHOCK("Shock", ChatColor.BLUE.toString(), Color.fromRGB(37, 150, 190)),
+    CORROSIVE("Corrosive", ChatColor.GREEN.toString(), Color.LIME),
+    SLAG("Slag", ChatColor.DARK_PURPLE.toString(), Color.PURPLE)
     ;
 
     override val id: String

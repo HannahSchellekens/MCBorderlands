@@ -57,6 +57,11 @@ data class BulletMeta(
     val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
 
     /**
+     * What to do when the target already has the same elemental effect.
+     */
+    val elementalPolicy: ElementalStatusEffects.ApplyPolicy = ElementalStatusEffects.ApplyPolicy.REPLACE,
+
+    /**
      * How large the splash damage radius is, 0.0 for no splash damage.
      */
     var splashRadius: Double = 0.0,

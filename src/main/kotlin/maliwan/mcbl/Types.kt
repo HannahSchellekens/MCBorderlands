@@ -8,11 +8,23 @@ import kotlin.random.Random
 @JvmInline
 value class Ticks(val ticks: Int) {
 
+    /**
+     * Converted to seconds.
+     */
     val seconds: Double
         get() = ticks.toDouble() / 20.0
 
+    /**
+     * Long value.
+     */
     val long: Long
         get() = ticks.toLong()
+
+    /**
+     * Converted to milliseconds.
+     */
+    val millis: Long
+        get() = long * 50L
 }
 
 @JvmInline
@@ -33,6 +45,12 @@ value class Chance(val chance: Double) {
         get() = "${"%.1f".format(chance * 100)}%"
 
     fun throwDice() = Random.nextDouble() <= chance
+
+    companion object {
+
+        val ONE = Chance(1.0)
+        val ZERO = Chance(0.0)
+    }
 }
 
 operator fun Double.compareTo(chance: Chance): Int = this.compareTo(chance.chance)

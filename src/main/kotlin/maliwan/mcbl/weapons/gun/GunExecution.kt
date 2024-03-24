@@ -33,6 +33,7 @@ open class GunExecution(
     properties.elementalChance,
     properties.elementalDuration,
     properties.elementalDamage,
+    properties.elementalPolicy,
     properties.splashRadius,
     properties.splashDamage,
     properties.recoilAngle,

@@ -1,10 +1,6 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.Chance
-import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.compareTo
-import maliwan.mcbl.entity.showHealthBar
-import maliwan.mcbl.showElementalParticle
+import maliwan.mcbl.*
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.gunProperties
@@ -15,14 +11,12 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
-import org.bukkit.event.entity.EntityRegainHealthEvent
-import org.bukkit.event.entity.EntitySpawnEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -55,6 +49,11 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      * The current gun executions by the players.
      */
     private val executions = HashMap<Entity, MutableMap<GunProperties, GunExecution>>()
+
+    /**
+     * Tracks for all entities what their elemental status effects are.
+     */
+    val elementalStatusEffects = ElementalStatusEffects()
 
     /**
      * Checks if the player already has an existing GunExecution with the given properties.
@@ -280,7 +279,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             acc * elementDamageModifier
         }
 
-        event.damage = bulletMeta.damage.damage * elementalModifier
+        // Apply damage & elemental effect
+        event.damage = bulletMeta.damage.damage * elementalModifier * elementalStatusEffects.slagMultiplier(targetEntity)
+        rollElementalDot(targetEntity, bulletMeta)
 
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
             targetEntity.noDamageTicks = oldNoDamageTicks
@@ -295,25 +296,75 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      */
     fun splashDamage(location: Location, bulletMeta: BulletMeta) = bulletMeta.elements.forEach { element ->
         if (element == Elements.PHYSICAL) return@forEach
-        if (element != Elements.EXPLOSIVE) return@forEach // Todo: test with explosive only for now.
 
-        val chance = bulletMeta.elementalChance[element] ?: return@forEach
-        if (chance.throwDice()) {
-            val radius = bulletMeta.splashRadius
-            location.world?.createExplosion(location, 0f)
-
-            location.world?.getNearbyEntities(location, radius, radius, radius)?.forEach entities@ { target ->
-                if (target !is LivingEntity) return@entities
-
-                target.damage(bulletMeta.splashDamage.damage, bulletMeta.shooter)
+        // Explosive does boom, contrary to the DoT effects of the other elements.
+        if (element == Elements.EXPLOSIVE) {
+            val chance = bulletMeta.elementalChance[element] ?: return@forEach
+            if (chance.throwDice()) {
+                val radius = bulletMeta.splashRadius
+                location.world?.createExplosion(location, 0f)
+                location.nearbyEntities(radius).forEach entities@{ target ->
+                    if (target !is LivingEntity) return@entities
+                    val slag = elementalStatusEffects.slagMultiplier(target)
+                    target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
+                }
             }
         }
+        // Other elements do not do boom, but they do hurt. Proc roll is incorporated in [rollElementalDot].
+        else {
+            val radius = bulletMeta.splashRadius
+
+            // Show small splash animation at location.
+            repeat((8 * radius).toInt()) {
+                val splashLocation = location.clone().add(
+                    0.0.modifyRandom(radius),
+                    0.0.modifyRandom(radius),
+                    0.0.modifyRandom(radius)
+                )
+                splashLocation.showElementalParticle(element.color, 1, size = 1.3f)
+            }
+
+            // Use slightly larger radius because locations are counted from the ground position of the entity
+            // this compensates for larger entities.
+            location.nearbyEntities(radius + 0.25).forEach entities@{ target ->
+                if (target !is LivingEntity) return@entities
+                /* Slag cannot enhance its own damage */
+                val slag = if (element == Elements.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
+                target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
+                rollElementalDot(target, bulletMeta)
+            }
+        }
+    }
+
+    /**
+     * Rolls if an elemental (DoT) effect can proc.
+     * The elemental effect will be applied to `target` and gets its info from `bulletMeta`.
+     */
+    fun rollElementalDot(target: LivingEntity, bulletMeta: BulletMeta) {
+        bulletMeta.elements.asSequence()
+            .filter { it == Elements.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
+            .forEach {
+                // Check if the effect will be procced.
+                val chance = bulletMeta.elementalChance[it] ?: Chance.ZERO
+                if (chance.throwDice().not()) return@forEach
+
+                // Apply effect.
+                val duration = bulletMeta.elementalDuration[it] ?: return@forEach
+                val damage = bulletMeta.elementalDamage[it]!!
+                val policy = bulletMeta.elementalPolicy
+
+                val statusEffect = ElementalStatusEffect(it, duration, damage, inflictedBy = bulletMeta.shooter)
+                elementalStatusEffects.applyEffect(target, statusEffect, policy)
+            }
     }
 
     @EventHandler
     fun meleeDamageBonus(event: EntityDamageByEntityEvent) {
         val damager = event.damager as? Player
         val gun = damager?.gunProperties() ?: return
+        // Prevent elemental damage to increase damage output.
+        if (event.entity.lastDamageCause?.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
+
         event.damage = max(event.damage, event.damage + gun.meleeDamage.damage)
     }
 
@@ -342,6 +393,14 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     }
 
     @EventHandler
+    fun clearEffectsOnDeath(event: EntityDeathEvent) {
+        // Prevent concurrent modification with scheduled task.
+        plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+            elementalStatusEffects.cleanup(event.entity)
+        }, 1L)
+    }
+
+    @EventHandler
     fun leaveGame(event: PlayerQuitEvent) {
         cleanup(event.player)
     }
@@ -351,6 +410,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      */
     fun cleanup() {
         executions.clear()
+        elementalStatusEffects.cleanup()
     }
 
     /**
@@ -358,6 +418,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      */
     fun cleanup(player: Player) {
         executions.remove(player)
+        elementalStatusEffects.cleanup(player)
     }
 
     /**
@@ -366,6 +427,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     override fun run() {
         applyBulletGravity()
         cleanExpiredBullets()
+        elementalStatusEffects.tick()
         particles.tick()
     }
 
