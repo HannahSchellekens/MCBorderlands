@@ -17,6 +17,11 @@ class MCBorderlandsPlugin : JavaPlugin() {
     val weaponEventHandler = WeaponEventHandler(this)
 
     /**
+     * Manages general play behaviour, like e.g. increasing default health pools.
+     */
+    val gameRules = GameRules(this)
+
+    /**
      * Manages all ammo inventories.
      */
     val inventoryManager = InventoryManager()
@@ -29,6 +34,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
     private fun registerAllEvents() {
         server.pluginManager.apply {
             registerEvents(weaponEventHandler, this@MCBorderlandsPlugin)
+            registerEvents(gameRules, this@MCBorderlandsPlugin)
             registerEvents(hud, this@MCBorderlandsPlugin)
         }
     }

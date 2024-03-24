@@ -34,7 +34,12 @@ import kotlin.random.Random
 /**
  * @author Hannah Schellekens
  */
-open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
+class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
+
+    /**
+     * Handles all particles created by weapons.
+     */
+    val particles: WeaponParticles = WeaponParticles(this)
 
     /**
      * Stores for each entity the Unix timestamp where the next shot can be fired.
@@ -44,7 +49,7 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
     /**
      * All bullets that have been shot
      */
-    private val bullets = HashMap<Entity, BulletMeta>()
+    val bullets = HashMap<Entity, BulletMeta>()
 
     /**
      * The current gun executions by the players.
@@ -337,32 +342,6 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
     }
 
     @EventHandler
-    fun moreBaseHealth(event: EntitySpawnEvent) {
-        // Make all entities a bit more beefy to compensate for elemental damage modifiers.
-        val entity = event.entity as? LivingEntity ?: return
-        val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH) ?: return
-        val newBaseValue = max(0.0, min(2024.0, maxHealth.baseValue * 1.8))
-        maxHealth.baseValue = newBaseValue
-        entity.health = newBaseValue
-        entity.showHealthBar()
-    }
-
-    @EventHandler(priority = EventPriority.LOW)
-    fun healthBarUpdate(event: EntityDamageEvent) {
-        (event.entity as? LivingEntity)?.showHealthBar()
-    }
-
-    @EventHandler(priority = EventPriority.LOW)
-    fun healthBarUpdateWhenHealed(event: EntityRegainHealthEvent) {
-        (event.entity as? LivingEntity)?.showHealthBar()
-    }
-
-    @EventHandler
-    fun debugDead(event: EntityDeathEvent) {
-        event.entity.customName = "${ChatColor.RED}DEAD"
-    }
-
-    @EventHandler
     fun leaveGame(event: PlayerQuitEvent) {
         cleanup(event.player)
     }
@@ -385,14 +364,18 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
      * Apply bullet physics.
      */
     override fun run() {
-        // Apply bullet specific gravity.
-        bullets.forEach { (bullet, meta) ->
-            val newVelocity = bullet.velocity.clone()
-            newVelocity.y -= meta.gravity
-            bullet.velocity = newVelocity
-        }
+        applyBulletGravity()
+        cleanExpiredBullets()
+        particles.tick()
+    }
 
-        // Cleanup dead bullets.
+    private fun applyBulletGravity() = bullets.forEach { (bullet, meta) ->
+        val newVelocity = bullet.velocity.clone()
+        newVelocity.y -= meta.gravity
+        bullet.velocity = newVelocity
+    }
+
+    private fun cleanExpiredBullets() {
         val toRemove = ArrayList<Entity>(bullets.size / 30)
         bullets.forEach { (bullet, meta) ->
             if (meta.isDead()) {
@@ -402,36 +385,6 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
         toRemove.forEach {
             bullets.remove(it)
             it.remove()
-        }
-
-        // Play particles.
-        particles()
-    }
-
-    var particleFrame = 0
-
-    fun particles() {
-        particleFrame++
-        if (particleFrame++ % 3 != 0) {
-            return
-        }
-
-        bullets.forEach { (bullet, meta) ->
-            if (Elements.EXPLOSIVE in meta.elements) {
-                bullet.location.world?.playEffect(bullet.location.add(0.0, 0.5, 0.0), Effect.SMOKE, 0)
-            }
-            if (Elements.INCENDIARY in meta.elements) {
-                bullet.location.showElementalParticle(Color.ORANGE, 1, 0.6f)
-            }
-            if (Elements.CORROSIVE in meta.elements) {
-                bullet.location.showElementalParticle(Color.LIME, 1, 0.6f)
-            }
-            if (Elements.SHOCK in meta.elements) {
-                bullet.location.showElementalParticle(Color.fromRGB(37, 150, 190), 1, 0.6f)
-            }
-            if (Elements.SLAG in meta.elements) {
-                bullet.location.showElementalParticle(Color.PURPLE, 1, 0.6f)
-            }
         }
     }
 }
