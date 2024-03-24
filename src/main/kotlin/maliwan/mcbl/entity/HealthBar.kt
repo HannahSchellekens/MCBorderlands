@@ -4,6 +4,8 @@ import org.bukkit.ChatColor
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -15,11 +17,11 @@ fun LivingEntity.showHealthBar(
     smallThreshold: Double = 14.0,
     color: ChatColor = ChatColor.RED
 ) {
-    val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
+    val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: return
     val barLength = if (maxHealth <= smallThreshold) smallLength else largeLength
     val percentage = health / maxHealth
-    val bars = ceil(percentage * barLength).toInt()
-    val grey = barLength - bars
+    val bars = max(0, ceil(percentage * barLength).toInt())
+    val grey = max(0, min(barLength, barLength - bars))
 
     val barText = if (health <= 0.0) {
         "${color}X"

@@ -42,6 +42,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "extraInfoText:empty",
                 "extraInfoText:add",
                 "extraInfoText:removeLast",
+                "element:none",
+                "element:add",
                 "splashRadius",
                 "splashDamage",
                 "recoilAngle:none",
@@ -54,6 +56,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "meleeDamage",
                 "burstCount",
                 "burstDelay",
+                "gravity",
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         }
         else if (args.size < 2) {
@@ -67,6 +70,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         }
         else if ("weaponClass".equals(args[1], ignoreCase = true)) {
             return WeaponClasses.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+        }
+        else if ("element:add".equals(args[1], ignoreCase = true)) {
+            return Elements.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else {
             return null
@@ -123,12 +129,27 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "reloadSpeed" -> update { reloadSpeed = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
             "magazineSize" -> update { magazineSize = value.toIntOrNull() ?: error("No int: $value") }
             "ammoPerShot" -> update { ammoPerShot = value.toIntOrNull() ?: error("No int: $value") }
-            "redText" -> update { redText = value }
+            "redText" -> update { redText = value.replace("\\n", "\n") }
             "redText:none" -> update { redText = null }
             "extraInfoText:none" -> update { extraInfoText.clear() }
             "extraInfoText:add" -> update { extraInfoText.add(value) }
             "extraInfoText:removeLast" -> update { extraInfoText.removeLast() }
-            // TODO: Elements, requires more spohisticated user interface
+            "element:none" -> update {
+                elements.clear()
+                elementalChance.clear()
+                elementalDuration.clear()
+                elementalDamage.clear()
+            }
+            "element:add" -> update {
+                val element = Elements.valueOf(values[0])
+                val chance = Chance(values[1].toDoubleOrNull() ?: error("Invalid double: ${values[1]}"))
+                val duration = Ticks(values[2].toIntOrNull() ?: error("Invalid int: ${values[2]}"))
+                val damage = Damage(values[3].toDoubleOrNull() ?: error("Invalid double: ${values[3]}"))
+                elements.add(element)
+                elementalChance[element] = chance
+                elementalDuration[element] = duration
+                elementalDamage[element] = damage
+            }
             "splashRadius" -> update { splashRadius = value.toDoubleOrNull() ?: error("No double: $value") }
             "splashDamage" -> update { splashDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "recoilAngle:none" -> update { recoilAngle = null }
@@ -141,30 +162,22 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "meleeDamage" -> update { meleeDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "burstCount" -> update { burstCount = value.toIntOrNull() ?: error("No int: $value") }
             "burstDelay" -> update { burstDelay = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
+            "gravity" -> update { gravity = value.toDoubleOrNull() ?: error("No double: $value") }
         }
     }
 
     fun debug(player: Player) {
         val gunItem = ItemStack(Material.BOW, 1)
         val gunProperties = GunProperties(
-            name = "RokSalt",
-            rarity = Rarities.LEGENDARY,
-            weaponClass = WeaponClasses.SHOTGUN,
-            manufacturer = Manufacturers.BANDIT,
+            name = "Anarchist",
+            rarity = Rarities.UNCOMMON,
+            weaponClass = WeaponClasses.PISTOL,
+            manufacturer = Manufacturers.VLADOF,
             bulletSpeed = 90.0,
-            accuracy = Chance(0.926),
-            fireRate = 1.3,
-            redText = "Don't retreat. Instead, reload!",
-            elements = mutableListOf(Elements.INCENDIARY),
-            elementalChance = mutableMapOf(
-                Elements.INCENDIARY to Chance(0.5),
-            ),
-            elementalDuration = mutableMapOf(
-                Elements.INCENDIARY to Ticks(80),
-            ),
-            elementalDamage = mutableMapOf(
-                Elements.INCENDIARY to Damage(1.3),
-            )
+            accuracy = Chance(0.862),
+            fireRate = 10.4,
+            magazineSize = 38,
+            baseDamage = Damage(0.8),
         )
 
         gunProperties.applyToItem(gunItem)

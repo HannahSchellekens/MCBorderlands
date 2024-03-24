@@ -4,11 +4,13 @@ import maliwan.mcbl.Chance
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.compareTo
 import maliwan.mcbl.entity.showHealthBar
+import maliwan.mcbl.showElementalParticle
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.gunProperties
 import maliwan.mcbl.weapons.gun.shootBullet
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -20,15 +22,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityRegainHealthEvent
+import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.*
 import kotlin.random.Random
 
 /**
@@ -229,7 +229,7 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
     fun Player.shootGunBullet(gunProperties: GunProperties) {
         val direction = eyeLocation.direction
         val bullet = shootBullet(eyeLocation, direction, gunProperties) ?: return
-        val bulletMeta = gunProperties.bulletMeta()
+        val bulletMeta = gunProperties.bulletMeta(this)
         bullets[bullet] = bulletMeta
 
         val millisDelay = (1000.0 / gunProperties.fireRate).toLong()
@@ -268,12 +268,41 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
         targetEntity.maximumNoDamageTicks = 0
 
         // Set damage to gun damage.
-        event.damage = bulletMeta.damage.damage
+        val armorPoints = targetEntity.getAttribute(Attribute.GENERIC_ARMOR)?.value?.roundToInt() ?: 0
+        val effectivenessType = EffectivenessType.typeOf(event.entityType)
+        val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
+            val elementDamageModifier = effectivenessType.damageMultiplier(elemental, armorPoints)
+            acc * elementDamageModifier
+        }
+
+        event.damage = bulletMeta.damage.damage * elementalModifier
 
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
             targetEntity.noDamageTicks = oldNoDamageTicks
             targetEntity.maximumNoDamageTicks = oldNoDamageTicksMax
         }, 2L)
+
+        bullets.remove(bullet)
+    }
+
+    /**
+     * Calculates whether splash damage must occur, and applies it.
+     */
+    fun splashDamage(location: Location, bulletMeta: BulletMeta) = bulletMeta.elements.forEach { element ->
+        if (element == Elements.PHYSICAL) return@forEach
+        if (element != Elements.EXPLOSIVE) return@forEach // Todo: test with explosive only for now.
+
+        val chance = bulletMeta.elementalChance[element] ?: return@forEach
+        if (chance.throwDice()) {
+            val radius = bulletMeta.splashRadius
+            location.world?.createExplosion(location, 0f)
+
+            location.world?.getNearbyEntities(location, radius, radius, radius)?.forEach entities@ { target ->
+                if (target !is LivingEntity) return@entities
+
+                target.damage(bulletMeta.splashDamage.damage, bulletMeta.shooter)
+            }
+        }
     }
 
     @EventHandler
@@ -284,10 +313,13 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
     }
 
     @EventHandler
-    fun removeBullets(event: ProjectileHitEvent) {
+    fun removeBulletsAndSplash(event: ProjectileHitEvent) {
         val bullet = event.entity
-        if (bullet in bullets) {
+        val bulletMeta = bullets[bullet]
+        if (bulletMeta != null) {
             bullet.remove()
+
+            splashDamage(bullet.location, bulletMeta)
 
             // Only remove the bullet when not hitting a living entity because
             // the damage event requires this bullet data to apply correct damage calculations.
@@ -302,6 +334,17 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
         val properties = event.itemDrop.gunProperties() ?: return
         event.isCancelled = true
         reloadGun(event.player, obtainGunExecution(event.player, properties))
+    }
+
+    @EventHandler
+    fun moreBaseHealth(event: EntitySpawnEvent) {
+        // Make all entities a bit more beefy to compensate for elemental damage modifiers.
+        val entity = event.entity as? LivingEntity ?: return
+        val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH) ?: return
+        val newBaseValue = max(0.0, min(2024.0, maxHealth.baseValue * 1.8))
+        maxHealth.baseValue = newBaseValue
+        entity.health = newBaseValue
+        entity.showHealthBar()
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -359,6 +402,36 @@ open class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runna
         toRemove.forEach {
             bullets.remove(it)
             it.remove()
+        }
+
+        // Play particles.
+        particles()
+    }
+
+    var particleFrame = 0
+
+    fun particles() {
+        particleFrame++
+        if (particleFrame++ % 3 != 0) {
+            return
+        }
+
+        bullets.forEach { (bullet, meta) ->
+            if (Elements.EXPLOSIVE in meta.elements) {
+                bullet.location.world?.playEffect(bullet.location.add(0.0, 0.5, 0.0), Effect.SMOKE, 0)
+            }
+            if (Elements.INCENDIARY in meta.elements) {
+                bullet.location.showElementalParticle(Color.ORANGE, 1, 0.6f)
+            }
+            if (Elements.CORROSIVE in meta.elements) {
+                bullet.location.showElementalParticle(Color.LIME, 1, 0.6f)
+            }
+            if (Elements.SHOCK in meta.elements) {
+                bullet.location.showElementalParticle(Color.fromRGB(37, 150, 190), 1, 0.6f)
+            }
+            if (Elements.SLAG in meta.elements) {
+                bullet.location.showElementalParticle(Color.PURPLE, 1, 0.6f)
+            }
         }
     }
 }

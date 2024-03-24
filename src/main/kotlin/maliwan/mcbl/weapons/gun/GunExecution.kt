@@ -16,7 +16,7 @@ open class GunExecution(
     /**
      * The amount of millis before the recoil ran out.
      */
-    val recoilTime: Int = 750
+    val recoilTime: Int = 650
 
 ) : GunProperties(
     properties.name,
@@ -43,7 +43,8 @@ open class GunExecution(
     properties.bulletSpeed,
     properties.meleeDamage,
     properties.burstCount,
-    properties.burstDelay
+    properties.burstDelay,
+    properties.gravity
 ) {
 
     /**

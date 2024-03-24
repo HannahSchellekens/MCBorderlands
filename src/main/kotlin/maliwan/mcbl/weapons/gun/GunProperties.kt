@@ -9,6 +9,7 @@ import maliwan.mcbl.Ticks
 import maliwan.mcbl.weapons.*
 import org.bukkit.ChatColor
 import org.bukkit.entity.Item
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -151,14 +152,29 @@ open class GunProperties(
     /**
      * How much delay there must be between each burst pellet.
      */
-    open var burstDelay: Ticks = Ticks(2)
+    open var burstDelay: Ticks = Ticks(2),
+
+    /**
+     * Downward acceleration (+ value is downward, - is upward) of the bullet.
+     */
+    open var gravity: Double = 0.016,
 ) {
 
     /**
      * Generates bullet meta for a bullet fired by a gun with these gun properties.
      */
-    fun bulletMeta(): BulletMeta {
-        return BulletMeta(baseDamage)
+    fun bulletMeta(owner: LivingEntity): BulletMeta {
+        return BulletMeta(
+            owner,
+            baseDamage,
+            elements = elements,
+            elementalChance = elementalChance,
+            elementalDuration = elementalDuration,
+            elementalDamage = elementalDamage,
+            splashRadius = splashRadius,
+            splashDamage = splashDamage,
+            gravity = gravity
+        )
     }
 
     /**
@@ -195,7 +211,11 @@ open class GunProperties(
 
         extraInfoText.forEach { line ->
             placeSeparator()
-            lore += "${ChatColor.WHITE}$line"
+            var text = line
+            Elements.entries.forEach {
+                text = text.replace(it.name.lowercase(), it.colourPrefix + it.name.lowercase() + ChatColor.WHITE)
+            }
+            lore += "${ChatColor.WHITE}$text"
         }
 
         // Melee damage bonus.
@@ -251,6 +271,7 @@ open class GunProperties(
         if (meleeDamage != other.meleeDamage) return false
         if (burstCount != other.burstCount) return false
         if (burstDelay != other.burstDelay) return false
+        if (gravity != other.gravity) return false
 
         return true
     }

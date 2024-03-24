@@ -52,7 +52,7 @@ open class Hud(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         // Place the status in the top left corner of the screen (approximately).
         val newLocation = location.clone()
         newLocation.yaw -= 45.0f
-        newLocation.pitch -= 23.0f
+        newLocation.pitch -= 22.0f
         val displayLocation = newLocation.add(newLocation.direction.normalize().multiply(9.0))
 
         val display = displayPeak ?: player.world.spawnEntity(displayLocation, EntityType.TEXT_DISPLAY) as TextDisplay

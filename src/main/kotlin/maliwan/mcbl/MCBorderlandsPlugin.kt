@@ -3,7 +3,7 @@ package maliwan.mcbl
 import maliwan.mcbl.commmand.McblCommands
 import maliwan.mcbl.gui.Hud
 import maliwan.mcbl.inventory.InventoryManager
-import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.WeaponEventHandler
 import org.bukkit.plugin.java.JavaPlugin
 
 /**

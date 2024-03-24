@@ -1,5 +1,7 @@
 package maliwan.mcbl
 
+import kotlin.random.Random
+
 /**
  * 20 ticks per second.
  */
@@ -29,6 +31,8 @@ value class Chance(val chance: Double) {
 
     val percentageDisplay: String
         get() = "${"%.1f".format(chance * 100)}%"
+
+    fun throwDice() = Random.nextDouble() <= chance
 }
 
 operator fun Double.compareTo(chance: Chance): Int = this.compareTo(chance.chance)
