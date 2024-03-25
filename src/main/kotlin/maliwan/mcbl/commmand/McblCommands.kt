@@ -1,6 +1,9 @@
 package maliwan.mcbl.commmand
 
 import maliwan.mcbl.*
+import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.gunProperties
@@ -55,6 +58,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "burstCount",
                 "burstDelay",
                 "gravity",
+                "bonusCritMultiplier"
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         }
         else if (args.size < 2) {
@@ -166,6 +170,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "burstCount" -> update { burstCount = value.toIntOrNull() ?: error("No int: $value") }
             "burstDelay" -> update { burstDelay = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
             "gravity" -> update { gravity = value.toDoubleOrNull() ?: error("No double: $value") }
+            "bonusCritMultiplier" -> update { bonusCritMultiplier = value.toDoubleOrNull() ?: error("No double: $value") }
         }
     }
 

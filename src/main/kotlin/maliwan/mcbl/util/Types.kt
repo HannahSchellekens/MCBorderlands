@@ -1,4 +1,4 @@
-package maliwan.mcbl
+package maliwan.mcbl.util
 
 import kotlin.random.Random
 

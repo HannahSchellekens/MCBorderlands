@@ -1,12 +1,11 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.modifyRandom
+import maliwan.mcbl.util.modifyRandom
 import org.bukkit.Location
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Projectile
-import org.bukkit.entity.Snowball
 import org.bukkit.util.Vector
 
 /**

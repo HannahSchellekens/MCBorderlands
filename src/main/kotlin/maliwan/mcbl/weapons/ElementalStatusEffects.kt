@@ -1,12 +1,8 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.*
 import maliwan.mcbl.entity.armorPoints
-import org.bukkit.ChatColor
-import org.bukkit.Color
+import maliwan.mcbl.util.*
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
-import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 

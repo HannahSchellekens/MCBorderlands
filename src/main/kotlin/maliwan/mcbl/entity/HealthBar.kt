@@ -14,7 +14,7 @@ import kotlin.math.roundToInt
 fun LivingEntity.showHealthBar(
     smallLength: Int = 15,
     largeLength: Int = 25,
-    smallThreshold: Double = 14.0,
+    smallThreshold: Double = 19.5,
     color: ChatColor = ChatColor.RED
 ) {
     val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: return

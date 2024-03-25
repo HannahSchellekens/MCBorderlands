@@ -1,4 +1,4 @@
-package maliwan.mcbl
+package maliwan.mcbl.util
 
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta

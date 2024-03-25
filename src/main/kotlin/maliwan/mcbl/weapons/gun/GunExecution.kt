@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.Chance
+import maliwan.mcbl.util.Chance
 import kotlin.math.pow
 
 /**
@@ -45,7 +45,8 @@ open class GunExecution(
     properties.meleeDamage,
     properties.burstCount,
     properties.burstDelay,
-    properties.gravity
+    properties.gravity,
+    properties.bonusCritMultiplier
 ) {
 
     /**

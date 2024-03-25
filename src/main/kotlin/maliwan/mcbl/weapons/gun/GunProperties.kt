@@ -2,10 +2,11 @@ package maliwan.mcbl.weapons.gun
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import maliwan.mcbl.Chance
-import maliwan.mcbl.Damage
+import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Damage
 import maliwan.mcbl.Keys
-import maliwan.mcbl.Ticks
+import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.formatPercentage
 import maliwan.mcbl.weapons.*
 import org.bukkit.ChatColor
 import org.bukkit.entity.Item
@@ -163,6 +164,15 @@ open class GunProperties(
      * Downward acceleration (+ value is downward, - is upward) of the bullet.
      */
     open var gravity: Double = 0.016,
+
+    /**
+     * Extra bonus critical hit multiplier that gets ADDED to the original multiplier.
+     * E.g. a value of 1.0 means that the multiplier will be +1.0 greater.
+     *
+     * Normally a critical is x2 damage. The bonus crit multiplier multiplies this multiplier.
+     * `null` for no bonus crit multiplier.
+     */
+    open var bonusCritMultiplier: Double? = null
 ) {
 
     /**
@@ -179,7 +189,8 @@ open class GunProperties(
             elementalPolicy = elementalPolicy,
             splashRadius = splashRadius,
             splashDamage = splashDamage,
-            gravity = gravity
+            gravity = gravity,
+            bonusCritMultiplier = bonusCritMultiplier
         )
     }
 
@@ -217,13 +228,10 @@ open class GunProperties(
             }
         }
 
-        extraInfoText.forEach { line ->
+        // Critical damage bonus.
+        if (bonusCritMultiplier != null && bonusCritMultiplier!! > 0.0001) {
             placeSeparator()
-            var text = line
-            Elements.entries.forEach {
-                text = text.replace(it.name.lowercase(), it.chatColor + it.name.lowercase() + ChatColor.WHITE)
-            }
-            lore += "${ChatColor.WHITE}• $text"
+            lore += "${ChatColor.WHITE}• +${bonusCritMultiplier!!.formatPercentage(0)} Critical Hit Damage"
         }
 
         // Melee damage bonus.
@@ -242,6 +250,16 @@ open class GunProperties(
         if (elementalDamage.values.any { it.damage > 0.01 } && splashDamage.damage > 0.0001) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} bonus elemental damage"
+        }
+
+        // Custom information.
+        extraInfoText.forEach { line ->
+            placeSeparator()
+            var text = line
+            Elements.entries.forEach {
+                text = text.replace(it.name.lowercase(), it.chatColor + it.name.lowercase() + ChatColor.WHITE)
+            }
+            lore += "${ChatColor.WHITE}• $text"
         }
 
         // Elemental data info.

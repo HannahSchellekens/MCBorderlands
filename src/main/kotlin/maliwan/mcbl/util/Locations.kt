@@ -1,4 +1,4 @@
-package maliwan.mcbl
+package maliwan.mcbl.util
 
 import org.bukkit.Location
 import org.bukkit.entity.Entity

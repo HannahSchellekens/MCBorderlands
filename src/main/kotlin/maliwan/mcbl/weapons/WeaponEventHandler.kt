@@ -1,6 +1,9 @@
 package maliwan.mcbl.weapons
 
 import maliwan.mcbl.*
+import maliwan.mcbl.entity.headLocation
+import maliwan.mcbl.entity.headshotRange
+import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.gunProperties
@@ -10,13 +13,13 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
-import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -279,8 +282,21 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             acc * elementDamageModifier
         }
 
+        // Calculate critical hit bonus.
+        val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
+        val head = targetEntity.headLocation
+        val distance = hitLocation?.distance(head) ?: Double.MAX_VALUE
+        val isCritical = distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
+
+        val critMultiplier = if (isCritical) {
+            2.0 + (bulletMeta.bonusCritMultiplier ?: 0.0)
+        }
+        else 1.0
+
         // Apply damage & elemental effect
-        event.damage = bulletMeta.damage.damage * elementalModifier * elementalStatusEffects.slagMultiplier(targetEntity)
+        event.damage = bulletMeta.damage.damage * elementalModifier *
+                elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
+
         rollElementalDot(targetEntity, bulletMeta)
 
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
@@ -375,7 +391,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         if (bulletMeta != null) {
             bullet.remove()
 
-            splashDamage(bullet.location, bulletMeta)
+            val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
+            val hitLocation = bullet.determineHitLocation(boundingBox) ?: bullet.location
+            splashDamage(hitLocation, bulletMeta)
 
             // Only remove the bullet when not hitting a living entity because
             // the damage event requires this bullet data to apply correct damage calculations.

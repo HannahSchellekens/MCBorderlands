@@ -1,7 +1,7 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.showElementalParticle
+import maliwan.mcbl.util.showElementalParticle
 import maliwan.mcbl.weapons.Rarities
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.entity.Item

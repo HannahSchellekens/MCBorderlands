@@ -1,7 +1,6 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.showElementalParticle
-import org.bukkit.Color
+import maliwan.mcbl.util.showElementalParticle
 import org.bukkit.Effect
 
 /**

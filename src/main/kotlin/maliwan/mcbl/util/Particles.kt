@@ -1,4 +1,4 @@
-package maliwan.mcbl
+package maliwan.mcbl.util
 
 import org.bukkit.Color
 import org.bukkit.Effect

@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.Chance
-import maliwan.mcbl.Damage
-import maliwan.mcbl.Ticks
+import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Ticks
 import org.bukkit.entity.LivingEntity
 
 /**
@@ -70,6 +70,13 @@ data class BulletMeta(
      * How much splash damage to deal on impact.
      */
     var splashDamage: Damage = Damage(0.0),
+
+    /**
+     * Extra bonus critical hit multiplier.
+     * Normally a critical is x2 damage. The bonus crit multiplier multiplies this multiplier.
+     * `null` for no bonus crit multiplier.
+     */
+    var bonusCritMultiplier: Double? = null
 ) {
 
     /**
