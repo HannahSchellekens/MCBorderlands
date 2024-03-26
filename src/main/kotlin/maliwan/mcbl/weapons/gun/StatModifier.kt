@@ -84,9 +84,37 @@ open class StatModifier(
             { it.magazineSize.toDouble().asList() },
             { stats, it -> stats.magazineSize = floor(it.first()).toInt() }
         ),
+        PELLET_COUNT(
+            { it.pelletCount.toDouble().asList() },
+            { stats, it -> stats.pelletCount = floor(it.first()).toInt() }
+        ),
         RELOAD_SPEED(
             { it.reloadSpeed.ticks.toDouble().asList() },
             { stats, it -> stats.reloadSpeed = Ticks(ceil(it.first()).toInt()) }
+        ),
+        BURST_COUNT(
+            { it.burstCount.toDouble().asList() },
+            { stats, it -> stats.burstCount = it.first().toInt() }
+        ),
+        AMMO_PER_SHOT(
+            { it.ammoPerShot.toDouble().asList() },
+            { stats, it -> stats.ammoPerShot = it.first().toInt() }
+        ),
+        BONUS_CRIT_MULTIPLIER(
+            { (it.bonusCritMultiplier ?: 0.0).asList() },
+            { stats, it -> stats.bonusCritMultiplier = if (it.first() < 0.001) null else it.first() }
+        ),
+        PROJECTILE_SPEED(
+            { it.bulletSpeed.asList() },
+            { stats, it -> stats.bulletSpeed = it.first() }
+        ),
+        GRAVITY(
+            { it.gravity.asList() },
+            { stats, it -> stats.gravity = it.first() }
+        ),
+        MELEE(
+            { it.meleeDamage.damage.asList() },
+            { stats, it -> stats.meleeDamage = Damage(it.first()) }
         ),
         ELEMENTAL_DAMAGE(
             { it.elementalDamage.values.map { dmg -> dmg.damage } },
@@ -152,22 +180,22 @@ class StatModifierBuilder {
 
     private val resultList = ArrayList<StatModifier>()
 
-    fun add(value: Double, property: StatModifier.Property): StatModifierBuilder {
-        resultList += StatModifier(value, StatModifier.Type.ADD, property)
+    fun add(value: Number, property: StatModifier.Property): StatModifierBuilder {
+        resultList += StatModifier(value.toDouble(), StatModifier.Type.ADD, property)
         return this
     }
 
-    fun subtract(value: Double, property: StatModifier.Property): StatModifierBuilder {
-        return add(-value, property)
+    fun subtract(value: Number, property: StatModifier.Property): StatModifierBuilder {
+        return add(-value.toDouble(), property)
     }
 
-    fun multiply(value: Double, property: StatModifier.Property): StatModifierBuilder {
-        resultList += StatModifier(value, StatModifier.Type.MULTIPLY, property)
+    fun multiply(value: Number, property: StatModifier.Property): StatModifierBuilder {
+        resultList += StatModifier(value.toDouble(), StatModifier.Type.MULTIPLY, property)
         return this
     }
 
-    fun divide(value: Double, property: StatModifier.Property): StatModifierBuilder {
-        return multiply(1.0 / value, property)
+    fun divide(value: Number, property: StatModifier.Property): StatModifierBuilder {
+        return multiply(1.0 / value.toDouble(), property)
     }
 
     fun build(): List<StatModifier> = resultList

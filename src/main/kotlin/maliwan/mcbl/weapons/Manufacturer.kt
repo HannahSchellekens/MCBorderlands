@@ -46,7 +46,8 @@ enum class Manufacturers(
     ERIDIAN("Eridian"),
     JAKOBS("Jakobs"),
     ANSHIN("Anshin"),
-    PANGOLIN("Pangolin")
+    PANGOLIN("Pangolin"),
+    NONE(""),
     ;
 
     override val id: String
