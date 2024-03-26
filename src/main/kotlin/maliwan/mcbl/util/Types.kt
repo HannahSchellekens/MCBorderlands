@@ -1,5 +1,7 @@
 package maliwan.mcbl.util
 
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.random.Random
 
 /**
@@ -52,6 +54,11 @@ value class Chance(val chance: Double) {
         val ZERO = Chance(0.0)
     }
 }
+
+/**
+ * Automatically fits to the range [0.0,1.0], negative values become 0.0, larger than 1 becomes 1.0.
+ */
+fun Double.toChance() = Chance(min(max(0.0, this), 1.0))
 
 operator fun Double.compareTo(chance: Chance): Int = this.compareTo(chance.chance)
 

@@ -41,7 +41,7 @@ open class GunProperties(
     /**
      * With how much to multiply the accuracy after each shot.
      */
-    open var recoil: Double = 0.995,
+    open var recoil: Double = 0.994,
 
     /**
      * Amount of shots per second.
@@ -83,17 +83,17 @@ open class GunProperties(
     /**
      * The chance each element is applied to the target.
      */
-    open val elementalChance: MutableMap<Elemental, Chance> = HashMap(),
+    open val elementalChance: LinkedHashMap<Elemental, Chance> = LinkedHashMap(),
 
     /**
      * How many ticks each elemental effect lasts when applied.
      */
-    open val elementalDuration: MutableMap<Elemental, Ticks> = HashMap(),
+    open val elementalDuration: LinkedHashMap<Elemental, Ticks> = LinkedHashMap(),
 
     /**
      * How much damage each elemental effect deals per 0.5 seconds.
      */
-    open val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
+    open val elementalDamage: LinkedHashMap<Elemental, Damage> = LinkedHashMap(),
 
     /**
      * What to do when the target already has an elemental effect of the same type.
