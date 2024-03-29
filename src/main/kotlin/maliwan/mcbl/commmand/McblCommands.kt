@@ -39,6 +39,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "ammoPerShot",
                 "redText",
                 "redText:none",
+                "cyanText",
+                "cyanText:none",
                 "extraInfoText:empty",
                 "extraInfoText:add",
                 "extraInfoText:removeLast",
@@ -137,6 +139,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "ammoPerShot" -> update { ammoPerShot = value.toIntOrNull() ?: error("No int: $value") }
             "redText" -> update { redText = value.replace("\\n", "\n") }
             "redText:none" -> update { redText = null }
+            "cyanText" -> update { cyanText = value.replace("\\n", "\n") }
+            "cyanText:none" -> update { cyanText = null }
             "extraInfoText:none" -> update { extraInfoText.clear() }
             "extraInfoText:add" -> update { extraInfoText.add(value) }
             "extraInfoText:removeLast" -> update { extraInfoText.removeLast() }

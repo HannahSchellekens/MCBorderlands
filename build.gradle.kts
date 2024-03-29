@@ -28,6 +28,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     compileOnly("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
     testCompileOnly("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
+    implementation(kotlin("reflect"))
 }
 
 tasks.test {

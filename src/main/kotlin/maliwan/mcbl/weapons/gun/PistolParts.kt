@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun
 
+import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Manufacturers
 import maliwan.mcbl.weapons.WeaponClass
@@ -142,6 +143,15 @@ object PistolParts {
         ;
 
         override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+
+        companion object {
+
+            val commonBarrels = setOf(
+                MALIWAN, VLADOF, BANDIT, DAHL, HYPERION, JAKOBS, TEDIORE, TORGUE
+            )
+
+            val commonLootPool = commonBarrels.toUniformLootPool()
+        }
     }
 
     /**
@@ -269,6 +279,22 @@ object PistolParts {
         ;
 
         override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+
+        companion object {
+
+            val commonGrips = setOf(
+                Grip.MALIWAN,
+                Grip.VLADOF,
+                Grip.BANDIT,
+                Grip.DAHL,
+                Grip.HYPERION,
+                Grip.JAKOBS,
+                Grip.TEDIORE,
+                Grip.TORGUE
+            )
+
+            val commonLootPool = commonGrips.toUniformLootPool()
+        }
     }
 
     /**
@@ -351,5 +377,20 @@ object PistolParts {
         ;
 
         override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+
+        companion object {
+
+            val commonAccessories = setOf(
+                ACCURACY,
+                BAYONET,
+                DOUBLE,
+                STOCK,
+                MAGAZINE,
+                DAMAGE,
+                FIRE_RATE
+            )
+
+            val commonLootPool = commonAccessories.toUniformLootPool()
+        }
     }
 }

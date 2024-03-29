@@ -28,6 +28,7 @@ open class GunExecution(
     properties.magazineSize,
     properties.ammoPerShot,
     properties.redText,
+    properties.cyanText,
     properties.extraInfoText,
     properties.elements,
     properties.elementalChance,

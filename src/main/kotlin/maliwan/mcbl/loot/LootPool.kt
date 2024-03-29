@@ -1,17 +1,14 @@
 package maliwan.mcbl.loot
 
+import maliwan.mcbl.weapons.Rarities
+import maliwan.mcbl.weapons.Rarity
 import java.util.Random
+import javax.print.attribute.HashAttributeSet
 
 /**
  * @author Hannah Schellekens
  */
-open class LootPool<Result>(
-
-    /**
-     * Maps each result type to the weight in the loot table.
-     */
-    weightTable: Map<Result, Int>
-) {
+open class LootPool<Result> {
 
     /**
      * In increasing order contains the end of the ranges that determine which parts
@@ -24,9 +21,15 @@ open class LootPool<Result>(
      */
     private val intervals: List<Pair<Double, Result>>
 
-    init {
-        val totalWeight = weightTable.values.sum().toDouble()
+    private constructor(intervals: List<Pair<Double, Result>>) {
+        this.intervals = intervals
+    }
 
+    /**
+     * Maps each result type to the weight in the loot table.
+     */
+    constructor(weightTable: Map<Result, Int>) {
+        val totalWeight = weightTable.values.sum().toDouble()
         var cumulativeChance = 0.0
         intervals = ArrayList<Pair<Double, Result>>(weightTable.size).apply {
             weightTable.forEach { (result, weight) ->
@@ -34,6 +37,16 @@ open class LootPool<Result>(
                 add((cumulativeChance + chance) to result)
                 cumulativeChance += chance
             }
+        }
+    }
+
+    /**
+     * Each item in the list has the same probability.
+     */
+    constructor(uniformList: Collection<Result>) {
+        val chancePerItem = 1.0 / uniformList.size
+        intervals = uniformList.mapIndexed { index, result ->
+            Pair((index + 1) * chancePerItem, result)
         }
     }
 
@@ -52,6 +65,58 @@ open class LootPool<Result>(
         }?.second ?: intervals.last().second
     }
 
+    /**
+     * Creates a new LootPool where certain results are removed from.
+     */
+    fun removeResults(toRemove: Set<Result>, precision: Int = 1_000_000): LootPool<Result> {
+        if (toRemove.isEmpty()) return this
+
+        // Total share of probability to remove.
+        var totalToRemove = 0.0
+
+        // Loop over all intervals and compare them to the previous entry
+        // sum the parts that need to be removed.
+        // Need to store each individual value to later use it to calculate new weights.
+        val individualValues = HashMap<Result, Double>()
+        var lastValue = 0.0
+
+        intervals.forEach { (rangeEnd, result) ->
+            val individualValue = (rangeEnd - lastValue)
+
+            if (result in toRemove) {
+                totalToRemove += individualValue
+            }
+            else individualValues[result] = individualValue
+
+            lastValue = rangeEnd
+        }
+
+        // Calculate new weights and build new loot pool:
+        val totalLeft = 1.0 - totalToRemove
+        return individualValues
+            .map { (result, value) -> result to (totalToRemove * (value / totalLeft) * precision).toInt() }
+            .toMap()
+            .toLootPool()
+    }
+
+    /**
+     * Creates a new Loot Pool where only certain results are kept, the rest is removed.
+     */
+    fun retainResults(toRetain: Set<Result>, precision: Int = 1_000_000): LootPool<Result> {
+        val difference = intervals.map { (_, result) -> result } subtract toRetain
+        return removeResults(difference, precision)
+    }
+
+    /**
+     * Creates a new LootPool where certain results are removed from.
+     */
+    fun removeResults(toRemove: Iterable<Result>, precision: Int = 1_000_000) = removeResults(toRemove.toSet(), precision)
+
+    /**
+     * Creates a new LootPool where certain results are removed from.
+     */
+    fun removeResults(vararg toRemove: Result, precision: Int = 1_000_000) = removeResults(toRemove.toSet(), precision)
+
     companion object {
 
         private val defaultRandom = Random()
@@ -59,6 +124,35 @@ open class LootPool<Result>(
 }
 
 /**
+ * Creates a new loot pool based on given weights as pairs Pair(result, int).
+ */
+fun <Result> lootPoolOf(vararg weightList: Pair<Result, Int>) = mapOf(*weightList).toLootPool()
+
+/**
+ * Creates a new loot pool for rarities based on the given weights.
+ */
+fun rarityLootPool(
+    commonWeight: Int,
+    uncommonWeight: Int,
+    rareWeight: Int,
+    epicWeight: Int,
+    legendaryWeight: Int,
+    pearlescentWeight: Int
+): LootPool<Rarity> = lootPoolOf(
+    Rarities.COMMON to commonWeight,
+    Rarities.UNCOMMON to uncommonWeight,
+    Rarities.RARE to rareWeight,
+    Rarities.EPIC to epicWeight,
+    Rarities.LEGENDARY to legendaryWeight,
+    Rarities.PEARLESCENT to pearlescentWeight
+)
+
+/**
  * Creates a new LootPool based on the weights defined by this map.
  */
 fun <Result> Map<Result, Int>.toLootPool() = LootPool(this)
+
+/**
+ * Creates a new LootPool where each item in this collection has equal weight.
+ */
+fun <Result> Collection<Result>.toUniformLootPool() = LootPool(this)

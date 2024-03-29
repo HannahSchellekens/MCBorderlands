@@ -1,12 +1,7 @@
 package maliwan.mcbl.weapons.gun
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import maliwan.mcbl.util.Chance
-import maliwan.mcbl.util.Damage
 import maliwan.mcbl.Keys
-import maliwan.mcbl.util.Ticks
-import maliwan.mcbl.util.formatPercentage
+import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.*
 import org.bukkit.ChatColor
 import org.bukkit.entity.Item
@@ -67,6 +62,11 @@ open class GunProperties(
      * Special red text to show on the weapon card, `null` for no text.
      */
     open var redText: String? = null,
+
+    /**
+     * Special cyan text to show on the weapon card, `null` for no text.
+     */
+    open var cyanText: String? = null,
 
     /**
      * Extra lines of information shown on the weapon card.
@@ -228,6 +228,13 @@ open class GunProperties(
             }
         }
 
+        cyanText?.let { text ->
+            placeSeparator()
+            text.split("\n").forEach { line ->
+                lore += "${ChatColor.DARK_AQUA}$line"
+            }
+        }
+
         // Critical damage bonus.
         if (bonusCritMultiplier != null && bonusCritMultiplier!! > 0.0001) {
             placeSeparator()
@@ -363,17 +370,10 @@ open class GunProperties(
 
     companion object {
 
-        val GSON: Gson = GsonBuilder()
-            .registerTypeAdapter(Elemental::class.java, ElementalTypeAdapter)
-            .registerTypeAdapter(Manufacturer::class.java, ManufacturerTypeAdapter)
-            .registerTypeAdapter(Rarity::class.java, RarityTypeAdapter)
-            .registerTypeAdapter(WeaponClass::class.java, WeaponClassTypeAdapter)
-            .create()
-
         /**
          * Gun string -> GunProperties object.
          */
-        fun deserialize(json: String): GunProperties = GSON.fromJson(json, GunProperties::class.java) /* TODO: Add type handlers */
+        fun deserialize(json: String): GunProperties = GSON.fromJson(json, GunProperties::class.java)
     }
 }
 
