@@ -1,8 +1,5 @@
 package maliwan.mcbl.weapons
 
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.entity.EntityType
@@ -10,36 +7,11 @@ import org.bukkit.entity.EntityType
 /**
  * @author Hannah Schellekens
  */
-interface Elemental {
-
-    val id: String
-    val displayName: String
-    val chatColor: String
+enum class Elemental(
+    val displayName: String,
+    val chatColor: String,
     val color: Color
-}
-
-/**
- * @author Hannah Schellekens
- */
-object ElementalTypeAdapter : TypeAdapter<Elemental>() {
-
-    override fun write(writer: JsonWriter, elemental: Elemental) {
-        writer.value(elemental.id)
-    }
-
-    override fun read(reader: JsonReader): Elemental {
-        return Elements.valueOf(reader.nextString())
-    }
-}
-
-/**
- * @author Hannah Schellekens
- */
-enum class Elements(
-    override val displayName: String,
-    override val chatColor: String,
-    override val color: Color
-) : Elemental {
+) {
 
     PHYSICAL("", ChatColor.WHITE.toString(), Color.WHITE),
     EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), Color.YELLOW),
@@ -49,8 +21,8 @@ enum class Elements(
     SLAG("Slag", ChatColor.DARK_PURPLE.toString(), Color.PURPLE)
     ;
 
-    override val id: String
-        get() = name
+    val nullIfPhysical: Elemental?
+        get() = if (this == PHYSICAL) null else this
 }
 
 /**
@@ -112,12 +84,12 @@ enum class EffectivenessType(
             EntityType.PLAYER,
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 1.0,
-            Elements.INCENDIARY to 1.5,
-            Elements.SHOCK to 0.6,
-            Elements.CORROSIVE to 0.8,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 1.0,
+            Elemental.INCENDIARY to 1.5,
+            Elemental.SHOCK to 0.6,
+            Elemental.CORROSIVE to 0.8,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -140,12 +112,12 @@ enum class EffectivenessType(
             EntityType.TURTLE
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 0.8,
-            Elements.INCENDIARY to 0.5,
-            Elements.SHOCK to 1.5,
-            Elements.CORROSIVE to 1.0,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 0.8,
+            Elemental.INCENDIARY to 0.5,
+            Elemental.SHOCK to 1.5,
+            Elemental.CORROSIVE to 1.0,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -161,12 +133,12 @@ enum class EffectivenessType(
             //EntityType.BREEZE,
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 1.0,
-            Elements.INCENDIARY to 1.5,
-            Elements.SHOCK to 1.5,
-            Elements.CORROSIVE to 0.8,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 1.0,
+            Elemental.INCENDIARY to 1.5,
+            Elemental.SHOCK to 1.5,
+            Elemental.CORROSIVE to 0.8,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -185,12 +157,12 @@ enum class EffectivenessType(
             EntityType.ALLAY,
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 1.0,
-            Elements.INCENDIARY to 1.0,
-            Elements.SHOCK to 1.0,
-            Elements.CORROSIVE to 1.0,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 1.0,
+            Elemental.INCENDIARY to 1.0,
+            Elemental.SHOCK to 1.0,
+            Elemental.CORROSIVE to 1.0,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -209,12 +181,12 @@ enum class EffectivenessType(
             EntityType.PIGLIN_BRUTE,
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 1.0,
-            Elements.INCENDIARY to 0.5,
-            Elements.SHOCK to 1.2,
-            Elements.CORROSIVE to 1.0,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 1.0,
+            Elemental.INCENDIARY to 0.5,
+            Elemental.SHOCK to 1.2,
+            Elemental.CORROSIVE to 1.0,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -237,12 +209,12 @@ enum class EffectivenessType(
             EntityType.DROWNED,
         ),
         mapOf(
-            Elements.PHYSICAL to 1.0,
-            Elements.EXPLOSIVE to 1.0,
-            Elements.INCENDIARY to 0.5,
-            Elements.SHOCK to 1.0,
-            Elements.CORROSIVE to 1.5,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 1.0,
+            Elemental.EXPLOSIVE to 1.0,
+            Elemental.INCENDIARY to 0.5,
+            Elemental.SHOCK to 1.0,
+            Elemental.CORROSIVE to 1.5,
+            Elemental.SLAG to 1.0,
         )
     ),
 
@@ -253,12 +225,12 @@ enum class EffectivenessType(
     ARMORED(
         emptySet() /* depends on armor points */,
         mapOf(
-            Elements.PHYSICAL to 0.8,
-            Elements.EXPLOSIVE to 0.8,
-            Elements.INCENDIARY to 0.8,
-            Elements.SHOCK to 2.0,
-            Elements.CORROSIVE to 1.2,
-            Elements.SLAG to 1.0,
+            Elemental.PHYSICAL to 0.8,
+            Elemental.EXPLOSIVE to 0.8,
+            Elemental.INCENDIARY to 0.8,
+            Elemental.SHOCK to 2.0,
+            Elemental.CORROSIVE to 1.2,
+            Elemental.SLAG to 1.0,
         )
     )
     ;

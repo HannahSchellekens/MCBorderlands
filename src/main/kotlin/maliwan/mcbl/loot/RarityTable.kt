@@ -1,6 +1,6 @@
 package maliwan.mcbl.loot
 
-import maliwan.mcbl.weapons.WeaponClasses
+import maliwan.mcbl.weapons.WeaponClass
 
 /**
  * @author Hannah Schellekens
@@ -42,12 +42,12 @@ object RarityTable {
     object Ammo {
 
         val regular = lootPoolOf(
-            WeaponClasses.PISTOL to 100,
-            WeaponClasses.ASSAULT_RIFLE to 100,
-            WeaponClasses.SMG to 100,
-            WeaponClasses.SHOTGUN to 100,
-            WeaponClasses.SNIPER to 100,
-            WeaponClasses.LAUNCHER to 5,
+            WeaponClass.PISTOL to 100,
+            WeaponClass.ASSAULT_RIFLE to 100,
+            WeaponClass.SMG to 100,
+            WeaponClass.SHOTGUN to 100,
+            WeaponClass.SNIPER to 100,
+            WeaponClass.LAUNCHER to 5,
         )
     }
 }

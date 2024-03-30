@@ -1,0 +1,15 @@
+""	BANDIT	DAHL	HYPERION	JAKOBS	MALIWAN	TEDIORE	TORGUE	VLADOF
+baseDamage	1.54	1.51	1.62	2.38	1.95	1.56	2.16	1.57
+magazineSize	38	16	15	6	6	13	7	20
+reloadTime	60	37	39	42	40	26	44	44
+fireRate	3.8	5.6	5.0	2.2	2.5	4.8	2.0	8.0
+burstCount	1	3	1	1	1	1	1	1
+elementalChance	0.12	0.12	0.12	0.12	0.156	0.12	0.12	0.12
+elementalDamage	2.43	2.43	2.43	2.43	3.04	2.43	2.43	2.43
+accuracy	0.817	0.91	0.965	0.945	0.931	0.873	0.842	0.861
+recoil	0.992	0.995	0.996	0.993	0.994	0.994	0.992	0.993
+gravity	0.016	0.016	0.016	0.016	0.016	0.016	0.008	0.016
+bulletSpeed	90.0	90.0	105.0	97.5	90.0	90.0	90.0	90.0
+bonusCritModifier	0	0	0	0.5	0	0	0	0
+spashRadius	0.3	0.3	0.3	0.3	0.5	0.3	0.8	0.3
+ammoPerShot	1	1	1	1	2	1	1	1

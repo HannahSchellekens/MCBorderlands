@@ -311,10 +311,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      * Calculates whether splash damage must occur, and applies it.
      */
     fun splashDamage(location: Location, bulletMeta: BulletMeta) = bulletMeta.elements.forEach { element ->
-        if (element == Elements.PHYSICAL) return@forEach
+        if (element == Elemental.PHYSICAL) return@forEach
 
         // Explosive does boom, contrary to the DoT effects of the other elements.
-        if (element == Elements.EXPLOSIVE) {
+        if (element == Elemental.EXPLOSIVE) {
             val chance = bulletMeta.elementalChance[element] ?: return@forEach
             if (chance.throwDice()) {
                 val radius = bulletMeta.splashRadius
@@ -345,7 +345,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             location.nearbyEntities(radius + 0.25).forEach entities@{ target ->
                 if (target !is LivingEntity) return@entities
                 /* Slag cannot enhance its own damage */
-                val slag = if (element == Elements.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
+                val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
                 target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
                 rollElementalDot(target, bulletMeta)
             }
@@ -358,7 +358,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      */
     fun rollElementalDot(target: LivingEntity, bulletMeta: BulletMeta) {
         bulletMeta.elements.asSequence()
-            .filter { it == Elements.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
+            .filter { it == Elemental.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
             .forEach {
                 // Check if the effect will be procced.
                 val chance = bulletMeta.elementalChance[it] ?: Chance.ZERO

@@ -1,6 +1,6 @@
 package maliwan.mcbl.loot
 
-import maliwan.mcbl.weapons.WeaponClasses
+import maliwan.mcbl.weapons.WeaponClass
 
 /**
  * @author Hannah Schellekens
@@ -8,11 +8,11 @@ import maliwan.mcbl.weapons.WeaponClasses
 object WeaponClassTable {
 
     val generation = lootPoolOf(
-        WeaponClasses.PISTOL to 100,
-        WeaponClasses.ASSAULT_RIFLE to 80,
-        WeaponClasses.SMG to 80,
-        WeaponClasses.SHOTGUN to 80,
-        WeaponClasses.SNIPER to 55,
-        WeaponClasses.LAUNCHER to 20,
+        WeaponClass.PISTOL to 100,
+        WeaponClass.ASSAULT_RIFLE to 80,
+        WeaponClass.SMG to 80,
+        WeaponClass.SHOTGUN to 80,
+        WeaponClass.SNIPER to 55,
+        WeaponClass.LAUNCHER to 20,
     )
 }

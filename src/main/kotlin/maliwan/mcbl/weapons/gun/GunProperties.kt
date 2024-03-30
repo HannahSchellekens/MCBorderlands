@@ -122,18 +122,18 @@ open class GunProperties(
     /**
      * The manufacturer of this gun.
      */
-    open var manufacturer: Manufacturer = Manufacturers.MALIWAN,
+    open var manufacturer: Manufacturer = Manufacturer.MALIWAN,
 
     /**
      * The rarity/grade of this weapon.
      */
-    open var rarity: Rarity = Rarities.COMMON,
+    open var rarity: Rarity = Rarity.COMMON,
 
     /**
      * Weapon class of this gun.
      * Determines base properties of each class combined with which ammo reserve to use.
      */
-    open var weaponClass: WeaponClass = WeaponClasses.PISTOL,
+    open var weaponClass: WeaponClass = WeaponClass.PISTOL,
 
     /**
      * How many pellets to fire at once.
@@ -212,7 +212,7 @@ open class GunProperties(
         lore += "${ChatColor.GRAY}Magazine Size: ${ChatColor.WHITE}%d".format(magazineSize)
 
         elements.forEach { element ->
-            val chance = if (element == Elements.EXPLOSIVE) "" else "${elementalChance[element]?.percentageDisplay}"
+            val chance = if (element == Elemental.EXPLOSIVE) "" else "${elementalChance[element]?.percentageDisplay}"
             val damage = if ((elementalDamage[element]?.damage ?: 0.0) > 0.01) " " + elementalDamage[element]!!.heartDisplay else ""
             val combined = "$chance$damage".trim()
             lore += "${element.chatColor}${element.displayName} ${ChatColor.GRAY}(${ChatColor.WHITE}$combined${ChatColor.GRAY})"
@@ -263,7 +263,7 @@ open class GunProperties(
         extraInfoText.forEach { line ->
             placeSeparator()
             var text = line
-            Elements.entries.forEach {
+            Elemental.entries.forEach {
                 text = text.replace(it.name.lowercase(), it.chatColor + it.name.lowercase() + ChatColor.WHITE)
             }
             lore += "${ChatColor.WHITE}• $text"
@@ -272,23 +272,24 @@ open class GunProperties(
         // Elemental data info.
         elements.forEach { element ->
             when (element) {
-                Elements.CORROSIVE -> {
+                Elemental.CORROSIVE -> {
                     placeSeparator()
                     lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Undead"
                 }
-                Elements.INCENDIARY -> {
+                Elemental.INCENDIARY -> {
                     placeSeparator()
                     lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Flesh"
                 }
-                Elements.SHOCK -> {
+                Elemental.SHOCK -> {
                     placeSeparator()
                     lore += "${ChatColor.WHITE}•${element.chatColor} Highly effective vs Armor & Fish"
                 }
-                Elements.SLAG -> {
+                Elemental.SLAG -> {
                     placeSeparator()
                     lore += "${ChatColor.WHITE}•${element.chatColor} Slagged entities take additional"
                     lore += "${element.chatColor}non-slag damage"
                 }
+                else -> {}
             }
         }
 
@@ -305,7 +306,6 @@ open class GunProperties(
      * GunProperties object -> json string.
      */
     fun serialize(): String = GSON.toJson(this)
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is GunProperties) return false
@@ -313,11 +313,13 @@ open class GunProperties(
         if (name != other.name) return false
         if (baseDamage != other.baseDamage) return false
         if (accuracy != other.accuracy) return false
+        if (recoil != other.recoil) return false
         if (fireRate != other.fireRate) return false
         if (reloadSpeed != other.reloadSpeed) return false
         if (magazineSize != other.magazineSize) return false
         if (ammoPerShot != other.ammoPerShot) return false
         if (redText != other.redText) return false
+        if (cyanText != other.cyanText) return false
         if (extraInfoText != other.extraInfoText) return false
         if (elements != other.elements) return false
         if (elementalChance != other.elementalChance) return false
@@ -336,35 +338,41 @@ open class GunProperties(
         if (burstCount != other.burstCount) return false
         if (burstDelay != other.burstDelay) return false
         if (gravity != other.gravity) return false
+        if (bonusCritMultiplier != other.bonusCritMultiplier) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + baseDamage.hashCode()
-        result = 31 * result + accuracy.hashCode()
-        result = 31 * result + fireRate.hashCode()
-        result = 31 * result + reloadSpeed.hashCode()
-        result = 31 * result + magazineSize
-        result = 31 * result + ammoPerShot
-        result = 31 * result + (redText?.hashCode() ?: 0)
-        result = 31 * result + extraInfoText.hashCode()
-        result = 31 * result + elements.hashCode()
-        result = 31 * result + elementalChance.hashCode()
-        result = 31 * result + elementalDuration.hashCode()
-        result = 31 * result + elementalDamage.hashCode()
-        result = 31 * result + splashRadius.hashCode()
-        result = 31 * result + splashDamage.hashCode()
-        result = 31 * result + (recoilAngle?.hashCode() ?: 0)
-        result = 31 * result + manufacturer.hashCode()
-        result = 31 * result + rarity.hashCode()
-        result = 31 * result + weaponClass.hashCode()
-        result = 31 * result + pelletCount
-        result = 31 * result + bulletSpeed.hashCode()
-        result = 31 * result + meleeDamage.hashCode()
-        result = 31 * result + burstCount
-        result = 31 * result + burstDelay.hashCode()
+        result = 12289 * result + baseDamage.hashCode()
+        result = 12289 * result + accuracy.hashCode()
+        result = 12289 * result + recoil.hashCode()
+        result = 12289 * result + fireRate.hashCode()
+        result = 12289 * result + reloadSpeed.hashCode()
+        result = 12289 * result + magazineSize
+        result = 12289 * result + ammoPerShot
+        result = 12289 * result + (redText?.hashCode() ?: 0)
+        result = 12289 * result + (cyanText?.hashCode() ?: 0)
+        result = 12289 * result + extraInfoText.hashCode()
+        result = 12289 * result + elements.hashCode()
+        result = 12289 * result + elementalChance.hashCode()
+        result = 12289 * result + elementalDuration.hashCode()
+        result = 12289 * result + elementalDamage.hashCode()
+        result = 12289 * result + elementalPolicy.hashCode()
+        result = 12289 * result + splashRadius.hashCode()
+        result = 12289 * result + splashDamage.hashCode()
+        result = 12289 * result + (recoilAngle?.hashCode() ?: 0)
+        result = 12289 * result + manufacturer.hashCode()
+        result = 12289 * result + rarity.hashCode()
+        result = 12289 * result + weaponClass.hashCode()
+        result = 12289 * result + pelletCount
+        result = 12289 * result + bulletSpeed.hashCode()
+        result = 12289 * result + meleeDamage.hashCode()
+        result = 12289 * result + burstCount
+        result = 12289 * result + burstDelay.hashCode()
+        result = 12289 * result + gravity.hashCode()
+        result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
         return result
     }
 

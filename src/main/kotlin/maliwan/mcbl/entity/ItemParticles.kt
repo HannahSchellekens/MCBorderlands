@@ -2,7 +2,7 @@ package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.util.showElementalParticle
-import maliwan.mcbl.weapons.Rarities
+import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.entity.Item
 
@@ -36,10 +36,9 @@ open class ItemParticles(
                 val gunProperties = item.gunProperties() ?: return@entities
 
                 val particleCount = when (gunProperties.rarity) {
-                    Rarities.COMMON, Rarities.UNCOMMON -> 3
-                    Rarities.RARE, Rarities.EPIC -> 4
-                    Rarities.LEGENDARY, Rarities.PEARLESCENT -> 5
-                    else -> 2
+                    Rarity.COMMON, Rarity.UNCOMMON -> 3
+                    Rarity.RARE, Rarity.EPIC -> 4
+                    Rarity.LEGENDARY, Rarity.PEARLESCENT -> 5
                 }
 
                 repeat(particleCount) {

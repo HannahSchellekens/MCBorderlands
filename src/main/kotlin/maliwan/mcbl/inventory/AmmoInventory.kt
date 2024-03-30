@@ -1,7 +1,6 @@
 package maliwan.mcbl.inventory
 
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.WeaponClasses
 import kotlin.math.max
 
 /**
@@ -14,12 +13,12 @@ open class AmmoInventory {
      */
     val maxAmmo: MutableMap<WeaponClass, Int>  = mutableMapOf(
         // Defaults based on green lvl BL2 amounts
-        WeaponClasses.ASSAULT_RIFLE to 420,
-        WeaponClasses.PISTOL to 300,
-        WeaponClasses.LAUNCHER to 15,
-        WeaponClasses.SHOTGUN to 100,
-        WeaponClasses.SMG to 540,
-        WeaponClasses.SNIPER to 60
+        WeaponClass.ASSAULT_RIFLE to 420,
+        WeaponClass.PISTOL to 300,
+        WeaponClass.LAUNCHER to 15,
+        WeaponClass.SHOTGUN to 100,
+        WeaponClass.SMG to 540,
+        WeaponClass.SNIPER to 60
     )
 
     /**

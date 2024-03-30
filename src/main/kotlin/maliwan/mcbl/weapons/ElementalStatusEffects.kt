@@ -78,7 +78,7 @@ open class ElementalStatusEffects {
     /**
      * The damage multiplier for this target based on the current slagged status.
      */
-    fun slagMultiplier(target: LivingEntity) = if (hasElementalEffect(target, Elements.SLAG)) {
+    fun slagMultiplier(target: LivingEntity) = if (hasElementalEffect(target, Elemental.SLAG)) {
         2.0
     }
     else 1.0
@@ -145,15 +145,15 @@ open class ElementalStatusEffects {
                 val element = effect.elemental
                 val weaknessType = EffectivenessType.typeOf(entity.type)
                 val multiplier = weaknessType.damageMultiplier(element, entity.armorPoints.toInt())
-                val slag = if (effect.elemental == Elements.SLAG) 1.0 else slagMultiplier(entity)
+                val slag = if (effect.elemental == Elemental.SLAG) 1.0 else slagMultiplier(entity)
                 val totalDamage = damage.damage * multiplier * slag
                 entity.damage(totalDamage, effect.inflictedBy)
 
                 // Prevent elemental damage to increase damage output.
                 val cause = when (effect.elemental) {
-                    Elements.INCENDIARY -> EntityDamageEvent.DamageCause.FIRE_TICK
-                    Elements.CORROSIVE -> EntityDamageEvent.DamageCause.POISON
-                    Elements.SHOCK -> EntityDamageEvent.DamageCause.LIGHTNING
+                    Elemental.INCENDIARY -> EntityDamageEvent.DamageCause.FIRE_TICK
+                    Elemental.CORROSIVE -> EntityDamageEvent.DamageCause.POISON
+                    Elemental.SHOCK -> EntityDamageEvent.DamageCause.LIGHTNING
                     else -> DamageCause.MAGIC
                 }
                 entity.lastDamageCause = EntityDamageEvent(entity, cause, totalDamage)
@@ -174,18 +174,19 @@ open class ElementalStatusEffects {
      */
     fun showStatusParticle(entity: LivingEntity, elemental: Elemental) {
         when (elemental) {
-            Elements.INCENDIARY -> {
+            Elemental.INCENDIARY -> {
                 entity.location.showFlameParticle()
             }
-            Elements.CORROSIVE,
-            Elements.SHOCK,
-            Elements.SLAG -> {
+            Elemental.CORROSIVE,
+            Elemental.SHOCK,
+            Elemental.SLAG -> {
                 repeat(8) {
                     val spread = entity.width / 2.0
                     val loc = entity.location.clone().add(0.5.modifyRandom(spread), 1.0.modifyRandom(spread), 0.5.modifyRandom(spread))
                     loc.showElementalParticle(elemental.color, 1, size = 1.4f)
                 }
             }
+            else -> Unit
         }
     }
 

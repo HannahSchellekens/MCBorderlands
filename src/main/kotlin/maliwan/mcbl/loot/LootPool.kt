@@ -1,9 +1,8 @@
 package maliwan.mcbl.loot
 
-import maliwan.mcbl.weapons.Rarities
+import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Rarity
-import java.util.Random
-import javax.print.attribute.HashAttributeSet
+import java.util.*
 
 /**
  * @author Hannah Schellekens
@@ -60,7 +59,7 @@ open class LootPool<Result> {
     fun roll(random: Random = defaultRandom): Result {
         val roll = random.nextDouble()
 
-        return intervals.find { (interval, result) ->
+        return intervals.find { (interval, _) ->
             roll < interval
         }?.second ?: intervals.last().second
     }
@@ -139,12 +138,31 @@ fun rarityLootPool(
     legendaryWeight: Int,
     pearlescentWeight: Int
 ): LootPool<Rarity> = lootPoolOf(
-    Rarities.COMMON to commonWeight,
-    Rarities.UNCOMMON to uncommonWeight,
-    Rarities.RARE to rareWeight,
-    Rarities.EPIC to epicWeight,
-    Rarities.LEGENDARY to legendaryWeight,
-    Rarities.PEARLESCENT to pearlescentWeight
+    Rarity.COMMON to commonWeight,
+    Rarity.UNCOMMON to uncommonWeight,
+    Rarity.RARE to rareWeight,
+    Rarity.EPIC to epicWeight,
+    Rarity.LEGENDARY to legendaryWeight,
+    Rarity.PEARLESCENT to pearlescentWeight
+)
+
+/**
+ * Creates a new loot pool for rarities based on the given weights.
+ */
+fun elementalLootPool(
+    nonElemental: Int,
+    incendiary: Int,
+    shock: Int,
+    corrosive: Int,
+    slag: Int,
+    explosive: Int
+): LootPool<Elemental> = lootPoolOf(
+    Elemental.PHYSICAL to nonElemental,
+    Elemental.INCENDIARY to incendiary,
+    Elemental.SHOCK to shock,
+    Elemental.CORROSIVE to corrosive,
+    Elemental.SLAG to slag,
+    Elemental.EXPLOSIVE to explosive
 )
 
 /**

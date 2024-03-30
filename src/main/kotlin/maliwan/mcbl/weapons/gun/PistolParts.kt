@@ -2,9 +2,7 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.weapons.Manufacturer
-import maliwan.mcbl.weapons.Manufacturers
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.WeaponClasses
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 
 /**
@@ -23,8 +21,8 @@ object PistolParts {
     ) : WeaponPart {
 
         MALIWAN(
-            Manufacturers.MALIWAN,
-            Manufacturers.MALIWAN.displayName,
+            Manufacturer.MALIWAN,
+            Manufacturer.MALIWAN.displayName,
             statModifierList {
                 add(0.005, Property.ACCURACY)
                 add(0.001, Property.RECOIL)
@@ -39,8 +37,8 @@ object PistolParts {
         ),
 
         VLADOF(
-            Manufacturers.VLADOF,
-            Manufacturers.VLADOF.displayName,
+            Manufacturer.VLADOF,
+            Manufacturer.VLADOF.displayName,
             statModifierList {
                 multiply(1.3, Property.FIRE_RATE)
                 add(-0.001, Property.RECOIL)
@@ -54,8 +52,8 @@ object PistolParts {
         ),
 
         BANDIT(
-            Manufacturers.BANDIT,
-            Manufacturers.BANDIT.displayName,
+            Manufacturer.BANDIT,
+            Manufacturer.BANDIT.displayName,
             statModifierList {
                 subtract(0.008, Property.ACCURACY)
                 multiply(1.06, Property.BASE_DAMAGE)
@@ -67,8 +65,8 @@ object PistolParts {
         ),
 
         DAHL(
-            Manufacturers.DAHL,
-            Manufacturers.DAHL.displayName,
+            Manufacturer.DAHL,
+            Manufacturer.DAHL.displayName,
             statModifierList {
                 add(0.015, Property.ACCURACY)
                 add(0.0025, Property.RECOIL)
@@ -82,8 +80,8 @@ object PistolParts {
         ),
 
         HYPERION(
-            Manufacturers.HYPERION,
-            Manufacturers.HYPERION.displayName,
+            Manufacturer.HYPERION,
+            Manufacturer.HYPERION.displayName,
             statModifierList {
                 add(0.3, Property.BONUS_CRIT_MULTIPLIER)
                 add(0.0015, Property.RECOIL)
@@ -99,8 +97,8 @@ object PistolParts {
         ),
 
         JAKOBS(
-            Manufacturers.JAKOBS,
-            Manufacturers.JAKOBS.displayName,
+            Manufacturer.JAKOBS,
+            Manufacturer.JAKOBS.displayName,
             statModifierList {
                 divide(1.36, Property.FIRE_RATE)
                 subtract(0.004, Property.RECOIL)
@@ -115,16 +113,16 @@ object PistolParts {
         ),
 
         TEDIORE(
-            Manufacturers.TEDIORE,
-            Manufacturers.TEDIORE.displayName,
+            Manufacturer.TEDIORE,
+            Manufacturer.TEDIORE.displayName,
             statModifierList {
                 subtract(5, Property.PROJECTILE_SPEED)
             }
         ),
 
         TORGUE(
-            Manufacturers.TORGUE,
-            Manufacturers.TORGUE.displayName,
+            Manufacturer.TORGUE,
+            Manufacturer.TORGUE.displayName,
             statModifierList {
                 divide(1.09, Property.FIRE_RATE)
                 subtract(0.002, Property.RECOIL)
@@ -142,7 +140,7 @@ object PistolParts {
         ),
         ;
 
-        override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+        override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {
 
@@ -165,8 +163,8 @@ object PistolParts {
     ) : WeaponPart {
 
         MALIWAN(
-            Manufacturers.MALIWAN,
-            Manufacturers.MALIWAN.displayName,
+            Manufacturer.MALIWAN,
+            Manufacturer.MALIWAN.displayName,
             statModifierList {
                 multiply(1.2, Property.ELEMENTAL_CHANCE)
                 divide(1.15, Property.RELOAD_SPEED)
@@ -178,8 +176,8 @@ object PistolParts {
         ),
 
         VLADOF(
-            Manufacturers.VLADOF,
-            Manufacturers.VLADOF.displayName,
+            Manufacturer.VLADOF,
+            Manufacturer.VLADOF.displayName,
             statModifierList {
                 multiply(1.12, Property.FIRE_RATE)
                 subtract(0.018, Property.ACCURACY)
@@ -192,8 +190,8 @@ object PistolParts {
         ),
 
         BANDIT(
-            Manufacturers.BANDIT,
-            Manufacturers.BANDIT.displayName,
+            Manufacturer.BANDIT,
+            Manufacturer.BANDIT.displayName,
             statModifierList {
                 multiply(1.35, Property.MAGAZINE_SIZE)
                 multiply(1.1, Property.RELOAD_SPEED)
@@ -206,8 +204,8 @@ object PistolParts {
         ),
 
         DAHL(
-            Manufacturers.DAHL,
-            Manufacturers.DAHL.displayName,
+            Manufacturer.DAHL,
+            Manufacturer.DAHL.displayName,
             statModifierList {
                 add(0.005, Property.ACCURACY)
                 add(0.001, Property.RECOIL)
@@ -220,8 +218,8 @@ object PistolParts {
         ),
 
         HYPERION(
-            Manufacturers.HYPERION,
-            Manufacturers.HYPERION.displayName,
+            Manufacturer.HYPERION,
+            Manufacturer.HYPERION.displayName,
             statModifierList {
                 add(0.011, Property.ACCURACY)
                 divide(1.09, Property.BASE_DAMAGE)
@@ -233,8 +231,8 @@ object PistolParts {
         ),
 
         JAKOBS(
-            Manufacturers.JAKOBS,
-            Manufacturers.JAKOBS.displayName,
+            Manufacturer.JAKOBS,
+            Manufacturer.JAKOBS.displayName,
             statModifierList {
                 divide(1.09, Property.FIRE_RATE)
                 subtract(0.001, Property.RECOIL)
@@ -249,8 +247,8 @@ object PistolParts {
         ),
 
         TEDIORE(
-            Manufacturers.TEDIORE,
-            Manufacturers.TEDIORE.displayName,
+            Manufacturer.TEDIORE,
+            Manufacturer.TEDIORE.displayName,
             statModifierList {
                 divide(1.12, Property.MAGAZINE_SIZE)
                 divide(1.2, Property.RELOAD_SPEED)
@@ -263,8 +261,8 @@ object PistolParts {
         ),
 
         TORGUE(
-            Manufacturers.TORGUE,
-            Manufacturers.TORGUE.displayName,
+            Manufacturer.TORGUE,
+            Manufacturer.TORGUE.displayName,
             statModifierList {
                 subtract(0.001, Property.RECOIL)
                 multiply(1.1, Property.RELOAD_SPEED)
@@ -278,7 +276,7 @@ object PistolParts {
         ),
         ;
 
-        override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+        override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {
 
@@ -308,7 +306,7 @@ object PistolParts {
     ) : WeaponPart {
 
         ACCURACY(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Accuracy",
             statModifierList {
                 add(0.015, Property.ACCURACY)
@@ -317,7 +315,7 @@ object PistolParts {
         ),
 
         BAYONET(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Bayonet",
             statModifierList {
                 add(2.5, Property.MELEE)
@@ -325,7 +323,7 @@ object PistolParts {
         ),
 
         DOUBLE(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Double",
             statModifierList {
                 divide(1.3, Property.FIRE_RATE)
@@ -340,7 +338,7 @@ object PistolParts {
         ),
 
         STOCK(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Stock",
             statModifierList {
                 add(0.018, Property.ACCURACY)
@@ -349,7 +347,7 @@ object PistolParts {
         ),
 
         MAGAZINE(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Magazine",
             statModifierList {
                 multiply(1.56, Property.MAGAZINE_SIZE)
@@ -358,7 +356,7 @@ object PistolParts {
         ),
 
         DAMAGE(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Damage",
             statModifierList {
                 subtract(0.002, Property.RECOIL)
@@ -367,7 +365,7 @@ object PistolParts {
         ),
 
         FIRE_RATE(
-            Manufacturers.NONE,
+            Manufacturer.NONE,
             "Fire Rate",
             statModifierList {
                 multiply(1.18, Property.FIRE_RATE)
@@ -376,7 +374,7 @@ object PistolParts {
         ),
         ;
 
-        override val weaponClass: WeaponClass = WeaponClasses.PISTOL
+        override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {
 

@@ -2,8 +2,9 @@ package maliwan.mcbl.loot.gen
 
 import maliwan.mcbl.loot.ManufacturerTable
 import maliwan.mcbl.weapons.gun.PistolAssembly
-import maliwan.mcbl.weapons.Manufacturers
+import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
+import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.PistolParts
 import java.util.Random
 
@@ -15,14 +16,14 @@ open class PistolGenerator(
     /**
      * Possible manufacturers for the generated pistol.
      */
-    manufacturers: Set<Manufacturers> = defaultManufacturers,
+    manufacturers: Set<Manufacturer> = defaultManufacturers,
 
     /**
      * The random object to use to generate random guns.
      */
     val random: Random = Random()
 
-) : WeaponGenerator{
+) : WeaponGenerator {
 
     private val manufacturerPool = ManufacturerTable.Weapons.generation.retainResults(manufacturers)
 
@@ -34,21 +35,22 @@ open class PistolGenerator(
             PistolParts.Accessory.commonLootPool.roll(random)
         }
         else null
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random).nullIfPhysical
 
-        return PistolAssembly(manufacturer, barrel, grip, accessory)
+        return PistolAssembly(manufacturer, barrel, grip, accessory, capacitor)
     }
 
     companion object {
 
         val defaultManufacturers = setOf(
-            Manufacturers.MALIWAN,
-            Manufacturers.BANDIT,
-            Manufacturers.DAHL,
-            Manufacturers.HYPERION,
-            Manufacturers.JAKOBS,
-            Manufacturers.TEDIORE,
-            Manufacturers.TORGUE,
-            Manufacturers.VLADOF,
+            Manufacturer.MALIWAN,
+            Manufacturer.BANDIT,
+            Manufacturer.DAHL,
+            Manufacturer.HYPERION,
+            Manufacturer.JAKOBS,
+            Manufacturer.TEDIORE,
+            Manufacturer.TORGUE,
+            Manufacturer.VLADOF,
         )
     }
 }

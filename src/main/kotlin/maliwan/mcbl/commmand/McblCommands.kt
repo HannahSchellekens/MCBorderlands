@@ -67,16 +67,16 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             return mutableListOf("update")
         }
         else if ("manufacturer".equals(args[1], ignoreCase = true)) {
-            return Manufacturers.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+            return Manufacturer.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else if ("rarity".equals(args[1], ignoreCase = true)) {
-            return Rarities.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+            return Rarity.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else if ("weaponClass".equals(args[1], ignoreCase = true)) {
-            return WeaponClasses.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+            return WeaponClass.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else if ("element:add".equals(args[1], ignoreCase = true)) {
-            return Elements.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
+            return Elemental.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
         }
         else if ("element:policy".equals(args[1], ignoreCase = true)) {
             return ElementalStatusEffects.ApplyPolicy.entries
@@ -151,7 +151,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 elementalDamage.clear()
             }
             "element:add" -> update {
-                val element = Elements.valueOf(values[0])
+                val element = Elemental.valueOf(values[0])
                 val chance = Chance(values[1].toDoubleOrNull() ?: error("Invalid double: ${values[1]}"))
                 val duration = Ticks(values[2].toIntOrNull() ?: error("Invalid int: ${values[2]}"))
                 val damage = Damage(values[3].toDoubleOrNull() ?: error("Invalid double: ${values[3]}"))
@@ -165,9 +165,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "splashDamage" -> update { splashDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "recoilAngle:none" -> update { recoilAngle = null }
             "recoilAngle" -> update { recoilAngle = value.toDoubleOrNull() ?: error("No double: $value") }
-            "manufacturer" -> update { manufacturer = Manufacturers.valueOf(value.uppercase()) }
-            "rarity" -> update { rarity = Rarities.valueOf(value.uppercase()) }
-            "weaponClass" -> update { weaponClass = WeaponClasses.valueOf(value.uppercase()) }
+            "manufacturer" -> update { manufacturer = Manufacturer.valueOf(value.uppercase()) }
+            "rarity" -> update { rarity = Rarity.valueOf(value.uppercase()) }
+            "weaponClass" -> update { weaponClass = WeaponClass.valueOf(value.uppercase()) }
             "pelletCount" -> update { pelletCount = value.toIntOrNull() ?: error("No int: $value") }
             "bulletSpeed" -> update { bulletSpeed = value.toDoubleOrNull() ?: error("No double: $value") }
             "meleeDamage" -> update { meleeDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
@@ -182,9 +182,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         val gunItem = ItemStack(Material.BOW, 1)
         val gunProperties = GunProperties(
             name = "Anarchist",
-            rarity = Rarities.UNCOMMON,
-            weaponClass = WeaponClasses.PISTOL,
-            manufacturer = Manufacturers.VLADOF,
+            rarity = Rarity.UNCOMMON,
+            weaponClass = WeaponClass.PISTOL,
+            manufacturer = Manufacturer.VLADOF,
             bulletSpeed = 90.0,
             accuracy = Chance(0.862),
             fireRate = 10.4,

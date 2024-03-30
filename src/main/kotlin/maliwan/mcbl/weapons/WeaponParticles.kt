@@ -20,20 +20,20 @@ open class WeaponParticles(val weaponHandler: WeaponEventHandler, val everyNtick
         }
 
         weaponHandler.bullets.forEach { (bullet, meta) ->
-            if (Elements.EXPLOSIVE in meta.elements) {
+            if (Elemental.EXPLOSIVE in meta.elements) {
                 bullet.location.world?.playEffect(bullet.location.add(0.0, 0.5, 0.0), Effect.SMOKE, 0)
             }
-            if (Elements.INCENDIARY in meta.elements) {
-                bullet.location.showElementalParticle(Elements.INCENDIARY.color, 1, 0.6f)
+            if (Elemental.INCENDIARY in meta.elements) {
+                bullet.location.showElementalParticle(Elemental.INCENDIARY.color, 1, 0.6f)
             }
-            if (Elements.CORROSIVE in meta.elements) {
-                bullet.location.showElementalParticle(Elements.CORROSIVE.color, 1, 0.6f)
+            if (Elemental.CORROSIVE in meta.elements) {
+                bullet.location.showElementalParticle(Elemental.CORROSIVE.color, 1, 0.6f)
             }
-            if (Elements.SHOCK in meta.elements) {
-                bullet.location.showElementalParticle(Elements.SHOCK.color, 1, 0.6f)
+            if (Elemental.SHOCK in meta.elements) {
+                bullet.location.showElementalParticle(Elemental.SHOCK.color, 1, 0.6f)
             }
-            if (Elements.SLAG in meta.elements) {
-                bullet.location.showElementalParticle(Elements.SLAG.color, 1, 0.6f)
+            if (Elemental.SLAG in meta.elements) {
+                bullet.location.showElementalParticle(Elemental.SLAG.color, 1, 0.6f)
             }
         }
     }

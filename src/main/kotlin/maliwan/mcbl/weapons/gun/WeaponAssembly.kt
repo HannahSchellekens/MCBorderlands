@@ -1,7 +1,11 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.Elemental
+import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.PistolNames
+import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubclassOf
 
 /**
  * An amalgamation of weapon parts into a single gun.
@@ -13,7 +17,7 @@ sealed class WeaponAssembly(
     /**
      * Type of weapon.
      */
-    val weaponClass: WeaponClasses,
+    val weaponClass: WeaponClass,
 
     /**
      * The main manufacturer of the weapon: i.e. the body.
@@ -31,7 +35,7 @@ sealed class WeaponAssembly(
      */
     abstract val gunName: String
 
-    constructor(weaponClass: WeaponClasses, manufacturer: Manufacturer, vararg parts: WeaponPart?)
+    constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, vararg parts: WeaponPart?)
             : this(weaponClass, manufacturer, parts.filterNotNull())
 
     /**
@@ -46,6 +50,11 @@ sealed class WeaponAssembly(
         }
         return properties
     }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : WeaponPart> partOfType(klass: KClass<T>): T? {
+        return parts.find { it::class.isSubclassOf(klass) } as? T
+    }
 }
 
 /**
@@ -56,8 +65,8 @@ data class PistolAssembly(
     val barrel: PistolParts.Barrel,
     val grip: PistolParts.Grip,
     val accessory: PistolParts.Accessory? = null,
-    val capacitor: Elements? = null
-) : WeaponAssembly(WeaponClasses.PISTOL, body, barrel, grip, accessory) {
+    val capacitor: Elemental? = null
+) : WeaponAssembly(WeaponClass.PISTOL, body, barrel, grip, accessory) {
 
     override val gunName = PistolNames.nameOf(manufacturer, barrel, accessory, capacitor)
 }
