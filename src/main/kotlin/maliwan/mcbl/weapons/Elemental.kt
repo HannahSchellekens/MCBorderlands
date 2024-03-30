@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons
 
+import maliwan.mcbl.util.Ticks
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.entity.EntityType
@@ -10,19 +11,29 @@ import org.bukkit.entity.EntityType
 enum class Elemental(
     val displayName: String,
     val chatColor: String,
-    val color: Color
+    val color: Color,
+    val baseDotDuration: Ticks
 ) {
 
-    PHYSICAL("", ChatColor.WHITE.toString(), Color.WHITE),
-    EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), Color.YELLOW),
-    INCENDIARY("Incendiary", ChatColor.GOLD.toString(), Color.ORANGE),
-    SHOCK("Shock", ChatColor.BLUE.toString(), Color.fromRGB(37, 150, 190)),
-    CORROSIVE("Corrosive", ChatColor.GREEN.toString(), Color.LIME),
-    SLAG("Slag", ChatColor.DARK_PURPLE.toString(), Color.PURPLE)
+    PHYSICAL("", ChatColor.WHITE.toString(), Color.WHITE, Ticks(0)),
+    EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), Color.YELLOW, Ticks(0)),
+    INCENDIARY("Incendiary", ChatColor.GOLD.toString(), Color.ORANGE, Ticks(80)),
+    SHOCK("Shock", ChatColor.BLUE.toString(), Color.fromRGB(37, 150, 190), Ticks(40)),
+    CORROSIVE("Corrosive", ChatColor.GREEN.toString(), Color.LIME, Ticks(160)),
+    SLAG("Slag", ChatColor.DARK_PURPLE.toString(), Color.PURPLE, Ticks(160))
     ;
 
     val nullIfPhysical: Elemental?
         get() = if (this == PHYSICAL) null else this
+
+    /**
+     * @return 0 when the element does not deal DoT damage.
+     */
+    val noDotMultiplier: Double
+        get() = when (this) {
+            PHYSICAL, SLAG -> 0.0
+            else -> 1.0
+        }
 }
 
 /**

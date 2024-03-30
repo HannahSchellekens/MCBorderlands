@@ -3,6 +3,7 @@ package maliwan.mcbl.weapons.gun.names
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.gun.Capacitor
 import maliwan.mcbl.weapons.gun.PistolParts
 
 /**
@@ -35,7 +36,7 @@ object PistolNames {
         manufacturer: Manufacturer,
         barrel: PistolParts.Barrel,
         accessory: PistolParts.Accessory? = null,
-        elemental: Elemental? = null
+        capacitor: Capacitor? = null
     ): String {
         val baseName = nameTable[barrel.manufacturer, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
@@ -44,9 +45,9 @@ object PistolNames {
             accessoryTable[accessory, manufacturer]
                 ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and accessory $accessory")
         }
-        else if (elemental != null) {
-            elementTable[elemental, manufacturer]
-                ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and element $elemental")
+        else if (capacitor != null) {
+            elementTable[capacitor.element, manufacturer]
+                ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and capacitor $capacitor")
         }
         else ""
 

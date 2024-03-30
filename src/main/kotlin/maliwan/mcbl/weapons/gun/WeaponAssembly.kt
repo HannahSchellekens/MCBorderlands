@@ -27,7 +27,13 @@ sealed class WeaponAssembly(
     /**
      * All weapon parts of this gun.
      */
-    val parts: List<WeaponPart>
+    @Transient
+    val parts: List<WeaponPart>,
+
+    /**
+     * The elemental capacitor of the gun.
+     */
+    val capacitor: Capacitor? = null
 ) {
 
     /**
@@ -35,8 +41,8 @@ sealed class WeaponAssembly(
      */
     abstract val gunName: String
 
-    constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, vararg parts: WeaponPart?)
-            : this(weaponClass, manufacturer, parts.filterNotNull())
+    constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, capacitor: Capacitor?, vararg parts: WeaponPart?)
+            : this(weaponClass, manufacturer, parts.filterNotNull(), capacitor)
 
     /**
      * Applies the stat modifiers of all weapon parts of this gun to the given gun properties.
@@ -52,7 +58,10 @@ sealed class WeaponAssembly(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : WeaponPart> partOfType(klass: KClass<T>): T? {
+    fun <T> partOfType(klass: KClass<*>): T? {
+        if (klass == Capacitor::class) {
+            return capacitor as T?
+        }
         return parts.find { it::class.isSubclassOf(klass) } as? T
     }
 }
@@ -60,13 +69,14 @@ sealed class WeaponAssembly(
 /**
  * @author Hannah Schellekens
  */
-data class PistolAssembly(
+class PistolAssembly(
     val body: Manufacturer,
     val barrel: PistolParts.Barrel,
     val grip: PistolParts.Grip,
     val accessory: PistolParts.Accessory? = null,
-    val capacitor: Elemental? = null
-) : WeaponAssembly(WeaponClass.PISTOL, body, barrel, grip, accessory) {
+    capacitor: Capacitor? = null
+) : WeaponAssembly(WeaponClass.PISTOL, body, capacitor, barrel, grip, accessory) {
 
+    @Transient
     override val gunName = PistolNames.nameOf(manufacturer, barrel, accessory, capacitor)
 }

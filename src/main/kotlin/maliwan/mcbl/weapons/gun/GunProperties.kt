@@ -172,7 +172,12 @@ open class GunProperties(
      * Normally a critical is x2 damage. The bonus crit multiplier multiplies this multiplier.
      * `null` for no bonus crit multiplier.
      */
-    open var bonusCritMultiplier: Double? = null
+    open var bonusCritMultiplier: Double? = null,
+
+    /**
+     * The separate parts of the gun.
+     */
+    var assembly: WeaponAssembly? = null,
 ) {
 
     /**

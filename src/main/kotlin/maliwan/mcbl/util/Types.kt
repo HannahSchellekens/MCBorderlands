@@ -67,11 +67,8 @@ value class Damage(val damage: Double) {
 
     val heartDisplay: String
         get() {
-            val tenfold = (damage * 10).toInt()
-            val fullHearts = tenfold / 10
-            if (tenfold % 10 != 0) {
-                return "$fullHearts.${tenfold % 10}♥"
-            }
-            return "$fullHearts♥"
+            return "%.2f♥".format(damage)
         }
+
+    operator fun times(other: Double) = Damage(damage * other)
 }

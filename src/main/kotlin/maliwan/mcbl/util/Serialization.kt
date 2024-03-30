@@ -9,6 +9,7 @@ import maliwan.mcbl.weapons.*
 import kotlin.reflect.KClass
 
 val GSON: Gson = GsonBuilder()
+    .setPrettyPrinting()
     .registerTypeAdapterFactory(SealedTypeAdapterFactory.of(WeaponAssembly::class))
     .create()
 

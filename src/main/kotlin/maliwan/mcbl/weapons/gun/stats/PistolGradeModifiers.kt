@@ -40,8 +40,13 @@ object PistolGradeModifiers {
      * Get the standar ddeviation for a specific stat for a given rarity.
      */
     fun standardDeviation(rarity: Rarity, standardDeviation: StandardDeviation): Double {
-        return modifierStandardDeviationTable[rarity, standardDeviation.key]
-            ?: throw IllegalArgumentException("No standard deviation found for rarity $rarity and key ${standardDeviation.key}")
+        val stdRarity = when (rarity) {
+            Rarity.LEGENDARY, Rarity.PEARLESCENT -> Rarity.EPIC
+            else -> rarity
+        }
+
+        return modifierStandardDeviationTable[stdRarity, standardDeviation.key]
+            ?: throw IllegalArgumentException("No standard deviation found for rarity $stdRarity and key ${standardDeviation.key}")
     }
 
     /**
@@ -81,7 +86,7 @@ object PistolGradeModifiers {
                 it.toDoubleOrNull() ?: error("Invalid baseDamage double <$it>")
             }
             val magazineSize = Modifier("magazineSize") {
-                it.toIntOrNull() ?: error("Invalid magazineSize int <$it>")
+                it.toDoubleOrNull() ?: error("Invalid magazineSize double <$it>")
             }
             val reloadTime = Modifier("reloadTime") {
                 it.toIntOrNull() ?: error("Invalid reloadTime int <$it>")

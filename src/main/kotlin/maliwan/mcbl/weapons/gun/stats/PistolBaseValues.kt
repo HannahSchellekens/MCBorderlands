@@ -5,6 +5,7 @@ import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.gun.GunProperties
 
 /**
  * @author Hannah Schellekens
@@ -26,6 +27,25 @@ object PistolBaseValues {
             ?: throw IllegalArgumentException("No stat found for manufacturer $manufacturer and key ${stat.key}")
         return stat(stringValue)
     }
+
+    /**
+     * Creates a new [GunProperties] object for pistols that is populated by the base values of `manufacturer`.
+     * Does not include elemental properties, they have to be applied when the specific element is applied.
+     */
+    fun newGunProperties(manufacturer: Manufacturer) = GunProperties(
+        baseDamage = baseValue(manufacturer, Stat.baseDamage),
+        magazineSize = baseValue(manufacturer, Stat.magazineSize),
+        reloadSpeed = baseValue(manufacturer, Stat.reloadTime),
+        fireRate = baseValue(manufacturer, Stat.fireRate),
+        burstCount = baseValue(manufacturer, Stat.burstCount),
+        accuracy = baseValue(manufacturer, Stat.accuracy),
+        recoil = baseValue(manufacturer, Stat.recoil),
+        gravity = baseValue(manufacturer, Stat.gravity),
+        bulletSpeed = baseValue(manufacturer, Stat.bulletSpeed),
+        bonusCritMultiplier = baseValue(manufacturer, Stat.bonusCritModifier),
+        splashRadius = baseValue(manufacturer, Stat.splashRadius),
+        ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot)
+    )
 
     /**
      * @author Hannah Schellekens
@@ -60,7 +80,7 @@ object PistolBaseValues {
                 Chance(it.toDoubleOrNull() ?: error("Invalid elementalChance double <$it>"))
             }
             val elementalDamage = Stat("elementalDamage") {
-                Damage(it.toDoubleOrNull() ?: error("Invalid elementalDamage double <$it>"))
+                Damage((it.toDoubleOrNull() ?: error("Invalid elementalDamage double <$it>")) / 2.0)
             }
             val accuracy = Stat("accuracy") {
                 Chance(it.toDoubleOrNull() ?: error("Invalid accuracy double <$it>"))

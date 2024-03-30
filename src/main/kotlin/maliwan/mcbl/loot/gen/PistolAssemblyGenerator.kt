@@ -11,7 +11,7 @@ import java.util.Random
 /**
  * @author Hannah Schellekens
  */
-open class PistolGenerator(
+open class PistolAssemblyGenerator(
 
     /**
      * Possible manufacturers for the generated pistol.
@@ -23,7 +23,7 @@ open class PistolGenerator(
      */
     val random: Random = Random()
 
-) : WeaponGenerator {
+) : WeaponAssemblyGenerator {
 
     private val manufacturerPool = ManufacturerTable.Weapons.generation.retainResults(manufacturers)
 

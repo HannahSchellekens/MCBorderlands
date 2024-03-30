@@ -25,4 +25,17 @@ enum class Manufacturer(
 
     val id: String
         get() = name
+
+    companion object {
+
+        val pistolProducers = setOf(MALIWAN, HYPERION, VLADOF, TEDIORE, BANDIT, DAHL, TORGUE, JAKOBS)
+
+        /**
+         * Set of manufacturers that make weapons of class `weaponClass`.
+         */
+        fun producersOf(weaponClass: WeaponClass) = when (weaponClass) {
+            WeaponClass.PISTOL -> pistolProducers
+            else -> emptySet()
+        }
+    }
 }
