@@ -9,6 +9,11 @@ import maliwan.mcbl.weapons.WeaponClass
 interface WeaponPart {
 
     /**
+     * The type name of weapon part (Barrel, Stock, ...)
+     */
+    val partTypeName: String
+
+    /**
      * The name of the weapon part.
      */
     val partName: String

@@ -210,23 +210,34 @@ open class GunProperties(
         lore += "${ChatColor.GRAY}${rarity.displayName} • ${weaponClass.displayName} • ${manufacturer.displayName}"
 
         val pelletPrefix = if (pelletCount == 1) "" else "${ChatColor.WHITE}$pelletCount${ChatColor.GRAY}×"
-        lore += "${ChatColor.GRAY}Damage: $pelletPrefix${ChatColor.WHITE}${baseDamage.heartDisplay}"
-        lore += "${ChatColor.GRAY}Accuracy: ${ChatColor.WHITE}${accuracy.percentageDisplay}"
-        lore += "${ChatColor.GRAY}Fire Rate: ${ChatColor.WHITE}%.1f".format(fireRate)
-        lore += "${ChatColor.GRAY}Reload Speed: ${ChatColor.WHITE}%.1f".format(reloadSpeed.seconds)
-        lore += "${ChatColor.GRAY}Magazine Size: ${ChatColor.WHITE}%d".format(magazineSize)
+        lore += "${ChatColor.GRAY}Damage: ♥$pelletPrefix${ChatColor.WHITE}${baseDamage.display}"
+        lore += "${ChatColor.GRAY}Accuracy: \uD83C\uDFAF${ChatColor.WHITE}${accuracy.percentageDisplay}"
+        lore += "${ChatColor.GRAY}Fire Rate: \uD83D\uDD2B${ChatColor.WHITE}%.1f".format(fireRate)
+        lore += "${ChatColor.GRAY}Reload Speed: ♻${ChatColor.WHITE}%.1f".format(reloadSpeed.seconds)
+        lore += "${ChatColor.GRAY}Magazine Size: □${ChatColor.WHITE}%d".format(magazineSize)
 
+        // Element
         elements.forEach { element ->
-            val chance = if (element == Elemental.EXPLOSIVE) "" else "${elementalChance[element]?.percentageDisplay}"
-            val perSecond = if (element.noDotMultiplier < 0.001) "" else "/sec"
+            val parts = ArrayList<String>(2)
 
-            val damage = if (element != Elemental.EXPLOSIVE && (elementalDamage[element]?.damage ?: 0.0) > 0.01) {
-                " " + (elementalDamage[element]!! * 2.0).heartDisplay + perSecond
+            // Chance
+            if (element != Elemental.EXPLOSIVE) {
+                parts += "${elementalChance[element]?.percentageDisplay}"
             }
-            else ""
 
-            val combined = "$chance$damage".trim()
-            lore += "${element.chatColor}${element.displayName} ${ChatColor.GRAY}(${ChatColor.WHITE}$combined${ChatColor.GRAY})"
+            // Damage
+            val perSecond = if (element.noDotMultiplier < 0.001) "" else "/sec"
+            if (element != Elemental.EXPLOSIVE && (elementalDamage[element]?.damage ?: 0.0) > 0.01) {
+                parts += ((elementalDamage[element]!! * 2.0).heartDisplay + perSecond)
+            }
+
+            val suffix = if (parts.isEmpty()) "" else parts.joinToString(
+                separator ="${ChatColor.GRAY} • ",
+                prefix = " ${ChatColor.GRAY}(",
+                postfix = "${ChatColor.GRAY})"
+            ) { "${ChatColor.WHITE}$it" }
+
+            lore += "${element.chatColor}${element.symbol} ${element.displayName}$suffix"
         }
 
         var separator: () -> Unit = { lore += "" }
@@ -301,6 +312,22 @@ open class GunProperties(
                     lore += "${element.chatColor}non-slag damage"
                 }
                 else -> {}
+            }
+        }
+
+        // Weapon parts.
+        assembly?.let { ass ->
+            lore += "\n"
+            val partStrings = ass.parts
+                ?.map { "${ChatColor.GRAY}${it.partTypeName}: ${it.partName}" }
+                ?.toMutableList() ?: ArrayList()
+
+            ass.capacitor?.let {
+                partStrings += "${ChatColor.GRAY}Capacitor: ${it.partName}"
+            }
+
+            partStrings.windowed(2, 2, partialWindows = true).forEach { window ->
+                lore += window.joinToString(" ${ChatColor.GRAY}• ")
             }
         }
 

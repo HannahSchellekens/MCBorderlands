@@ -1,5 +1,6 @@
 package maliwan.mcbl.entity
 
+import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.weapons.Elemental
 import org.bukkit.ChatColor
 import org.bukkit.attribute.Attribute
@@ -7,11 +8,7 @@ import org.bukkit.entity.LivingEntity
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.roundToInt
 
-/**
- * @author Hannah Schellekens
- */
 fun LivingEntity.showHealthBar(
     smallLength: Int = 15,
     largeLength: Int = 25,
@@ -43,4 +40,16 @@ fun LivingEntity.showHealthBar(
     // TODO: Change to display entity to not hijack the entity name.
     customName = barText
     isCustomNameVisible = true
+}
+
+fun LivingEntity.showHealthBar(
+    plugin: MCBorderlandsPlugin,
+    smallLength: Int = 15,
+    largeLength: Int = 25,
+    smallThreshold: Double = 19.5,
+    color: ChatColor = ChatColor.RED
+) {
+    val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffets(this)
+        .map { (effect, _) -> effect.elemental }
+    showHealthBar(smallLength, largeLength, smallThreshold, color, effects)
 }

@@ -3,6 +3,8 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.*
 import maliwan.mcbl.entity.headLocation
 import maliwan.mcbl.entity.headshotRange
+import maliwan.mcbl.entity.setKnockbackResistance
+import maliwan.mcbl.entity.showHealthBar
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
@@ -296,13 +298,19 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         // Apply damage & elemental effect
         event.damage = bulletMeta.damage.damage * elementalModifier *
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
-
         rollElementalDot(targetEntity, bulletMeta)
+
+        // Disable knockback for guns.
+        targetEntity.setKnockbackResistance(1.0)
 
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
             targetEntity.noDamageTicks = oldNoDamageTicks
             targetEntity.maximumNoDamageTicks = oldNoDamageTicksMax
-        }, 2L)
+            targetEntity.setKnockbackResistance()
+
+            // Update health bar after the damage has been dealt.
+            targetEntity.showHealthBar(plugin)
+        }, 1L)
 
         bullets.remove(bullet)
     }

@@ -140,6 +140,7 @@ object PistolParts {
         ),
         ;
 
+        override val partTypeName: String = "Barrel"
         override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {
@@ -276,6 +277,7 @@ object PistolParts {
         ),
         ;
 
+        override val partTypeName: String = "Grip"
         override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {
@@ -374,6 +376,7 @@ object PistolParts {
         ),
         ;
 
+        override val partTypeName: String = "Acc."
         override val weaponClass: WeaponClass = WeaponClass.PISTOL
 
         companion object {

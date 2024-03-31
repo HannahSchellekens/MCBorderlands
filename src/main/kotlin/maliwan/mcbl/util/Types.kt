@@ -70,5 +70,10 @@ value class Damage(val damage: Double) {
             return "%.2f♥".format(damage)
         }
 
+    val display: String
+        get() {
+            return "%.2f".format(damage)
+        }
+
     operator fun times(other: Double) = Damage(damage * other)
 }

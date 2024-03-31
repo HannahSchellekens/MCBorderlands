@@ -2,6 +2,7 @@ import maliwan.mcbl.loot.gen.WeaponGenerator
 import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.PistolParts
 import maliwan.mcbl.weapons.gun.names.PistolNames
 import maliwan.mcbl.weapons.gun.stats.PistolBaseValues
@@ -10,9 +11,19 @@ import java.util.Random
 
 fun main() {
 
-    val generator = WeaponGenerator(weaponClassTable = lootPoolOf(WeaponClass.PISTOL to 10))
+    val generator = WeaponGenerator(
+        weaponClassTable = lootPoolOf(WeaponClass.PISTOL to 10),
+        random = Random(123)
+    )
 
-    repeat(100) {
-        println(generator.generate().serialize())
-    }
+    val gun = generator.generate()
+
+    val serialized = gun.serialize()
+
+    println(serialized)
+
+    val deserialized = GunProperties.deserialize(serialized)
+
+    println(deserialized.serialize())
+    println("Assembly: " + deserialized.assembly)
 }

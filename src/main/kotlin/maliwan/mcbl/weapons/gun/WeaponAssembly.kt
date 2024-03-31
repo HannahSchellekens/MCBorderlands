@@ -28,7 +28,7 @@ sealed class WeaponAssembly(
      * All weapon parts of this gun.
      */
     @Transient
-    val parts: List<WeaponPart>,
+    open val parts: List<WeaponPart>?,
 
     /**
      * The elemental capacitor of the gun.
@@ -48,7 +48,7 @@ sealed class WeaponAssembly(
      * Applies the stat modifiers of all weapon parts of this gun to the given gun properties.
      */
     open fun applyToGun(properties: GunProperties): GunProperties {
-        parts.forEach {
+        parts?.forEach {
             it.statModifiers.applyAll(properties)
             if (it.manufacturer == manufacturer) {
                 it.manufacturerStatModifiers.applyAll(properties)
@@ -62,7 +62,7 @@ sealed class WeaponAssembly(
         if (klass == Capacitor::class) {
             return capacitor as T?
         }
-        return parts.find { it::class.isSubclassOf(klass) } as? T
+        return parts?.find { it::class.isSubclassOf(klass) } as? T
     }
 }
 
@@ -77,6 +77,13 @@ class PistolAssembly(
     capacitor: Capacitor? = null
 ) : WeaponAssembly(WeaponClass.PISTOL, body, capacitor, barrel, grip, accessory) {
 
-    @Transient
-    override val gunName = PistolNames.nameOf(manufacturer, barrel, accessory, capacitor)
+    override val parts: List<WeaponPart>
+        get() = listOfNotNull(barrel, grip, accessory)
+
+    override val gunName: String
+        get() = PistolNames.nameOf(manufacturer, barrel, accessory, capacitor)
+
+    override fun toString(): String {
+        return "PistolAssembly(body=$body, barrel=$barrel, grip=$grip, accessory=$accessory)"
+    }
 }

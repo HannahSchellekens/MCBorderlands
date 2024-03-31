@@ -15,6 +15,16 @@ import org.bukkit.util.Vector
 val Entity.armorPoints: Double
     get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: 0.0
 
+/**
+ * Set knockback resistance (scale 0.0 for no resistance, to 1.0 for full resistance).
+ * `null` is reset.
+ */
+fun LivingEntity.setKnockbackResistance(knockbackValue: Double? = null) {
+    val knockback = getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
+    if (knockback != null) {
+        knockback.baseValue = knockbackValue ?: knockback.defaultValue
+    }
+}
 
 /**
  * Calculates for each type of living entity what the head position of the entity is.
