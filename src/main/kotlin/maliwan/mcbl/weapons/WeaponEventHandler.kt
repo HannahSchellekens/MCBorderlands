@@ -1,10 +1,7 @@
 package maliwan.mcbl.weapons
 
 import maliwan.mcbl.*
-import maliwan.mcbl.entity.headLocation
-import maliwan.mcbl.entity.headshotRange
-import maliwan.mcbl.entity.setKnockbackResistance
-import maliwan.mcbl.entity.showHealthBar
+import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
@@ -13,6 +10,7 @@ import maliwan.mcbl.weapons.gun.shootBullet
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Item
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
@@ -58,7 +56,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     /**
      * Tracks for all entities what their elemental status effects are.
      */
-    val elementalStatusEffects = ElementalStatusEffects()
+    val elementalStatusEffects = ElementalStatusEffects(plugin)
+
+    /**
+     * Map (owner, gun) to the system time that the reload started.
+     */
+    private val reload = HashMap<Pair<Entity, GunProperties>, Long>()
 
     /**
      * Checks if the player already has an existing GunExecution with the given properties.
@@ -204,6 +207,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // Set clip to 0 to prevent shooting during reload.
         gunExecution.clip = 0
+        reload[player to gunExecution.properties] = System.currentTimeMillis()
 
         val reloadTicks = gunExecution.reloadSpeed.ticks
         player.noActionTicks = reloadTicks
@@ -220,7 +224,19 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
             gunExecution.clip = min(gunExecution.magazineSize, plugin.inventoryManager[player][gunExecution.weaponClass])
             player.playSound(player.location, Sound.ENTITY_ARROW_HIT_PLAYER, SoundCategory.PLAYERS, 0.7f, 1.0f)
+            reload.remove(player to gunExecution.properties)
         }, reloadTicks.toLong())
+    }
+
+    /**
+     * What the current progress is of the player reloading in [0.0, 1.0], or `null` when the player is not reloading.
+     */
+    fun reloadProgress(player: Player): Double? {
+        val gunExecution = obtainGunExecutionFromInventory(player) ?: return null
+        val reloadStartTime = reload[player to gunExecution.properties] ?: return null
+        val timeElapsed = System.currentTimeMillis() - reloadStartTime
+        val reloadTime = gunExecution.reloadSpeed.millis
+        return min(1.0, timeElapsed.toDouble() / reloadTime)
     }
 
     /**
@@ -330,6 +346,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 location.nearbyEntities(radius).forEach entities@{ target ->
                     if (target !is LivingEntity) return@entities
                     val slag = elementalStatusEffects.slagMultiplier(target)
+                    target.temporarilyDisableKnockback(plugin)
                     target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
                 }
             }
@@ -354,6 +371,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 if (target !is LivingEntity) return@entities
                 /* Slag cannot enhance its own damage */
                 val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
+                target.temporarilyDisableKnockback(plugin)
                 target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
                 rollElementalDot(target, bulletMeta)
             }

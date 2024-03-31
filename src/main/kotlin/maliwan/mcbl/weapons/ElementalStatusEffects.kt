@@ -1,7 +1,9 @@
 package maliwan.mcbl.weapons
 
+import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.armorPoints
 import maliwan.mcbl.entity.showHealthBar
+import maliwan.mcbl.entity.temporarilyDisableKnockback
 import maliwan.mcbl.util.*
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageEvent
@@ -41,7 +43,7 @@ data class ElementalStatusEffect(
 /**
  * @author Hannah Schellekens
  */
-open class ElementalStatusEffects {
+open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
 
     /**
      * Counts how many ticks have passed.
@@ -148,6 +150,8 @@ open class ElementalStatusEffects {
                 val multiplier = weaknessType.damageMultiplier(element, entity.armorPoints.toInt())
                 val slag = if (effect.elemental == Elemental.SLAG) 1.0 else slagMultiplier(entity)
                 val totalDamage = damage.damage * multiplier * slag
+
+                entity.temporarilyDisableKnockback(plugin)
                 entity.damage(totalDamage, effect.inflictedBy)
 
                 // Prevent elemental damage to increase damage output.

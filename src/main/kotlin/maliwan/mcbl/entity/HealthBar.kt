@@ -24,7 +24,7 @@ fun LivingEntity.showHealthBar(
         else -> ""
     }
 
-    val statusPrefix = statusEffects.sorted().joinToString("") { it.letter() }
+    val statusPrefix = statusEffects.sorted().joinToString("") { it.chatColor + it.symbol }
 
     val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: return
     val barLength = if (maxHealth <= smallThreshold) smallLength else largeLength
@@ -33,7 +33,7 @@ fun LivingEntity.showHealthBar(
     val grey = max(0, min(barLength, barLength - bars))
 
     val barText = if (health <= 0.0) {
-        "${color}X"
+        "${color}☠"
     }
     else "$statusPrefix ${ChatColor.GRAY}[$color${"|".repeat(bars)}${ChatColor.DARK_GRAY}${"|".repeat(grey)}${ChatColor.GRAY}] %.1f".format(health).trim()
 

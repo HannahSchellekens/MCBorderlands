@@ -3,6 +3,7 @@ package maliwan.mcbl
 import maliwan.mcbl.commmand.McblCommands
 import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.Hud
+import maliwan.mcbl.gui.TextDisplayHud
 import maliwan.mcbl.inventory.InventoryManager
 import maliwan.mcbl.weapons.WeaponEventHandler
 import org.bukkit.plugin.java.JavaPlugin
@@ -70,7 +71,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
 
     override fun onDisable() {
         weaponEventHandler.cleanup()
-        hud.clearDisplays()
+        hud.clearAll()
 
         logger.info("Disabled!")
     }
