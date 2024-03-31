@@ -344,6 +344,7 @@ open class GunProperties(
      * GunProperties object -> json string.
      */
     fun serialize(): String = GSON.toJson(this)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is GunProperties) return false

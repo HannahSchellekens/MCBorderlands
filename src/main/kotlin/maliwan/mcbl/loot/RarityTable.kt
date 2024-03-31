@@ -46,7 +46,7 @@ object RarityTable {
             WeaponClass.ASSAULT_RIFLE to 100,
             WeaponClass.SMG to 100,
             WeaponClass.SHOTGUN to 100,
-            WeaponClass.SNIPER to 100,
+            WeaponClass.SNIPER to 60,
             WeaponClass.LAUNCHER to 5,
         )
     }

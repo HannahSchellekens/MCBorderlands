@@ -5,6 +5,8 @@ import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.Hud
 import maliwan.mcbl.gui.TextDisplayHud
 import maliwan.mcbl.inventory.InventoryManager
+import maliwan.mcbl.loot.ammo.AmmoObtain
+import maliwan.mcbl.loot.drops.AmmoDropOnDeath
 import maliwan.mcbl.weapons.WeaponEventHandler
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -39,10 +41,13 @@ class MCBorderlandsPlugin : JavaPlugin() {
     val itemParticles = ItemParticles(this)
 
     private fun registerAllEvents() {
+        val plugin = this@MCBorderlandsPlugin
         server.pluginManager.apply {
-            registerEvents(weaponEventHandler, this@MCBorderlandsPlugin)
-            registerEvents(gameRules, this@MCBorderlandsPlugin)
-            registerEvents(hud, this@MCBorderlandsPlugin)
+            registerEvents(weaponEventHandler, plugin)
+            registerEvents(gameRules, plugin)
+            registerEvents(hud, plugin)
+            registerEvents(AmmoDropOnDeath(plugin), plugin)
+            registerEvents(AmmoObtain(plugin), plugin)
         }
     }
 

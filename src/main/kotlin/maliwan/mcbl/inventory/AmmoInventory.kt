@@ -1,7 +1,9 @@
 package maliwan.mcbl.inventory
 
+import maliwan.mcbl.loot.ammo.AmmoPack
 import maliwan.mcbl.weapons.WeaponClass
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * @author Hannah Schellekens
@@ -40,6 +42,18 @@ open class AmmoInventory {
      */
     fun removeAmmo(weaponClass: WeaponClass, amount: Int) {
         ammo[weaponClass] = max(0, (ammo[weaponClass] ?: error("No weapon class $weaponClass in inventory")) - amount)
+    }
+
+    /**
+     * Adds the contents of this ammo pack to the inventory.
+     *
+     * @param ammoPack
+     *          Ammo to add to the inventory.
+     */
+    fun add(ammoPack: AmmoPack) {
+        val current = ammo[ammoPack.weaponType] ?: error("No weapon type <${ammoPack.weaponType}> in inventory.")
+        val limit = maxAmmo[ammoPack.weaponType] ?: error("No weapon type <${ammoPack.weaponType}> in inventory.")
+        ammo[ammoPack.weaponType] = min(current + ammoPack.amount, limit)
     }
 
     /**
