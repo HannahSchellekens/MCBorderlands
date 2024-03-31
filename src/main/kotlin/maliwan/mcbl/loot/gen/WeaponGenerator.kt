@@ -23,6 +23,7 @@ import maliwan.mcbl.weapons.gun.stats.newBaseValueProperties
 import org.checkerframework.common.aliasing.qual.MaybeLeaked
 import java.util.Random
 import kotlin.math.floor
+import kotlin.math.min
 
 /**
  * @author Hannah Schellekens
@@ -59,6 +60,7 @@ open class WeaponGenerator(
         properties.assembly = assembly
 
         properties.applyGradeScaling()
+        properties.addManufacturerGimmkcisk(assembly)
 
         return properties
     }
@@ -72,6 +74,15 @@ open class WeaponGenerator(
                 if (rarity == Rarity.EPIC) {
                     burstCount++
                     burstDelay = Ticks(1)
+                }
+            }
+            Manufacturer.TORGUE -> {
+                if (Elemental.EXPLOSIVE !in elements) {
+                    elements += Elemental.EXPLOSIVE
+                    elementalChance[Elemental.EXPLOSIVE] = Chance.ONE
+                    elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
+                    elementalDamage[Elemental.EXPLOSIVE] = baseDamage * 0.5
+                    splashDamage = baseDamage * 0.5
                 }
             }
             else -> Unit
@@ -140,24 +151,20 @@ open class WeaponGenerator(
         val baseDamageBaseMult = modifier(rarity, PistolGradeModifiers.Modifier.baseDamage)
         val baseDamageStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.baseDamage)
         val baseDamageMultiplier = random.nextGaussian() * baseDamageStd + baseDamageBaseMult
-        println("> Damage: $baseDamage -> ${baseDamage.damage * baseDamageMultiplier} (x$baseDamageMultiplier)")
         baseDamage = Damage(baseDamage.damage * baseDamageMultiplier)
 
         // Magazine size
         val magSizeMult = modifier(rarity, PistolGradeModifiers.Modifier.magazineSize)
         val magSizeStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.magazineSize)
         val magSizeMultiplier = random.nextGaussian() * magSizeStd + magSizeMult
-        println("> MagSize: $magazineSize -> ${floor(magazineSize * magSizeMultiplier).toInt()} (x$magSizeMultiplier)")
         magazineSize = floor(magazineSize * magSizeMultiplier).toInt()
 
         // Reload time.
         val reloadBonus = modifier(rarity, PistolGradeModifiers.Modifier.reloadTime)
-        println("> Reload Speed: $reloadSpeed -> ${reloadSpeed.ticks + reloadBonus} ($reloadBonus)")
         reloadSpeed = Ticks(reloadSpeed.ticks + reloadBonus)
 
         // Fire rate
         val fireRateModifier = modifier(rarity, PistolGradeModifiers.Modifier.fireRate)
-        println("> Fire Rate: $fireRate -> ${fireRate * fireRateModifier} (x$fireRateModifier)")
         fireRate *= fireRateModifier
 
         // Elemental chance and damage
@@ -165,22 +172,18 @@ open class WeaponGenerator(
         val eltDamageMult = modifier(rarity, PistolGradeModifiers.Modifier.elementalDamage)
         val eltDamageStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.elementalDamage)
         val eltDamageMultiplier = random.nextGaussian() * eltDamageStd + eltDamageMult
-        println("> Elemental chance multiplier: (x$eltChanceMultiplier)")
-        println("> Elemental damage multiplier: (x$eltDamageMultiplier)")
 
         elements.forEach { element ->
-            elementalChance[element] = Chance(elementalChance[element]!!.chance * eltChanceMultiplier)
+            elementalChance[element] = Chance(min(0.995, elementalChance[element]!!.chance * eltChanceMultiplier))
             elementalDamage[element] = Damage(elementalDamage[element]!!.damage * eltDamageMultiplier)
         }
 
         // Accuracy
         val accuracyModifier = modifier(rarity, PistolGradeModifiers.Modifier.accuracy)
-        println("> Accuracy: $accuracy -> ${accuracy.chance + accuracyModifier} (+$accuracyModifier)")
         accuracy = Chance(accuracy.chance + accuracyModifier)
 
         // Recoil
         val recoilModifier = modifier(rarity, PistolGradeModifiers.Modifier.recoil)
-        println("> Recoil: $recoil -> ${recoil + recoilModifier} (+$recoilModifier)")
         recoil += recoilModifier
     }
 }

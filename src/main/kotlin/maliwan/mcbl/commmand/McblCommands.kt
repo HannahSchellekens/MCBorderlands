@@ -1,6 +1,8 @@
 package maliwan.mcbl.commmand
 
 import maliwan.mcbl.*
+import maliwan.mcbl.loot.gen.WeaponGenerator
+import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
@@ -180,18 +182,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
 
     fun debug(player: Player) {
         val gunItem = ItemStack(Material.BOW, 1)
-        val gunProperties = GunProperties(
-            name = "Anarchist",
-            rarity = Rarity.UNCOMMON,
-            weaponClass = WeaponClass.PISTOL,
-            manufacturer = Manufacturer.VLADOF,
-            bulletSpeed = 90.0,
-            accuracy = Chance(0.862),
-            fireRate = 10.4,
-            magazineSize = 38,
-            baseDamage = Damage(0.8),
-        )
-
+        val generator = WeaponGenerator(weaponClassTable = listOf(WeaponClass.PISTOL).toUniformLootPool())
+        val gunProperties = generator.generate()
         gunProperties.applyToItem(gunItem)
         player.inventory.addItem(gunItem)
     }

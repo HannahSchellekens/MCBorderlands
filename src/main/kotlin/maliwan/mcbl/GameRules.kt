@@ -27,17 +27,30 @@ open class GameRules(val plugin: MCBorderlandsPlugin) : Listener {
         val newBaseValue = max(0.0, min(2024.0, maxHealth.baseValue * 1.8))
         maxHealth.baseValue = newBaseValue
         entity.health = newBaseValue
-        entity.showHealthBar()
+
+        val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffets(entity)
+            .map { (effect, _) -> effect.elemental }
+
+        entity.showHealthBar(statusEffects = effects)
     }
 
     @EventHandler(priority = EventPriority.LOW)
     fun healthBarUpdate(event: EntityDamageEvent) {
-        (event.entity as? LivingEntity)?.showHealthBar()
+        val entity = event.entity as? LivingEntity ?: return
+        val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffets(entity)
+            .map { (effect, _) -> effect.elemental }
+
+        entity.showHealthBar(statusEffects = effects)
+
     }
 
     @EventHandler(priority = EventPriority.LOW)
     fun healthBarUpdateWhenHealed(event: EntityRegainHealthEvent) {
-        (event.entity as? LivingEntity)?.showHealthBar()
+        val entity = event.entity as? LivingEntity ?: return
+        val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffets(entity)
+            .map { (effect, _) -> effect.elemental }
+
+        entity.showHealthBar(statusEffects = effects)
     }
 
     @EventHandler

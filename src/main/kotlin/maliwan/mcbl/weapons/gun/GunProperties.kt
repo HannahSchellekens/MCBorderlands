@@ -218,7 +218,13 @@ open class GunProperties(
 
         elements.forEach { element ->
             val chance = if (element == Elemental.EXPLOSIVE) "" else "${elementalChance[element]?.percentageDisplay}"
-            val damage = if ((elementalDamage[element]?.damage ?: 0.0) > 0.01) " " + elementalDamage[element]!!.heartDisplay else ""
+            val perSecond = if (element.noDotMultiplier < 0.001) "" else "/sec"
+
+            val damage = if (element != Elemental.EXPLOSIVE && (elementalDamage[element]?.damage ?: 0.0) > 0.01) {
+                " " + (elementalDamage[element]!! * 2.0).heartDisplay + perSecond
+            }
+            else ""
+
             val combined = "$chance$damage".trim()
             lore += "${element.chatColor}${element.displayName} ${ChatColor.GRAY}(${ChatColor.WHITE}$combined${ChatColor.GRAY})"
         }
@@ -259,7 +265,7 @@ open class GunProperties(
         }
 
         // Bonus elemental damage.
-        if (elementalDamage.values.any { it.damage > 0.01 } && splashDamage.damage > 0.0001) {
+        if (splashDamage.damage > 0.0001) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} bonus elemental damage"
         }

@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons
 
 import maliwan.mcbl.entity.armorPoints
+import maliwan.mcbl.entity.showHealthBar
 import maliwan.mcbl.util.*
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageEvent
@@ -195,9 +196,17 @@ open class ElementalStatusEffects {
      */
     fun removeExpiredEffects() {
         val now = System.currentTimeMillis()
-        activeEffects.forEach { (_, effectList) ->
-            effectList.removeIf { (_, endTimestamp) ->
-                now > endTimestamp
+        activeEffects.forEach { (entity, effectList) ->
+            effectList.removeIf { (toRemove, endTimestamp) ->
+                if (now > endTimestamp) {
+                    val effects = activeEffets(entity)
+                        .filter { (effect, _) -> effect != toRemove }
+                        .map { (effect, _) -> effect.elemental }
+
+                    entity.showHealthBar(statusEffects = effects)
+                    true
+                }
+                else false
             }
         }
         activeEffects.entries.removeIf { (_, effects) -> effects.isEmpty() }

@@ -31,7 +31,7 @@ enum class Elemental(
      */
     val noDotMultiplier: Double
         get() = when (this) {
-            PHYSICAL, SLAG -> 0.0
+            PHYSICAL, SLAG, EXPLOSIVE -> 0.0
             else -> 1.0
         }
 }
