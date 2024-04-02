@@ -14,6 +14,7 @@ object RarityTable {
      */
     object WorldDrops {
 
+        val shitty = rarityLootPool(100000, 10000, 1000, 1, 0, 0)
         val regular = rarityLootPool(100000, 10000, 1000, 100, 10, 1)
         val badass = rarityLootPool(25000, 5000, 1000, 200, 20, 3)
         val superBadass = rarityLootPool(6250, 2500, 1000, 400, 40, 9)

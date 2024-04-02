@@ -71,7 +71,7 @@ open class WeaponGenerator(
     private fun GunProperties.addManufacturerGimmkcisk(assembly: WeaponAssembly) {
         when (assembly.manufacturer) {
             Manufacturer.DAHL -> {
-                if (rarity == Rarity.EPIC) {
+                applyToEpicGuns {
                     burstCount++
                     burstDelay = Ticks(1)
                 }
@@ -83,6 +83,11 @@ open class WeaponGenerator(
                     elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
                     elementalDamage[Elemental.EXPLOSIVE] = baseDamage * 0.5
                     splashDamage = baseDamage * 0.5
+                }
+            }
+            Manufacturer.JAKOBS -> {
+                applyToEpicGuns {
+                    bonusCritMultiplier = (bonusCritMultiplier ?: 0.0) + 0.25
                 }
             }
             else -> Unit
@@ -185,5 +190,17 @@ open class WeaponGenerator(
         // Recoil
         val recoilModifier = modifier(rarity, PistolGradeModifiers.Modifier.recoil)
         recoil += recoilModifier
+    }
+
+    /**
+     * Execute code on the gun property, but only if the rarity is EPIC or higher.
+     */
+    fun GunProperties.applyToEpicGuns(apply: GunProperties.() -> Unit) {
+        when (rarity) {
+            Rarity.EPIC, Rarity.LEGENDARY, Rarity.PEARLESCENT -> {
+                this.apply()
+            }
+            else -> Unit
+        }
     }
 }

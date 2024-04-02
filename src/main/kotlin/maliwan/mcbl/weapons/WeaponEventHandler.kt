@@ -157,7 +157,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      * Executes one gunshot from the given gun execution.
      */
     fun shootGun(player: Player, gunExecution: GunExecution) {
-        if (gunExecution.clip <= 0) {
+        val inventory = plugin.inventoryManager[player]
+        val ammoLeft = inventory[gunExecution.weaponClass]
+        if (gunExecution.clip <= 0 || ammoLeft <= 0) {
             return
         }
 

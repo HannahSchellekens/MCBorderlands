@@ -11,6 +11,12 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
 /**
+ * [Attribute.GENERIC_MAX_HEALTH]
+ */
+val LivingEntity.genericMaxHealth: Double
+    get() = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 0.0
+
+/**
  * How many armor points the given entity has: 0 if not applicable.
  */
 val Entity.armorPoints: Double

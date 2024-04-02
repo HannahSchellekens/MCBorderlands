@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * @author Hannah Schellekens
@@ -30,8 +31,8 @@ open class Hud(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val inventory = plugin.inventoryManager[player]
 
         val gunType = gunExecution.weaponClass.displayName
-        val leftInClip = gunExecution.clip
         val totalAmmo = inventory[gunExecution.weaponClass]
+        val leftInClip = min(gunExecution.clip, totalAmmo)
         val ammoLeft = max(0, totalAmmo - leftInClip)
 
         val element = gunExecution.elements.sorted().joinToString("") {

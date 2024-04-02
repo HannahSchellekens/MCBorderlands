@@ -7,6 +7,7 @@ import maliwan.mcbl.gui.TextDisplayHud
 import maliwan.mcbl.inventory.InventoryManager
 import maliwan.mcbl.loot.ammo.AmmoObtain
 import maliwan.mcbl.loot.drops.AmmoDropOnDeath
+import maliwan.mcbl.loot.drops.WeaponDropOnDeath
 import maliwan.mcbl.weapons.WeaponEventHandler
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -48,6 +49,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
             registerEvents(hud, plugin)
             registerEvents(AmmoDropOnDeath(plugin), plugin)
             registerEvents(AmmoObtain(plugin), plugin)
+            registerEvents(WeaponDropOnDeath(plugin), plugin)
         }
     }
 

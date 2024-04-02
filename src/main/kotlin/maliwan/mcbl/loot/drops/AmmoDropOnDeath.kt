@@ -33,15 +33,15 @@ open class AmmoDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
     companion object {
 
         fun dropChance(entityType: EntityType) = when (entityType) {
-            in lowAmmoDrops -> 0.1
+            in lowAmmoDrops -> 0.2
             in highAmmoDrops -> 1.0
-            else -> 0.5
+            else -> 0.7
         }
 
         fun dropAmount(entityType: EntityType) = when (entityType) {
             in lowAmmoDrops -> 0..1
             in highAmmoDrops -> 2..4
-            else -> 0..2
+            else -> 1..2
         }
 
         val lowAmmoDrops = setOf(
