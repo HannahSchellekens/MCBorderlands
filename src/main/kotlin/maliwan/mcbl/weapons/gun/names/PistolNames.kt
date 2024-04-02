@@ -4,7 +4,7 @@ import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.gun.Capacitor
-import maliwan.mcbl.weapons.gun.PistolParts
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 
 /**
  * @author Hannah Schellekens

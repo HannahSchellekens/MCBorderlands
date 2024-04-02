@@ -1,9 +1,9 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.PistolNames
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 

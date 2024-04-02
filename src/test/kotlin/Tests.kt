@@ -1,12 +1,7 @@
 import maliwan.mcbl.loot.gen.WeaponGenerator
 import maliwan.mcbl.loot.lootPoolOf
-import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.GunProperties
-import maliwan.mcbl.weapons.gun.PistolParts
-import maliwan.mcbl.weapons.gun.names.PistolNames
-import maliwan.mcbl.weapons.gun.stats.PistolBaseValues
-import maliwan.mcbl.weapons.gun.stats.PistolGradeModifiers
 import java.util.Random
 
 fun main() {

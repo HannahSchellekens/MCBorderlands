@@ -1,9 +1,12 @@
-package maliwan.mcbl.weapons.gun
+package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
+import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
+import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
  * @author Hannah Schellekens
@@ -283,14 +286,14 @@ object PistolParts {
         companion object {
 
             val commonGrips = setOf(
-                Grip.MALIWAN,
-                Grip.VLADOF,
-                Grip.BANDIT,
-                Grip.DAHL,
-                Grip.HYPERION,
-                Grip.JAKOBS,
-                Grip.TEDIORE,
-                Grip.TORGUE
+                MALIWAN,
+                VLADOF,
+                BANDIT,
+                DAHL,
+                HYPERION,
+                JAKOBS,
+                TEDIORE,
+                TORGUE
             )
 
             val commonLootPool = commonGrips.toUniformLootPool()

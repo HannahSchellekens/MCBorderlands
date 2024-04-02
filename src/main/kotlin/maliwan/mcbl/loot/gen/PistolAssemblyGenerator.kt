@@ -5,7 +5,7 @@ import maliwan.mcbl.weapons.gun.PistolAssembly
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.gun.PistolParts
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 import java.util.Random
 
 /**
