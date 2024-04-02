@@ -24,7 +24,6 @@ open class AmmoDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
         repeat(dropCount) {
             if (Random.nextDouble() < dropChance) {
                 val pack = AmmoPack(type)
-                println(pack)
                 event.drops.add(pack.toItemStack())
             }
         }

@@ -31,7 +31,7 @@ object RarityTable {
 
         val shitty = rarityLootPool(100000, 27360, 3330, 465, 0, 0)
         val regular = rarityLootPool(25000, 13680, 3330, 930, 9, 1)
-        val highQuality = rarityLootPool(2500, 17100, 11100, 9300, 90, 10)
+        val highQuality = rarityLootPool(6000, 17100, 10000, 2000, 90, 10)
         val stellar = rarityLootPool(250, 1710, 5550, 9300, 900, 200)
     }
 

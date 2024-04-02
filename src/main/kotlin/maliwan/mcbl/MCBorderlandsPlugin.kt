@@ -3,9 +3,9 @@ package maliwan.mcbl
 import maliwan.mcbl.commmand.McblCommands
 import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.Hud
-import maliwan.mcbl.gui.TextDisplayHud
 import maliwan.mcbl.inventory.InventoryManager
 import maliwan.mcbl.loot.ammo.AmmoObtain
+import maliwan.mcbl.loot.chests.LootChestPopulator
 import maliwan.mcbl.loot.drops.AmmoDropOnDeath
 import maliwan.mcbl.loot.drops.WeaponDropOnDeath
 import maliwan.mcbl.weapons.WeaponEventHandler
@@ -50,6 +50,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
             registerEvents(AmmoDropOnDeath(plugin), plugin)
             registerEvents(AmmoObtain(plugin), plugin)
             registerEvents(WeaponDropOnDeath(plugin), plugin)
+            registerEvents(LootChestPopulator(plugin), plugin)
         }
     }
 

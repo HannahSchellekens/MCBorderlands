@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.*
+import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.GunExecution
@@ -10,7 +10,6 @@ import maliwan.mcbl.weapons.gun.shootBullet
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Item
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
@@ -25,7 +24,10 @@ import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import kotlin.math.*
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 /**
@@ -129,10 +131,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                                 execution.burstDelay.long * burstIndex
                             )
                         }
-
-                        // After each burst, update accuracy.
-                        // TODO: Gun property proxy.
-
                         applyRecoil(execution)
                     }
                     execution.consecutiveShots++
