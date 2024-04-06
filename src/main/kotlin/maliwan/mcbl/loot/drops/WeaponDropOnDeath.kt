@@ -4,6 +4,7 @@ import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.genericMaxHealth
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.gen.WeaponGenerator
+import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.FireworkEffect
@@ -42,9 +43,9 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
                 addEffect(builder.build())
             }
 
-            plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+            plugin.scheduleTask(1L) {
                 detonate()
-            }, 1L)
+            }
         }
     }
 

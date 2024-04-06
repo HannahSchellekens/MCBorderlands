@@ -2,6 +2,7 @@ package maliwan.mcbl
 
 import maliwan.mcbl.commmand.McblCommands
 import maliwan.mcbl.entity.ItemParticles
+import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.gui.Hud
 import maliwan.mcbl.inventory.InventoryManager
 import maliwan.mcbl.loot.ammo.AmmoObtain
@@ -37,6 +38,11 @@ class MCBorderlandsPlugin : JavaPlugin() {
     val hud = Hud(this)
 
     /**
+     * Shows particles when enemies get damaged.
+     */
+    val damageParticles = DamageParticles()
+
+    /**
      * Shows rarity particles above the gun items on the ground.
      */
     val itemParticles = ItemParticles(this)
@@ -51,6 +57,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
             registerEvents(AmmoObtain(plugin), plugin)
             registerEvents(WeaponDropOnDeath(plugin), plugin)
             registerEvents(LootChestPopulator(plugin), plugin)
+            registerEvents(damageParticles, plugin)
         }
     }
 
@@ -73,6 +80,8 @@ class MCBorderlandsPlugin : JavaPlugin() {
         server.scheduler.scheduleSyncRepeatingTask(this, hud, 1L, 1L)
         // Show rarity particles on items.
         server.scheduler.scheduleSyncRepeatingTask(this, itemParticles, 1L, 1L)
+        // Damage particle
+        server.scheduler.scheduleSyncRepeatingTask(this, damageParticles, 1L, 1L)
 
         logger.info("Enabled!")
     }

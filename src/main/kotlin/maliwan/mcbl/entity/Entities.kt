@@ -1,6 +1,7 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.util.scheduleTask
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Cow
@@ -38,9 +39,9 @@ fun LivingEntity.setKnockbackResistance(knockbackValue: Double? = null) {
  */
 fun LivingEntity.temporarilyDisableKnockback(plugin: MCBorderlandsPlugin) {
     setKnockbackResistance(1.0)
-    plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
+    plugin.scheduleTask(1L) {
         setKnockbackResistance()
-    }, 1L)
+    }
 }
 
 /**

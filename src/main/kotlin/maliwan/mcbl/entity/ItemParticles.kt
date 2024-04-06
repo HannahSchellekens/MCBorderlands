@@ -1,6 +1,7 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.util.showElementalParticle
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.gun.gunProperties
@@ -44,9 +45,9 @@ open class ItemParticles(
                 repeat(particleCount) {
                     val loc = item.location.clone().add(0.0, 0.2 + 0.2 * it, 0.0)
 
-                    plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+                    plugin.scheduleTask(it.toLong()) {
                         loc.showElementalParticle(gunProperties.rarity.color, 1, size = 1f - 0.15f * it)
-                    }, it.toLong())
+                    }
                 }
             }
         }

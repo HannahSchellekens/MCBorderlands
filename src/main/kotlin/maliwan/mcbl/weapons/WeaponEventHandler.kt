@@ -128,19 +128,14 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                         }
                         // Subsequent ones must be scheduled by burst delay:
                         else {
-                            plugin.server.scheduler.scheduleSyncDelayedTask(
-                                plugin,
-                                Runnable {
-                                    shootGun(this, execution)
-                                },
-                                execution.burstDelay.long * burstIndex
-                            )
+                            plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
+                                shootGun(this, execution)
+                            }
                         }
 
                         // Make sure the recoil angle is not applied when there are no shots
                         // left.
                         if (enoughAmmo) {
-                            Bukkit.broadcastMessage("Applying recoil : ${execution.recoilAngle}")
                             applyRecoil(execution)
                         }
                     }
@@ -152,9 +147,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                     if (fireRateBurstIndex == 0) {
                         executeGunBurst()
                     }
-                    else plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
+                    else plugin.scheduleTask(fireRateBurstIndex.toLong() * 2L) {
                         executeGunBurst()
-                    }, fireRateBurstIndex.toLong() * 2L)
+                    }
                 }
             }
         }
@@ -227,16 +222,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         player.playSound(player.location, Sound.BLOCK_GRAVEL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f)
 
         repeat(reloadTicks / 10) {
-            plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+            plugin.scheduleTask(it * 10L) {
                 player.playSound(player.location, Sound.BLOCK_GRAVEL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f)
-            }, it * 10L)
+            }
         }
 
-        plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+        plugin.scheduleTask(reloadTicks.toLong()) {
             gunExecution.clip = min(gunExecution.magazineSize, plugin.inventoryManager[player][gunExecution.weaponClass])
             player.playSound(player.location, Sound.ENTITY_ARROW_HIT_PLAYER, SoundCategory.PLAYERS, 0.7f, 1.0f)
             reload.remove(player to gunExecution.properties)
-        }, reloadTicks.toLong())
+        }
     }
 
     /**
@@ -330,14 +325,14 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         // Disable knockback for guns.
         targetEntity.setKnockbackResistance(1.0)
 
-        plugin.server.scheduler.scheduleSyncDelayedTask(plugin, Runnable {
+        plugin.scheduleTask(1L) {
             targetEntity.noDamageTicks = oldNoDamageTicks
             targetEntity.maximumNoDamageTicks = oldNoDamageTicksMax
             targetEntity.setKnockbackResistance()
 
             // Update health bar after the damage has been dealt.
             targetEntity.showHealthBar(plugin)
-        }, 1L)
+        }
 
         bullets.remove(bullet)
     }
@@ -458,9 +453,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     @EventHandler
     fun clearEffectsOnDeath(event: EntityDeathEvent) {
         // Prevent concurrent modification with scheduled task.
-        plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+        plugin.scheduleTask(1L) {
             elementalStatusEffects.cleanup(event.entity)
-        }, 1L)
+        }
     }
 
     @EventHandler
