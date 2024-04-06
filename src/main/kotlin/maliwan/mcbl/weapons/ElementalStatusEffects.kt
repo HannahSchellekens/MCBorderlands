@@ -5,9 +5,10 @@ import maliwan.mcbl.entity.armorPoints
 import maliwan.mcbl.entity.showHealthBar
 import maliwan.mcbl.entity.temporarilyDisableKnockback
 import maliwan.mcbl.util.*
+import org.bukkit.damage.DamageSource
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
-import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause
+import kotlin.random.Random
 
 /**
  * @author Hannah Schellekens
@@ -127,6 +128,7 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
      */
     fun tick() {
         applyDamage()
+        applyShockEffect()
         removeExpiredEffects()
 
         // Lower particle count.
@@ -140,6 +142,7 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
     /**
      * Applies all status effect damage to entities with status effects.
      */
+    @Suppress("UnstableApiUsage" /* Damage API is experimental */)
     fun applyDamage() = activeEffects.forEach { (entity, effects) ->
         effects.asSequence()
             .filter { (effect, _) -> effect.damage.damage > 0.01 && tickCount % effect.damageInterval.ticks == 0 }
@@ -151,17 +154,32 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                 val slag = if (effect.elemental == Elemental.SLAG) 1.0 else slagMultiplier(entity)
                 val totalDamage = damage.damage * multiplier * slag
 
-                entity.temporarilyDisableKnockback(plugin)
-                entity.damage(totalDamage, effect.inflictedBy)
-
                 // Prevent elemental damage to increase damage output.
                 val cause = when (effect.elemental) {
-                    Elemental.INCENDIARY -> EntityDamageEvent.DamageCause.FIRE_TICK
-                    Elemental.CORROSIVE -> EntityDamageEvent.DamageCause.POISON
-                    Elemental.SHOCK -> EntityDamageEvent.DamageCause.LIGHTNING
-                    else -> DamageCause.MAGIC
+                    Elemental.INCENDIARY -> DamageSource.builder(DamageType.ON_FIRE).build()
+                    Elemental.CORROSIVE -> DamageSource.builder(DamageType.WITHER).build()
+                    Elemental.SHOCK -> DamageSource.builder(DamageType.LIGHTNING_BOLT).build()
+                    else -> DamageSource.builder(DamageType.MAGIC).build()
                 }
-                entity.lastDamageCause = EntityDamageEvent(entity, cause, totalDamage)
+
+                entity.temporarilyDisableKnockback(plugin)
+                entity.damage(totalDamage, cause)
+            }
+    }
+
+    /**
+     * Executes all special effects when the player has a shock DoT.
+     * This method checks for this DoT effect.
+     */
+    fun applyShockEffect() = activeEffects.forEach { (entity, effects) ->
+        effects.asSequence()
+            .filter { (effect, _) -> effect.elemental == Elemental.SHOCK }
+            .filter { (effect, _) -> tickCount % effect.damageInterval.ticks == 0 }
+            .forEach { (_, _) ->
+                val location = entity.location
+                location.pitch += Random.nextDouble(-3.0, 3.0).toFloat()
+                location.yaw += Random.nextDouble(-3.0, 3.0).toFloat()
+                entity.teleport(location)
             }
     }
 
