@@ -2,7 +2,7 @@
 baseDamage	0.76	0.57	0.83	0.69	0.83
 magazineSize	12	7	2	5	4
 reloadTime	82	70	56	50	76
-fireRate	1.3	3.6	10	1.5	1
+fireRate	1.3	2.5	4.5	1.5	1
 burstCount	1	1	1	1	1
 elementalChance	0.08	0.08	0.08	0.08	0.08
 elementalDamage	1.35	1.08	0.81	1.35	1.35
