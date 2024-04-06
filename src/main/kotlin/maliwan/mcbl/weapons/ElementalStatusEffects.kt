@@ -8,6 +8,7 @@ import maliwan.mcbl.util.*
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.util.Vector
 import kotlin.random.Random
 
 /**
@@ -164,6 +165,11 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
 
                 entity.temporarilyDisableKnockback(plugin)
                 entity.damage(totalDamage, cause)
+                plugin.damageParticles.showDotDamageDisplay(
+                    entity.location.add(0.0, entity.height, 0.0),
+                    totalDamage,
+                    element
+                )
             }
     }
 

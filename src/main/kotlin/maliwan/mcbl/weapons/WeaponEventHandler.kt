@@ -317,9 +317,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
         else 1.0
 
+        val particleLocation = targetEntity.location.add(0.0, targetEntity.height, 0.0)
+        if (isCritical) {
+            plugin.damageParticles.showCritDisplay(particleLocation.clone())
+        }
+
         // Apply damage & elemental effect
         event.damage = bulletMeta.damage.damage * elementalModifier *
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
+        plugin.damageParticles.showDamageDisplay(hitLocation?.clone() ?: particleLocation.clone(), event.damage)
+
         rollElementalDot(targetEntity, bulletMeta)
 
         // Disable knockback for guns.
@@ -353,7 +360,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                     if (target !is LivingEntity) return@entities
                     val slag = elementalStatusEffects.slagMultiplier(target)
                     target.temporarilyDisableKnockback(plugin)
-                    target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
+                    val totalDamage = bulletMeta.splashDamage.damage * slag
+                    target.damage(totalDamage, bulletMeta.shooter)
+
+                    if (totalDamage >= 0.01) {
+                        plugin.damageParticles.showDotDamageDisplay(
+                            target.location.add(0.0, target.height, 0.0),
+                            totalDamage,
+                            element
+                        )
+                    }
                 }
             }
         }
@@ -378,8 +394,17 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 /* Slag cannot enhance its own damage */
                 val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
                 target.temporarilyDisableKnockback(plugin)
-                target.damage(bulletMeta.splashDamage.damage * slag, bulletMeta.shooter)
+                val totalDamage = bulletMeta.splashDamage.damage * slag
+                target.damage(totalDamage, bulletMeta.shooter)
                 rollElementalDot(target, bulletMeta)
+
+                if (totalDamage > 0.01) {
+                    plugin.damageParticles.showDotDamageDisplay(
+                        target.location.add(0.0, target.height, 0.0),
+                        totalDamage,
+                        element
+                    )
+                }
             }
         }
     }
