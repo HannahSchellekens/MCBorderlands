@@ -30,6 +30,7 @@ enum class Manufacturer(
 
         val pistolProducers = setOf(MALIWAN, HYPERION, VLADOF, TEDIORE, BANDIT, DAHL, TORGUE, JAKOBS)
         val shotgunProducers = setOf(BANDIT, HYPERION, TEDIORE, JAKOBS, TORGUE)
+        val sniperProducers = setOf(DAHL, HYPERION, JAKOBS, MALIWAN, VLADOF)
 
         /**
          * Set of manufacturers that make weapons of class `weaponClass`.
@@ -37,6 +38,7 @@ enum class Manufacturer(
         fun producersOf(weaponClass: WeaponClass) = when (weaponClass) {
             WeaponClass.PISTOL -> pistolProducers
             WeaponClass.SHOTGUN -> shotgunProducers
+            WeaponClass.SNIPER -> sniperProducers
             else -> emptySet()
         }
     }

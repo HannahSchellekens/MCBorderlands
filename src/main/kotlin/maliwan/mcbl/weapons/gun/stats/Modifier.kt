@@ -12,6 +12,7 @@ object Modifiers {
     fun providerOf(weaponClass: WeaponClass): ModifierProvider = when (weaponClass) {
         WeaponClass.PISTOL -> PistolGradeModifiers
         WeaponClass.SHOTGUN -> ShotgunGradeModifiers
+        WeaponClass.SNIPER -> SniperGradeModifiers
         else -> error("Weapon class <$weaponClass> is not supported.")
     }
 }

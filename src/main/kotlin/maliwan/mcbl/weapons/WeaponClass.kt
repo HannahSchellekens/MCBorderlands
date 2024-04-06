@@ -1,9 +1,5 @@
 package maliwan.mcbl.weapons
 
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
-
 /**
  * @author Hannah Schellekens
  */

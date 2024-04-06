@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.gun.PistolAssembly
 import maliwan.mcbl.weapons.gun.ShotgunAssembly
+import maliwan.mcbl.weapons.gun.SniperAssembly
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 
 /**
@@ -27,6 +28,12 @@ object WeaponNames {
             weaponAssembly.capacitor
         )
         is ShotgunAssembly -> ShotgunNames.nameOf(
+            weaponAssembly.manufacturer,
+            weaponAssembly.barrel,
+            weaponAssembly.accessory,
+            weaponAssembly.capacitor
+        )
+        is SniperAssembly -> SniperNames.nameOf(
             weaponAssembly.manufacturer,
             weaponAssembly.barrel,
             weaponAssembly.accessory,

@@ -4,8 +4,10 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.PistolNames
 import maliwan.mcbl.weapons.gun.names.ShotgunNames
+import maliwan.mcbl.weapons.gun.names.SniperNames
 import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.parts.ShotgunParts
+import maliwan.mcbl.weapons.gun.parts.SniperParts
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -97,17 +99,41 @@ class ShotgunAssembly(
     val body: Manufacturer,
     val barrel: ShotgunParts.Barrel,
     val grip: ShotgunParts.Grip,
+    val stock: ShotgunParts.Stock,
     val accessory: ShotgunParts.Accessory? = null,
     capacitor: Capacitor? = null
-) : WeaponAssembly(WeaponClass.SHOTGUN, body, capacitor, barrel, grip, accessory) {
+) : WeaponAssembly(WeaponClass.SHOTGUN, body, capacitor, barrel, grip, stock, accessory) {
 
     override val parts: List<WeaponPart>
-        get() = listOfNotNull(barrel, grip, accessory)
+        get() = listOfNotNull(barrel, grip, stock, accessory)
 
     override val gunName: String
         get() = ShotgunNames.nameOf(manufacturer, barrel, accessory, capacitor)
 
     override fun toString(): String {
-        return "ShotgunAssembly(body=$body, barrel=$barrel, grip=$grip, accessory=$accessory)"
+        return "ShotgunAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
+    }
+}
+
+/**
+ * @author Hannah Schellekens
+ */
+class SniperAssembly(
+    val body: Manufacturer,
+    val barrel: SniperParts.Barrel,
+    val grip: SniperParts.Grip,
+    val stock: SniperParts.Stock,
+    val accessory: SniperParts.Accessory? = null,
+    capacitor: Capacitor? = null
+) : WeaponAssembly(WeaponClass.SNIPER, body, capacitor, barrel, grip, stock, accessory) {
+
+    override val parts: List<WeaponPart>
+        get() = listOfNotNull(barrel, grip, stock, accessory)
+
+    override val gunName: String
+        get() = SniperNames.nameOf(manufacturer, barrel, accessory, capacitor)
+
+    override fun toString(): String {
+        return "SniperAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
     }
 }

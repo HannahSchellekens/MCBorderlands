@@ -15,6 +15,7 @@ import maliwan.mcbl.weapons.gun.Capacitor
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import maliwan.mcbl.weapons.gun.stats.*
+import org.bukkit.Bukkit
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.min
@@ -82,6 +83,10 @@ open class WeaponGenerator(
             Manufacturer.JAKOBS -> {
                 applyToEpicGuns {
                     bonusCritMultiplier = (bonusCritMultiplier ?: 0.0) + 0.25
+                }
+                if (Elemental.EXPLOSIVE in elements) {
+                    // Prevent Jakobs guns from totally enjoying explosive damage...
+                    baseDamage = Damage(baseDamage.damage / 1.1)
                 }
             }
             else -> Unit
@@ -183,7 +188,7 @@ open class WeaponGenerator(
 
         // Accuracy
         val accuracyModifier = mod.modifier(rarity, Modifier.accuracy)
-        accuracy = Chance(accuracy.chance + accuracyModifier)
+        accuracy = Chance(min(1.0, accuracy.chance + accuracyModifier))
 
         // Recoil
         val recoilModifier = mod.modifier(rarity, Modifier.recoil)

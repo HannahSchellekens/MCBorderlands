@@ -1,15 +1,12 @@
 package maliwan.mcbl.loot.gen
 
-import maliwan.mcbl.loot.ManufacturerTable
 import maliwan.mcbl.loot.toUniformLootPool
-import maliwan.mcbl.weapons.gun.PistolAssembly
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.ShotgunAssembly
-import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.parts.ShotgunParts
-import java.util.Random
+import java.util.*
 
 /**
  * @author Hannah Schellekens
@@ -34,12 +31,13 @@ open class ShotgunAssemblyGenerator(
         val manufacturer = manufacturerPool.roll(random)
         val barrel = ShotgunParts.Barrel.commonLootPool.roll(random)
         val grip = ShotgunParts.Grip.commonLootPool.roll(random)
+        val stock = ShotgunParts.Stock.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             ShotgunParts.Accessory.commonLootPool.roll(random)
         }
         else null
         val capacitor = capacitorLootpool(manufacturer, WeaponClass.SHOTGUN).roll(random).nullIfPhysical
 
-        return ShotgunAssembly(manufacturer, barrel, grip, accessory, capacitor)
+        return ShotgunAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }
 }

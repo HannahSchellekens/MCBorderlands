@@ -28,6 +28,7 @@ interface WeaponAssemblyGenerator {
         ) = when (weaponClass) {
             WeaponClass.PISTOL -> PistolAssemblyGenerator(manufacturers, random)
             WeaponClass.SHOTGUN -> ShotgunAssemblyGenerator(manufacturers, random)
+            WeaponClass.SNIPER -> SniperAssemblyGenerator(manufacturers, random)
             else -> error("Weapon class <$weaponClass> is not supported.")
         }
     }

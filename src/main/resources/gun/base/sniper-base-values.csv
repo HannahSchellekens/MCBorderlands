@@ -1,0 +1,17 @@
+""	DAHL	HYPERION	JAKOBS	MALIWAN	VLADOF
+baseDamage	3.46	4	4.33	3.57	3.25
+magazineSize	6	5	6	5	8
+reloadTime	80	80	100	80	80
+fireRate	1.5	1	1.2	1.4	4
+burstCount	3	1	1	1	1
+elementalChance	0.3	0.3	0.3	0.4	0.3
+elementalDamage	1.35	1.35	1.08	2.03	1.35
+accuracy	0.98	0.985	0.98	0.985	0.97
+recoil	0.993	0.995	0.98	0.9945	0.993
+gravity	0.016	0.016	0.016	0.012	0.016
+bulletSpeed	100.0	115.0	107.5	85	100
+bonusCritModifier	3	3	4.2	3	3
+splashRadius	0.3	0.3	0.3	0.5	0.3
+ammoPerShot	1	1	1	1	1
+projectileCount	1	1	1	1	1
+recoilAngle	-3	-3	-4	-2	-2

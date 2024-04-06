@@ -63,5 +63,8 @@ class Stat<T>(
         val projectileCount = Stat("projectileCount") {
             it.toIntOrNull() ?: error("Invalid projectileCount int <$it>")
         }
+        val recoilAngle = Stat("recoilAngle") {
+            it.toDoubleOrNull() ?: error("Invalid recoilAngle double <$it>")
+        }
     }
 }

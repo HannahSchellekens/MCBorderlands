@@ -4,6 +4,7 @@ import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.asList
 import maliwan.mcbl.util.toChance
+import org.bukkit.Bukkit
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -35,6 +36,10 @@ open class StatModifier(
      */
     fun applyStatModifier(stats: GunProperties): GunProperties {
         val resultingValues = property.getProperty(stats).toMutableList()
+
+        if (property == Property.RECOIL_ANGLE) {
+            Bukkit.broadcastMessage("Apply for ${stats.weaponClass}, $type, value: $value")
+        }
 
         for (i in resultingValues.indices) {
             resultingValues[i] = when (type) {
@@ -75,6 +80,13 @@ open class StatModifier(
         RECOIL(
             { it.recoil.asList() },
             { stats, it -> stats.recoil = it.first() }
+        ),
+        RECOIL_ANGLE(
+            { (it.recoilAngle ?: 0.0).asList() },
+            { stats, it ->
+                val angle = it.first()
+                stats.recoilAngle = if (angle > -0.0001 && angle < 0.0001) null else angle
+            }
         ),
         FIRE_RATE(
             { it.fireRate.asList() },

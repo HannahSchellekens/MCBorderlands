@@ -11,6 +11,7 @@ object BaseValues {
     fun providerOf(weaponClass: WeaponClass) = when (weaponClass) {
         WeaponClass.PISTOL -> PistolBaseValues
         WeaponClass.SHOTGUN -> ShotgunBaseValues
+        WeaponClass.SNIPER -> SniperBaseValues
         else -> error("Weapon class <$weaponClass> is not supported.")
     }
 }

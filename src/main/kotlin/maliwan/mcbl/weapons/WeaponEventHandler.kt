@@ -117,6 +117,11 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 fun executeGunBurst() {
                     // Bursts
                     repeat(execution.burstCount) { burstIndex ->
+                        // Determine beforehand if the gun will be shot.
+                        val inventory = plugin.inventoryManager[this]
+                        val ammoLeft = inventory[execution.weaponClass]
+                        val enoughAmmo = execution.clip > 0 && ammoLeft > 0
+
                         // First one must not be scheduled:
                         if (burstIndex == 0) {
                             shootGun(this, execution)
@@ -131,7 +136,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                                 execution.burstDelay.long * burstIndex
                             )
                         }
-                        applyRecoil(execution)
+
+                        // Make sure the recoil angle is not applied when there are no shots
+                        // left.
+                        if (enoughAmmo) {
+                            Bukkit.broadcastMessage("Applying recoil : ${execution.recoilAngle}")
+                            applyRecoil(execution)
+                        }
                     }
                     execution.consecutiveShots++
                 }

@@ -12,7 +12,7 @@ object WeaponClassTable {
 //        WeaponClass.ASSAULT_RIFLE to 80,
 //        WeaponClass.SMG to 80,
         WeaponClass.SHOTGUN to 80,
-//        WeaponClass.SNIPER to 55,
+        WeaponClass.SNIPER to 55,
 //        WeaponClass.LAUNCHER to 20,
     )
 }
