@@ -3,31 +3,31 @@ package maliwan.mcbl.weapons.gun.names
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.gun.Capacitor
-import maliwan.mcbl.weapons.gun.parts.PistolParts
+import maliwan.mcbl.weapons.gun.parts.ShotgunParts
 
 /**
  * @author Hannah Schellekens
  */
-object PistolNames {
+object ShotgunNames {
 
     private val nameTable = TabTable.fromResource(
-        "/gun/names/pistol-names.csv",
+        "/gun/names/shotgun-names.csv",
         Manufacturer::valueOf,
         Manufacturer::valueOf,
         { it }
     )
 
     private val accessoryTable = TabTable.fromResource(
-        "/gun/names/pistol-prefixes.csv",
-        PistolParts.Accessory::valueOf,
+        "/gun/names/shotgun-prefixes.csv",
+        ShotgunParts.Accessory::valueOf,
         Manufacturer::valueOf,
         { it }
     )
 
     fun nameOf(
         manufacturer: Manufacturer,
-        barrel: PistolParts.Barrel,
-        accessory: PistolParts.Accessory? = null,
+        barrel: ShotgunParts.Barrel,
+        accessory: ShotgunParts.Accessory? = null,
         capacitor: Capacitor? = null
     ): String {
         val baseName = nameTable[barrel.manufacturer, manufacturer]

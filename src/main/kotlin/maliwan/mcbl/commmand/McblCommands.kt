@@ -2,6 +2,7 @@ package maliwan.mcbl.commmand
 
 import maliwan.mcbl.*
 import maliwan.mcbl.loot.gen.WeaponGenerator
+import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
@@ -29,7 +30,14 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         label: String,
         args: Array<out String>
     ): MutableList<String>? {
-        if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
+        if (args.size == 1) {
+            return mutableListOf(
+                "update",
+                "pistol",
+                "shotgun"
+            )
+        }
+        else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
             return listOf(
                 "name",
                 "baseDamage",
@@ -96,24 +104,41 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         args: Array<out String>
     ): Boolean {
         val player = sender as? Player ?: return false
+        val subCommand = args.getOrNull(0)
 
-        if (args.getOrNull(0) == "update") {
-            if (args.size >= 2 && args[1].endsWith(":none") || args[1].endsWith(":removeLast")) {
-                updateBowProperties(player, args[1], emptyList())
+        when (subCommand) {
+            "update" -> {
+                if (args.size >= 2 && args[1].endsWith(":none") || args[1].endsWith(":removeLast")) {
+                    updateBowProperties(player, args[1], emptyList())
+                    return true
+                }
+
+                if (args.size < 3) {
+                    sender.sendMessage("${ChatColor.RED}Usage: /mcbl update <property> <value>")
+                    return false
+                }
+
+                updateBowProperties(player, args[1], args.toList().subList(2, args.size))
                 return true
             }
-
-            if (args.size < 3) {
-                sender.sendMessage("${ChatColor.RED}Usage: /mcbl update <property> <value>")
-                return false
-            }
-
-            updateBowProperties(player, args[1], args.toList().subList(2, args.size))
-            return true
+            "pistol" -> debug(player, WeaponClass.PISTOL)
+            "shotgun" -> debug(player, WeaponClass.SHOTGUN)
+            else -> debug(player)
         }
 
-        debug(player)
         return true
+    }
+
+    fun debug(player: Player, weaponClass: WeaponClass? = null) {
+        val gunItem = ItemStack(Material.BOW, 1)
+
+        val generator = weaponClass?.let {
+            WeaponGenerator(weaponClassTable = lootPoolOf(it to 1))
+        } ?: WeaponGenerator()
+
+        val gunProperties = generator.generate()
+        gunProperties.applyToItem(gunItem)
+        player.inventory.addItem(gunItem)
     }
 
     fun updateBowProperties(player: Player, property: String, values: List<String>) {
@@ -178,13 +203,5 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "gravity" -> update { gravity = value.toDoubleOrNull() ?: error("No double: $value") }
             "bonusCritMultiplier" -> update { bonusCritMultiplier = value.toDoubleOrNull() ?: error("No double: $value") }
         }
-    }
-
-    fun debug(player: Player) {
-        val gunItem = ItemStack(Material.BOW, 1)
-        val generator = WeaponGenerator(weaponClassTable = listOf(WeaponClass.PISTOL).toUniformLootPool())
-        val gunProperties = generator.generate()
-        gunProperties.applyToItem(gunItem)
-        player.inventory.addItem(gunItem)
     }
 }

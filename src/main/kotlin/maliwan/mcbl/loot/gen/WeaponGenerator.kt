@@ -14,14 +14,8 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.Capacitor
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
-import maliwan.mcbl.weapons.gun.stats.PistolBaseValues
-import maliwan.mcbl.weapons.gun.stats.PistolGradeModifiers
-import maliwan.mcbl.weapons.gun.stats.PistolGradeModifiers.StandardDeviation.Companion
-import maliwan.mcbl.weapons.gun.stats.PistolGradeModifiers.modifier
-import maliwan.mcbl.weapons.gun.stats.PistolGradeModifiers.standardDeviation
-import maliwan.mcbl.weapons.gun.stats.newBaseValueProperties
-import org.checkerframework.common.aliasing.qual.MaybeLeaked
-import java.util.Random
+import maliwan.mcbl.weapons.gun.stats.*
+import java.util.*
 import kotlin.math.floor
 import kotlin.math.min
 
@@ -60,7 +54,7 @@ open class WeaponGenerator(
         properties.assembly = assembly
 
         properties.applyGradeScaling()
-        properties.addManufacturerGimmkcisk(assembly)
+        properties.addManufacturerGimmick(assembly)
 
         return properties
     }
@@ -68,7 +62,7 @@ open class WeaponGenerator(
     /**
      * Adds all specific tweaks that are manufacturer specific.
      */
-    private fun GunProperties.addManufacturerGimmkcisk(assembly: WeaponAssembly) {
+    private fun GunProperties.addManufacturerGimmick(assembly: WeaponAssembly) {
         when (assembly.manufacturer) {
             Manufacturer.DAHL -> {
                 applyToEpicGuns {
@@ -104,8 +98,9 @@ open class WeaponGenerator(
         val element = capacitor.element
         if (element == Elemental.PHYSICAL) return /* Physical => no elemental damage */
 
-        val chance = PistolBaseValues.baseValue(assembly.manufacturer, PistolBaseValues.Stat.elementalChance)
-        val damage = PistolBaseValues.baseValue(assembly.manufacturer, PistolBaseValues.Stat.elementalDamage)
+        val baseValues = BaseValues.providerOf(assembly.weaponClass)
+        val chance = baseValues.baseValue(assembly.manufacturer, Stat.elementalChance)
+        val damage = baseValues.baseValue(assembly.manufacturer, Stat.elementalDamage)
 
         // Update properties to include element.
         elements += element
@@ -152,30 +147,33 @@ open class WeaponGenerator(
      * Scales the weapons base stats based on the rarity of the gun.
      */
     private fun GunProperties.applyGradeScaling() {
+        val mod = Modifiers.providerOf(weaponClass)
+        val std = StandardDeviations.providerOf(weaponClass)
+
         // Base Damage
-        val baseDamageBaseMult = modifier(rarity, PistolGradeModifiers.Modifier.baseDamage)
-        val baseDamageStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.baseDamage)
+        val baseDamageBaseMult = mod.modifier(rarity, Modifier.baseDamage)
+        val baseDamageStd = std.standardDeviation(rarity, StandardDeviation.baseDamage)
         val baseDamageMultiplier = random.nextGaussian() * baseDamageStd + baseDamageBaseMult
         baseDamage = Damage(baseDamage.damage * baseDamageMultiplier)
 
         // Magazine size
-        val magSizeMult = modifier(rarity, PistolGradeModifiers.Modifier.magazineSize)
-        val magSizeStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.magazineSize)
+        val magSizeMult = mod.modifier(rarity, Modifier.magazineSize)
+        val magSizeStd = std.standardDeviation(rarity, StandardDeviation.magazineSize)
         val magSizeMultiplier = random.nextGaussian() * magSizeStd + magSizeMult
         magazineSize = floor(magazineSize * magSizeMultiplier).toInt()
 
         // Reload time.
-        val reloadBonus = modifier(rarity, PistolGradeModifiers.Modifier.reloadTime)
+        val reloadBonus = mod.modifier(rarity, Modifier.reloadTime)
         reloadSpeed = Ticks(reloadSpeed.ticks + reloadBonus)
 
         // Fire rate
-        val fireRateModifier = modifier(rarity, PistolGradeModifiers.Modifier.fireRate)
+        val fireRateModifier = mod.modifier(rarity, Modifier.fireRate)
         fireRate *= fireRateModifier
 
         // Elemental chance and damage
-        val eltChanceMultiplier = modifier(rarity, PistolGradeModifiers.Modifier.elementalChance)
-        val eltDamageMult = modifier(rarity, PistolGradeModifiers.Modifier.elementalDamage)
-        val eltDamageStd = standardDeviation(rarity, PistolGradeModifiers.StandardDeviation.elementalDamage)
+        val eltChanceMultiplier = mod.modifier(rarity, Modifier.elementalChance)
+        val eltDamageMult = mod.modifier(rarity, Modifier.elementalDamage)
+        val eltDamageStd = std.standardDeviation(rarity, StandardDeviation.elementalDamage)
         val eltDamageMultiplier = random.nextGaussian() * eltDamageStd + eltDamageMult
 
         elements.forEach { element ->
@@ -184,11 +182,11 @@ open class WeaponGenerator(
         }
 
         // Accuracy
-        val accuracyModifier = modifier(rarity, PistolGradeModifiers.Modifier.accuracy)
+        val accuracyModifier = mod.modifier(rarity, Modifier.accuracy)
         accuracy = Chance(accuracy.chance + accuracyModifier)
 
         // Recoil
-        val recoilModifier = modifier(rarity, PistolGradeModifiers.Modifier.recoil)
+        val recoilModifier = mod.modifier(rarity, Modifier.recoil)
         recoil += recoilModifier
     }
 

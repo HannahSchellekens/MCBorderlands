@@ -1,6 +1,7 @@
 package maliwan.mcbl.loot.gen
 
 import maliwan.mcbl.loot.ManufacturerTable
+import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.weapons.gun.PistolAssembly
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
@@ -16,7 +17,7 @@ open class PistolAssemblyGenerator(
     /**
      * Possible manufacturers for the generated pistol.
      */
-    manufacturers: Set<Manufacturer> = defaultManufacturers,
+    manufacturers: Set<Manufacturer> = Manufacturer.pistolProducers,
 
     /**
      * The random object to use to generate random guns.
@@ -25,7 +26,7 @@ open class PistolAssemblyGenerator(
 
 ) : WeaponAssemblyGenerator {
 
-    private val manufacturerPool = ManufacturerTable.Weapons.generation.retainResults(manufacturers)
+    private val manufacturerPool = Manufacturer.pistolProducers.toUniformLootPool().retainResults(manufacturers)
 
     override fun generate(rarity: Rarity): PistolAssembly {
         val manufacturer = manufacturerPool.roll(random)
@@ -38,19 +39,5 @@ open class PistolAssemblyGenerator(
         val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random).nullIfPhysical
 
         return PistolAssembly(manufacturer, barrel, grip, accessory, capacitor)
-    }
-
-    companion object {
-
-        val defaultManufacturers = setOf(
-            Manufacturer.MALIWAN,
-            Manufacturer.BANDIT,
-            Manufacturer.DAHL,
-            Manufacturer.HYPERION,
-            Manufacturer.JAKOBS,
-            Manufacturer.TEDIORE,
-            Manufacturer.TORGUE,
-            Manufacturer.VLADOF,
-        )
     }
 }

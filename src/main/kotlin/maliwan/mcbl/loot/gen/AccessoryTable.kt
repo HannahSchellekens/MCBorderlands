@@ -12,7 +12,7 @@ object AccessoryTable {
      */
     fun chanceByRarity(rarity: Rarity) = when (rarity) {
         Rarity.COMMON -> 0.01
-        Rarity.UNCOMMON -> 0.25
+        Rarity.UNCOMMON -> 0.2
         Rarity.RARE -> 0.5
         Rarity.EPIC -> 0.8
         Rarity.LEGENDARY, Rarity.PEARLESCENT -> 1.0

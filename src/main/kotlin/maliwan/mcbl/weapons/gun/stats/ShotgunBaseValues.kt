@@ -7,10 +7,10 @@ import maliwan.mcbl.weapons.gun.GunProperties
 /**
  * @author Hannah Schellekens
  */
-object PistolBaseValues : BaseValueProvider {
+object ShotgunBaseValues : BaseValueProvider {
 
     private val baseValueTable = TabTable.fromResource(
-        "/gun/base/pistol-base-values.csv",
+        "/gun/base/shotgun-base-values.csv",
         Manufacturer::valueOf,
         { it },
         { it }
@@ -26,7 +26,7 @@ object PistolBaseValues : BaseValueProvider {
     }
 
     /**
-     * Creates a new [GunProperties] object for pistols that is populated by the base values of `manufacturer`.
+     * Creates a new [GunProperties] object for shotguns that is populated by the base values of `manufacturer`.
      * Does not include elemental properties, they have to be applied when the specific element is applied.
      */
     fun newGunProperties(manufacturer: Manufacturer) = GunProperties(
@@ -41,6 +41,7 @@ object PistolBaseValues : BaseValueProvider {
         bulletSpeed = baseValue(manufacturer, Stat.bulletSpeed),
         bonusCritMultiplier = baseValue(manufacturer, Stat.bonusCritModifier),
         splashRadius = baseValue(manufacturer, Stat.splashRadius),
-        ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot)
+        ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot),
+        pelletCount = baseValue(manufacturer, Stat.projectileCount)
     )
 }

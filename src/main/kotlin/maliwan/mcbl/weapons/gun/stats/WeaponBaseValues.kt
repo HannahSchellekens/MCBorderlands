@@ -9,5 +9,6 @@ import maliwan.mcbl.weapons.gun.GunProperties
  */
 fun newBaseValueProperties(manufacturer: Manufacturer, weaponClass: WeaponClass) = when (weaponClass) {
     WeaponClass.PISTOL -> PistolBaseValues.newGunProperties(manufacturer)
+    WeaponClass.SHOTGUN -> ShotgunBaseValues.newGunProperties(manufacturer)
     else -> error("Weapon class <$weaponClass> is not supported.")
 }

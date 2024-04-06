@@ -3,7 +3,9 @@ package maliwan.mcbl.weapons.gun
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.PistolNames
+import maliwan.mcbl.weapons.gun.names.ShotgunNames
 import maliwan.mcbl.weapons.gun.parts.PistolParts
+import maliwan.mcbl.weapons.gun.parts.ShotgunParts
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -85,5 +87,27 @@ class PistolAssembly(
 
     override fun toString(): String {
         return "PistolAssembly(body=$body, barrel=$barrel, grip=$grip, accessory=$accessory)"
+    }
+}
+
+/**
+ * @author Hannah Schellekens
+ */
+class ShotgunAssembly(
+    val body: Manufacturer,
+    val barrel: ShotgunParts.Barrel,
+    val grip: ShotgunParts.Grip,
+    val accessory: ShotgunParts.Accessory? = null,
+    capacitor: Capacitor? = null
+) : WeaponAssembly(WeaponClass.SHOTGUN, body, capacitor, barrel, grip, accessory) {
+
+    override val parts: List<WeaponPart>
+        get() = listOfNotNull(barrel, grip, accessory)
+
+    override val gunName: String
+        get() = ShotgunNames.nameOf(manufacturer, barrel, accessory, capacitor)
+
+    override fun toString(): String {
+        return "ShotgunAssembly(body=$body, barrel=$barrel, grip=$grip, accessory=$accessory)"
     }
 }

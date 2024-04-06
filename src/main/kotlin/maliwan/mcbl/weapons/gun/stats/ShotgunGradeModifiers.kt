@@ -6,17 +6,17 @@ import maliwan.mcbl.weapons.Rarity
 /**
  * @author Hannah Schellekens
  */
-object PistolGradeModifiers : ModifierProvider, StandardDeviationProvider {
+object ShotgunGradeModifiers : ModifierProvider, StandardDeviationProvider {
 
     private val baseModifierTable = TabTable.fromResource(
-        "/gun/base/pistol-grade-modifiers.csv",
+        "/gun/base/shotgun-grade-modifiers.csv",
         Rarity::valueOf,
         { it },
         { it }
     )
 
     private val modifierStandardDeviationTable = TabTable.fromResource(
-        "/gun/base/pistol-grade-modifiers-std.csv",
+        "/gun/base/shotgun-grade-modifiers-std.csv",
         Rarity::valueOf,
         { it },
         { it.toDouble() }
