@@ -66,5 +66,8 @@ class Stat<T>(
         val recoilAngle = Stat("recoilAngle") {
             it.toDoubleOrNull() ?: error("Invalid recoilAngle double <$it>")
         }
+        val freeShotChance = Stat("freeShotChance") {
+            Chance(it.toDoubleOrNull() ?: error("Invalid freeShotChance double <$it>"))
+        }
     }
 }

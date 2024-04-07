@@ -77,6 +77,10 @@ open class StatModifier(
             { it.extraShotChance.chance.asList() },
             { stats, it -> stats.extraShotChance = it.first().toChance() }
         ),
+        FREE_SHOT_CHANCE(
+            { it.freeShotChance.chance.asList() },
+            { stats, it -> stats.freeShotChance = it.first().toChance() }
+        ),
         RECOIL(
             { it.recoil.asList() },
             { stats, it -> stats.recoil = it.first() }

@@ -1,6 +1,8 @@
 package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.util.Chance
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 /**
@@ -49,7 +51,8 @@ class GunExecution(
     properties.gravity,
     properties.bonusCritMultiplier,
     properties.assembly,
-    properties.extraShotChance
+    properties.extraShotChance,
+    properties.freeShotChance
 ) {
 
     val originalFireRate: Double = properties.fireRate
@@ -87,7 +90,8 @@ class GunExecution(
                 consecutiveShots = 0
                 return properties.accuracy
             }
-            return Chance(properties.accuracy.chance * properties.recoil.pow(consecutiveShots))
+            val newChance = properties.accuracy.chance * properties.recoil.pow(consecutiveShots)
+            return Chance(min(max(0.0, newChance), 1.0))
         }
         set(value) { properties.accuracy = value }
 }

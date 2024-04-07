@@ -46,7 +46,7 @@ value class Chance(val chance: Double) {
     val percentageDisplay: String
         get() = "${"%.1f".format(chance * 100)}%"
 
-    fun throwDice() = Random.nextDouble() <= chance
+    fun roll() = Random.nextDouble() <= chance
 
     companion object {
 
@@ -76,4 +76,6 @@ value class Damage(val damage: Double) {
         }
 
     operator fun times(other: Double) = Damage(damage * other)
+    operator fun plus(other: Double) = Damage(damage + other)
+    operator fun plus(other: Damage) = Damage(damage + other.damage)
 }

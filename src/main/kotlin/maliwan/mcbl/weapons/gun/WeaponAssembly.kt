@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*
 import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.RocketLauncher
 import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
@@ -43,7 +44,7 @@ sealed class WeaponAssembly(
      */
     abstract val gunName: String
 
-    val behaviours: List<GunBehaviour>
+    open val behaviours: List<GunBehaviour>
         get() {
             val mainParts = parts?.flatMap { it.behaviours } ?: emptyList()
             val capacitorBehaviour = capacitor?.behaviours ?: emptyList()
@@ -191,5 +192,31 @@ class AssaultRifleAssembly(
 
     override fun toString(): String {
         return "AssaultRifleAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
+    }
+}
+
+/**
+ * @author Hannah Schellekens
+ */
+class LauncherAssembly(
+    val body: Manufacturer,
+    val barrel: LauncherParts.Barrel,
+    val grip: LauncherParts.Grip,
+    val exhaust: LauncherParts.Exhaust,
+    val accessory: LauncherParts.Accessory? = null,
+    capacitor: Capacitor? = null
+) : WeaponAssembly(WeaponClass.LAUNCHER, body, capacitor, barrel, grip, exhaust, accessory) {
+
+    override val behaviours: List<GunBehaviour>
+        get() = super.behaviours + listOf(RocketLauncher())
+
+    override val parts: List<WeaponPart>
+        get() = listOfNotNull(barrel, grip, exhaust, accessory)
+
+    override val gunName: String
+        get() = LauncherNames.nameOf(manufacturer, barrel, accessory, capacitor)
+
+    override fun toString(): String {
+        return "LauncherAssembly(body=$body, barrel=$barrel, grip=$grip, exhaust=$exhaust, accessory=$accessory)"
     }
 }

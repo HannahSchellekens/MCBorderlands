@@ -14,7 +14,7 @@ object BaseValues {
         WeaponClass.SNIPER -> SniperBaseValues
         WeaponClass.SMG -> SmgBaseValues
         WeaponClass.ASSAULT_RIFLE -> AssaultRifleBaseValues
-        else -> error("Weapon class <$weaponClass> is not supported.")
+        WeaponClass.LAUNCHER -> LauncherBaseValues
     }
 }
 

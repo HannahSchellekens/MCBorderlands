@@ -13,6 +13,6 @@ object WeaponClassTable {
         WeaponClass.SMG to 80,
         WeaponClass.SHOTGUN to 80,
         WeaponClass.SNIPER to 55,
-//        WeaponClass.LAUNCHER to 20,
+        WeaponClass.LAUNCHER to 20,
     )
 }

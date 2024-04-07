@@ -33,6 +33,7 @@ enum class Manufacturer(
         val sniperProducers = setOf(DAHL, HYPERION, JAKOBS, MALIWAN, VLADOF)
         val smgProducers = setOf(BANDIT, DAHL, HYPERION, MALIWAN, TEDIORE)
         val assaultRifleProducers = setOf(BANDIT, DAHL, JAKOBS, TORGUE, VLADOF)
+        val launcherProducers = setOf(BANDIT, MALIWAN, TEDIORE, TORGUE, VLADOF)
 
         /**
          * Set of manufacturers that make weapons of class `weaponClass`.
@@ -43,7 +44,7 @@ enum class Manufacturer(
             WeaponClass.SNIPER -> sniperProducers
             WeaponClass.SMG -> smgProducers
             WeaponClass.ASSAULT_RIFLE -> assaultRifleProducers
-            else -> emptySet()
+            WeaponClass.LAUNCHER -> launcherProducers
         }
     }
 }

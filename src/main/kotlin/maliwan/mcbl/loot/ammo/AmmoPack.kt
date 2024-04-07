@@ -46,12 +46,12 @@ data class AmmoPack(
         fun deserialize(json: String): AmmoPack = GSON.fromJson(json, AmmoPack::class.java)
 
         fun defaultAmount(weaponType: WeaponClass) = when (weaponType) {
-            WeaponClass.ASSAULT_RIFLE -> 28
-            WeaponClass.PISTOL -> 24
-            WeaponClass.LAUNCHER -> 4
-            WeaponClass.SHOTGUN -> 12
-            WeaponClass.SMG -> 36
-            WeaponClass.SNIPER -> 8
+            WeaponClass.ASSAULT_RIFLE -> 36
+            WeaponClass.PISTOL -> 36
+            WeaponClass.LAUNCHER -> 6
+            WeaponClass.SHOTGUN -> 16
+            WeaponClass.SMG -> 48
+            WeaponClass.SNIPER -> 12
         }
     }
 }

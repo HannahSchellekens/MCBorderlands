@@ -38,6 +38,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "sniper",
                 "smg",
                 "assaultRifle",
+                "launcher",
             )
         }
         else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
@@ -73,7 +74,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "burstCount",
                 "burstDelay",
                 "gravity",
-                "bonusCritMultiplier"
+                "bonusCritMultiplier",
+                "extraShotChance",
+                "freeShotChance",
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         }
         else if (args.size < 2) {
@@ -130,6 +133,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "sniper" -> debug(player, WeaponClass.SNIPER, amount = amount)
             "smg" -> debug(player, WeaponClass.SMG, amount = amount)
             "assaultRifle" -> debug(player, WeaponClass.ASSAULT_RIFLE, amount = amount)
+            "launcher" -> debug(player, WeaponClass.LAUNCHER, amount = amount)
             else -> debug(player, amount = 1)
         }
 
@@ -209,6 +213,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "burstDelay" -> update { burstDelay = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
             "gravity" -> update { gravity = value.toDoubleOrNull() ?: error("No double: $value") }
             "bonusCritMultiplier" -> update { bonusCritMultiplier = value.toDoubleOrNull() ?: error("No double: $value") }
+            "extraShotChance" -> update { extraShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "freeShotChance" -> update { freeShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
         }
     }
 }

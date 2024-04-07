@@ -24,6 +24,7 @@ object WeaponNames {
             is SniperAssembly -> SniperNames.nameOf(manufacturer, barrel, accessory, capacitor)
             is SmgAssembly -> SmgNames.nameOf(manufacturer, barrel, accessory, capacitor)
             is AssaultRifleAssembly -> AssaultRifleNames.nameOf(manufacturer, barrel, accessory, capacitor)
+            is LauncherAssembly -> LauncherNames.nameOf(manufacturer, barrel, accessory, capacitor)
         }
     }
 }

@@ -16,7 +16,7 @@ open class SmgAssemblyGenerator(
     /**
      * Possible manufacturers for the generated smg.
      */
-    manufacturers: Set<Manufacturer> = Manufacturer.sniperProducers,
+    manufacturers: Set<Manufacturer> = Manufacturer.smgProducers,
 
     /**
      * The random object to use to generate random guns.

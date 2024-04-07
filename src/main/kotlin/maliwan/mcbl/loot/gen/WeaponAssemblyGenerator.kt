@@ -3,6 +3,7 @@ package maliwan.mcbl.loot.gen
 import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.Capacitor
+import maliwan.mcbl.weapons.gun.LauncherAssembly
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import java.util.*
 
@@ -31,7 +32,7 @@ interface WeaponAssemblyGenerator {
             WeaponClass.SNIPER -> SniperAssemblyGenerator(manufacturers, random)
             WeaponClass.SMG -> SmgAssemblyGenerator(manufacturers, random)
             WeaponClass.ASSAULT_RIFLE -> AssaultRifleAssemblyGenerator(manufacturers, random)
-            else -> error("Weapon class <$weaponClass> is not supported.")
+            WeaponClass.LAUNCHER -> LauncherAssemblyGenerator(manufacturers, random)
         }
     }
 }

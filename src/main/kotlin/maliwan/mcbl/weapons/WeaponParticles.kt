@@ -19,22 +19,24 @@ open class WeaponParticles(val weaponHandler: WeaponEventHandler, val everyNtick
             return
         }
 
-        weaponHandler.bullets.forEach { (bullet, meta) ->
-            if (Elemental.EXPLOSIVE in meta.elements) {
-                bullet.location.world?.playEffect(bullet.location.add(0.0, 0.5, 0.0), Effect.SMOKE, 0)
+        weaponHandler.bullets.asSequence()
+            .filter { (bullet, _) -> bullet.velocity.length() > 0.001 }
+            .forEach { (bullet, meta) ->
+                if (Elemental.EXPLOSIVE in meta.elements) {
+                    bullet.location.world?.playEffect(bullet.location.add(0.0, 0.5, 0.0), Effect.SMOKE, 0)
+                }
+                if (Elemental.INCENDIARY in meta.elements) {
+                    bullet.location.showElementalParticle(Elemental.INCENDIARY.color, 1, 0.6f)
+                }
+                if (Elemental.CORROSIVE in meta.elements) {
+                    bullet.location.showElementalParticle(Elemental.CORROSIVE.color, 1, 0.6f)
+                }
+                if (Elemental.SHOCK in meta.elements) {
+                    bullet.location.showElementalParticle(Elemental.SHOCK.color, 1, 0.6f)
+                }
+                if (Elemental.SLAG in meta.elements) {
+                    bullet.location.showElementalParticle(Elemental.SLAG.color, 1, 0.6f)
+                }
             }
-            if (Elemental.INCENDIARY in meta.elements) {
-                bullet.location.showElementalParticle(Elemental.INCENDIARY.color, 1, 0.6f)
-            }
-            if (Elemental.CORROSIVE in meta.elements) {
-                bullet.location.showElementalParticle(Elemental.CORROSIVE.color, 1, 0.6f)
-            }
-            if (Elemental.SHOCK in meta.elements) {
-                bullet.location.showElementalParticle(Elemental.SHOCK.color, 1, 0.6f)
-            }
-            if (Elemental.SLAG in meta.elements) {
-                bullet.location.showElementalParticle(Elemental.SLAG.color, 1, 0.6f)
-            }
-        }
     }
 }

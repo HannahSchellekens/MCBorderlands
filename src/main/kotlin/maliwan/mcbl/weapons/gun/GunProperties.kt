@@ -182,7 +182,12 @@ open class GunProperties(
     /**
      * The chance for firing an extra shot.
      */
-    var extraShotChance: Chance = Chance.ZERO
+    var extraShotChance: Chance = Chance.ZERO,
+
+    /**
+     * The chance for a shot to not consume ammo.
+     */
+    var freeShotChance: Chance = Chance.ZERO
 ) {
 
     /**
@@ -281,10 +286,17 @@ open class GunProperties(
             lore += "${ChatColor.WHITE}• Consumes %d ammo per shot".format(ammoPerShot)
         }
 
+        // Reduced ammo per shot.
+        if (freeShotChance.chance > 0.01) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Consumes reduced ammo per shot"
+        }
+
         // Bonus elemental damage.
         if (splashDamage.damage > 0.0001) {
             placeSeparator()
-            lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} bonus elemental damage"
+            val bonus = if (weaponClass == WeaponClass.LAUNCHER) "" else "bonus "
+            lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} ${bonus}elemental damage"
         }
 
         // Custom information.
@@ -385,6 +397,7 @@ open class GunProperties(
         if (gravity != other.gravity) return false
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
         if (extraShotChance != other.extraShotChance) return false
+        if (freeShotChance != other.freeShotChance) return false
 
         return true
     }
@@ -420,6 +433,7 @@ open class GunProperties(
         result = 12289 * result + gravity.hashCode()
         result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
         result = 12289 * result + extraShotChance.hashCode()
+        result = 12289 * result + freeShotChance.hashCode()
         return result
     }
 

@@ -24,7 +24,7 @@ open class AssaultRifleAssemblyGenerator(
     /**
      * Possible manufacturers for the generated assault rifle.
      */
-    manufacturers: Set<Manufacturer> = Manufacturer.sniperProducers,
+    manufacturers: Set<Manufacturer> = Manufacturer.assaultRifleProducers,
 
     /**
      * The random object to use to generate random guns.
