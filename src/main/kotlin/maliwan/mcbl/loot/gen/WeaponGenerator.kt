@@ -70,6 +70,9 @@ open class WeaponGenerator(
                     burstCount++
                     burstDelay = Ticks(1)
                 }
+                if (weaponClass == WeaponClass.SMG) {
+                    burstDelay = Ticks(1)
+                }
             }
             Manufacturer.TORGUE -> {
                 if (Elemental.EXPLOSIVE !in elements) {

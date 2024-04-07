@@ -86,6 +86,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
     @EventHandler
     fun fireGun(event: PlayerInteractEvent) {
+        println(event.action)
+
         if (event.action != Action.RIGHT_CLICK_AIR && event.action != Action.RIGHT_CLICK_BLOCK) {
             // Drop reload is handled by another function [dropReload].
             return

@@ -1,6 +1,5 @@
 package maliwan.mcbl.gui
 
-import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.weapons.Elemental
 import org.bukkit.ChatColor

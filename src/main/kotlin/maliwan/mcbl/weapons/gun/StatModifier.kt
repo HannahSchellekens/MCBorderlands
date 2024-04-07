@@ -37,10 +37,6 @@ open class StatModifier(
     fun applyStatModifier(stats: GunProperties): GunProperties {
         val resultingValues = property.getProperty(stats).toMutableList()
 
-        if (property == Property.RECOIL_ANGLE) {
-            Bukkit.broadcastMessage("Apply for ${stats.weaponClass}, $type, value: $value")
-        }
-
         for (i in resultingValues.indices) {
             resultingValues[i] = when (type) {
                 Type.ADD -> resultingValues[i] + value

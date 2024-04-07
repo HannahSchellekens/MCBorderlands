@@ -11,5 +11,6 @@ fun newBaseValueProperties(manufacturer: Manufacturer, weaponClass: WeaponClass)
     WeaponClass.PISTOL -> PistolBaseValues.newGunProperties(manufacturer)
     WeaponClass.SHOTGUN -> ShotgunBaseValues.newGunProperties(manufacturer)
     WeaponClass.SNIPER -> SniperBaseValues.newGunProperties(manufacturer)
+    WeaponClass.SMG -> SmgBaseValues.newGunProperties(manufacturer)
     else -> error("Weapon class <$weaponClass> is not supported.")
 }

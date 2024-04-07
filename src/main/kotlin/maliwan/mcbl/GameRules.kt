@@ -42,9 +42,4 @@ open class GameRules(val plugin: MCBorderlandsPlugin) : Listener {
         val entity = event.entity as? LivingEntity ?: return
         entity.showHealthBar(plugin)
     }
-
-    @EventHandler
-    fun debugDead(event: EntityDeathEvent) {
-        event.entity.customName = "${ChatColor.RED}DEAD"
-    }
 }

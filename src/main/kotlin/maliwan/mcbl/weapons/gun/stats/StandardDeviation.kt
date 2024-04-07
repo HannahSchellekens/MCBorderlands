@@ -12,6 +12,7 @@ object StandardDeviations {
         WeaponClass.PISTOL -> PistolGradeModifiers
         WeaponClass.SHOTGUN -> ShotgunGradeModifiers
         WeaponClass.SNIPER -> SniperGradeModifiers
+        WeaponClass.SMG -> SmgGradeModifiers
         else -> error("Weapon class <$weaponClass> is not supported.")
     }
 }
