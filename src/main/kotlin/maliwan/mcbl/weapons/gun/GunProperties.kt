@@ -191,6 +191,7 @@ open class GunProperties(
     fun bulletMeta(owner: LivingEntity): BulletMeta {
         return BulletMeta(
             owner,
+            assembly,
             baseDamage,
             elements = elements,
             elementalChance = elementalChance,

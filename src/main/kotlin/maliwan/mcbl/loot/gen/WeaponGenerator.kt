@@ -14,6 +14,9 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.Capacitor
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
+import maliwan.mcbl.weapons.gun.forEachBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.PostGenerationBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 import maliwan.mcbl.weapons.gun.stats.*
 import org.bukkit.Bukkit
 import java.util.*
@@ -56,6 +59,10 @@ open class WeaponGenerator(
 
         properties.applyGradeScaling()
         properties.addManufacturerGimmick(assembly)
+
+        assembly.forEachBehaviour<PostGenerationBehaviour> {
+            it.onFinishGeneration(properties, assembly)
+        }
 
         return properties
     }

@@ -2,6 +2,8 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
+import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 
 /**
  * @author Hannah Schellekens
@@ -45,6 +47,12 @@ interface WeaponPart {
      */
     val otherManufacturerStatModifiers: Map<Manufacturer, List<StatModifier>>
         get() = emptyMap()
+
+    /**
+     * All extra gun behaviours of this weapon part.
+     */
+    val behaviours: List<GunBehaviour>
+        get() = emptyList()
 }
 
 /**

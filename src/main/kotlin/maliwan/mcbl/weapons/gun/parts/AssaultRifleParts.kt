@@ -6,6 +6,10 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.parts.behaviour.Grenadier
+import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.Spinigun
+import maliwan.mcbl.weapons.gun.parts.behaviour.TorgueBarrelAssaultRifle
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -21,7 +25,8 @@ object AssaultRifleParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
-        override val otherManufacturerStatModifiers: Map<Manufacturer, List<StatModifier>> = emptyMap()
+        override val otherManufacturerStatModifiers: Map<Manufacturer, List<StatModifier>> = emptyMap(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         BANDIT(
@@ -113,7 +118,8 @@ object AssaultRifleParts {
                     add(2, Property.AMMO_PER_SHOT)
                     multiply(2.5, Property.BASE_DAMAGE)
                 }
-            )
+            ),
+            behaviours = listOf(TorgueBarrelAssaultRifle(), Grenadier())
         ),
 
         VLADOF(
@@ -135,7 +141,7 @@ object AssaultRifleParts {
             Manufacturer.VLADOF,
             Manufacturer.VLADOF.displayName + " Minigun",
             statModifierList {
-                multiply(1.3, Property.FIRE_RATE)
+                multiply(1.35, Property.FIRE_RATE)
                 add(0.004, Property.RECOIL)
                 multiply(1.15, Property.MAGAZINE_SIZE)
                 subtract(0.011, Property.ACCURACY)
@@ -161,7 +167,8 @@ object AssaultRifleParts {
                     add(4, Property.MAGAZINE_SIZE)
                     add(0.25, Property.EXTRA_SHOT_CHANCE)
                 },
-            )
+            ),
+            behaviours = listOf(Spinigun())
         ),
         ;
 

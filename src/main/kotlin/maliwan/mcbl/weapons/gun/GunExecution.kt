@@ -6,7 +6,7 @@ import kotlin.math.pow
 /**
  * @author Hannah Schellekens
  */
-open class GunExecution(
+class GunExecution(
 
     /**
      * The initial properties of the gun used.
@@ -51,6 +51,8 @@ open class GunExecution(
     properties.assembly,
     properties.extraShotChance
 ) {
+
+    val originalFireRate: Double = properties.fireRate
 
     /**
      * The amount of bullets left in the clip.

@@ -3,10 +3,11 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.*
-import maliwan.mcbl.weapons.gun.GunExecution
-import maliwan.mcbl.weapons.gun.GunProperties
-import maliwan.mcbl.weapons.gun.gunProperties
-import maliwan.mcbl.weapons.gun.shootBullet
+import maliwan.mcbl.weapons.gun.*
+import maliwan.mcbl.weapons.gun.parts.behaviour.GunExecutionInitializationBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.PostBulletLandBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.PreGunShotBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
@@ -70,7 +71,18 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      */
     fun obtainGunExecution(player: Player, gunProperties: GunProperties): GunExecution {
         val gunExecutions = executions.getOrDefault(player, HashMap())
-        val newExecution = gunExecutions.getOrDefault(gunProperties, GunExecution(gunProperties))
+        var newExecution = gunExecutions.getOrDefault(gunProperties, null)
+
+        // Use var/value of null to know if a new execution is created.
+        // This way the init event can be applied.
+        if (newExecution == null) {
+            newExecution = GunExecution(gunProperties)
+
+            gunProperties.assembly?.forEachBehaviour<GunExecutionInitializationBehaviour> {
+                it.onInitializedGunExecution(newExecution, player)
+            }
+        }
+
         gunExecutions[gunProperties] = newExecution
         executions[player] = gunExecutions
         return newExecution
@@ -86,8 +98,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
     @EventHandler
     fun fireGun(event: PlayerInteractEvent) {
-        println(event.action)
-
         if (event.action != Action.RIGHT_CLICK_AIR && event.action != Action.RIGHT_CLICK_BLOCK) {
             // Drop reload is handled by another function [dropReload].
             return
@@ -142,7 +152,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                         // Make sure the recoil angle is not applied when there are no shots
                         // left.
                         if (enoughAmmo) {
-                            applyRecoil(execution)
+                            // Delay recoil to last burst shot to make burst recoil weapons not insufferable.
+                            plugin.scheduleTask(execution.burstCount * execution.burstDelay.long) {
+                                applyRecoil(execution)
+                            }
                         }
                     }
                     execution.consecutiveShots++
@@ -171,6 +184,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val ammoLeft = inventory[gunExecution.weaponClass]
         if (gunExecution.clip <= 0 || ammoLeft <= 0) {
             return
+        }
+
+        gunExecution.assembly?.forEachBehaviour<PreGunShotBehaviour> {
+            it.beforeGunShot(gunExecution, player)
         }
 
         // Shoot for each pellet.
@@ -348,6 +365,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
             // Update health bar after the damage has been dealt.
             targetEntity.showHealthBar(plugin)
+        }
+
+        bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
+            it.afterBulletLands(bullet, bulletMeta)
         }
 
         bullets.remove(bullet)

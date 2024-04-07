@@ -108,6 +108,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
     ): Boolean {
         val player = sender as? Player ?: return false
         val subCommand = args.getOrNull(0)
+        val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
 
         when (subCommand) {
             "update" -> {
@@ -124,18 +125,18 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 updateBowProperties(player, args[1], args.toList().subList(2, args.size))
                 return true
             }
-            "pistol" -> debug(player, WeaponClass.PISTOL)
-            "shotgun" -> debug(player, WeaponClass.SHOTGUN)
-            "sniper" -> debug(player, WeaponClass.SNIPER)
-            "smg" -> debug(player, WeaponClass.SMG)
-            "assaultRifle" -> debug(player, WeaponClass.ASSAULT_RIFLE)
-            else -> debug(player)
+            "pistol" -> debug(player, WeaponClass.PISTOL, amount = amount)
+            "shotgun" -> debug(player, WeaponClass.SHOTGUN, amount = amount)
+            "sniper" -> debug(player, WeaponClass.SNIPER, amount = amount)
+            "smg" -> debug(player, WeaponClass.SMG, amount = amount)
+            "assaultRifle" -> debug(player, WeaponClass.ASSAULT_RIFLE, amount = amount)
+            else -> debug(player, amount = 1)
         }
 
         return true
     }
 
-    fun debug(player: Player, weaponClass: WeaponClass? = null) {
+    fun debug(player: Player, weaponClass: WeaponClass? = null, amount: Int = 1) = repeat(amount) {
         val gunItem = ItemStack(Material.BOW, 1)
 
         val generator = weaponClass?.let {

@@ -4,6 +4,8 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*
+import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -41,6 +43,13 @@ sealed class WeaponAssembly(
      */
     abstract val gunName: String
 
+    val behaviours: List<GunBehaviour>
+        get() {
+            val mainParts = parts?.flatMap { it.behaviours } ?: emptyList()
+            val capacitorBehaviour = capacitor?.behaviours ?: emptyList()
+            return mainParts + capacitorBehaviour
+        }
+
     constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, capacitor: Capacitor?, vararg parts: WeaponPart?)
             : this(weaponClass, manufacturer, parts.filterNotNull(), capacitor)
 
@@ -65,6 +74,10 @@ sealed class WeaponAssembly(
         }
         return parts?.find { it::class.isSubclassOf(klass) } as? T
     }
+}
+
+inline fun <reified T> WeaponAssembly.forEachBehaviour(action: (T) -> Unit) {
+    behaviours.forEachType<T> { action(it) }
 }
 
 /**

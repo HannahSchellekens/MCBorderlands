@@ -3,7 +3,11 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.weapons.gun.WeaponAssembly
 import org.bukkit.entity.LivingEntity
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * @author Hannah Schellekens
@@ -14,6 +18,11 @@ data class BulletMeta(
      * Who shot the bullet.
      */
     val shooter: LivingEntity,
+
+    /**
+     * The assembly of the weapon that shot this bullet.
+     */
+    val assembly: WeaponAssembly?,
 
     /**
      * How much damage to deal by this bullet.
@@ -44,17 +53,17 @@ data class BulletMeta(
     /**
      * The chance each element is applied to the target.
      */
-    val elementalChance: MutableMap<Elemental, Chance> = HashMap(),
+    val elementalChance: MutableMap<Elemental, Chance> = EnumMap(Elemental::class.java),
 
     /**
      * How many ticks each elemental effect lasts when applied.
      */
-    val elementalDuration: MutableMap<Elemental, Ticks> = HashMap(),
+    val elementalDuration: MutableMap<Elemental, Ticks> = EnumMap(Elemental::class.java),
 
     /**
      * How much damage each elemental effect deals per 0.5 seconds.
      */
-    val elementalDamage: MutableMap<Elemental, Damage> = HashMap(),
+    val elementalDamage: MutableMap<Elemental, Damage> = EnumMap(Elemental::class.java),
 
     /**
      * What to do when the target already has the same elemental effect.
