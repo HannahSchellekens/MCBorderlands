@@ -73,6 +73,10 @@ open class StatModifier(
             { it.accuracy.chance.asList() },
             { stats, it -> stats.accuracy = it.first().toChance() }
         ),
+        EXTRA_SHOT_CHANCE(
+            { it.extraShotChance.chance.asList() },
+            { stats, it -> stats.extraShotChance = it.first().toChance() }
+        ),
         RECOIL(
             { it.recoil.asList() },
             { stats, it -> stats.recoil = it.first() }

@@ -20,7 +20,8 @@ object AssaultRifleParts {
         override val manufacturer: Manufacturer,
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
-        override val manufacturerStatModifiers: List<StatModifier> = emptyList()
+        override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val otherManufacturerStatModifiers: Map<Manufacturer, List<StatModifier>> = emptyMap()
     ) : WeaponPart {
 
         BANDIT(
@@ -70,33 +71,49 @@ object AssaultRifleParts {
             Manufacturer.TORGUE,
             Manufacturer.TORGUE.displayName,
             statModifierList {
+            },
+            statModifierList {
+                /* TORGUE */
                 divide(1.9, Property.FIRE_RATE)
                 subtract(0.003, Property.RECOIL)
-                add(8, Property.MAGAZINE_SIZE)
+                add(5, Property.MAGAZINE_SIZE)
                 multiply(1.25, Property.RELOAD_SPEED)
-                add(2, Property.AMMO_PER_SHOT)
-                multiply(2.5, Property.BASE_DAMAGE)
+                add(3, Property.AMMO_PER_SHOT)
+                multiply(3.6, Property.BASE_DAMAGE)
             },
-            statModifierList {
-                subtract(3, Property.MAGAZINE_SIZE)
-                add(1, Property.AMMO_PER_SHOT)
-                multiply(1.44, Property.BASE_DAMAGE)
-            }
-        ),
-
-        VLADOF_MINIGUN(
-            Manufacturer.VLADOF,
-            Manufacturer.VLADOF.displayName + " Minigun",
-            statModifierList {
-                multiply(1.3, Property.FIRE_RATE)
-                add(0.004, Property.RECOIL)
-                multiply(1.15, Property.MAGAZINE_SIZE)
-                subtract(0.011, Property.ACCURACY)
-            },
-            statModifierList {
-                add(6, Property.MAGAZINE_SIZE)
-                multiply(1.1, Property.BASE_DAMAGE)
-            }
+            otherManufacturerStatModifiers = mapOf(
+                Manufacturer.DAHL to statModifierList {
+                    divide(1.75, Property.FIRE_RATE)
+                    add(4, Property.MAGAZINE_SIZE)
+                    multiply(1.25, Property.RELOAD_SPEED)
+                    add(2, Property.AMMO_PER_SHOT)
+                    multiply(2.6, Property.BASE_DAMAGE)
+                },
+                Manufacturer.JAKOBS to statModifierList {
+                    divide(1.9, Property.FIRE_RATE)
+                    subtract(0.003, Property.RECOIL)
+                    add(4, Property.MAGAZINE_SIZE)
+                    multiply(1.25, Property.RELOAD_SPEED)
+                    add(1, Property.AMMO_PER_SHOT)
+                    multiply(2.5, Property.BASE_DAMAGE)
+                },
+                Manufacturer.VLADOF to statModifierList {
+                    divide(1.6, Property.FIRE_RATE)
+                    subtract(0.003, Property.RECOIL)
+                    add(5, Property.MAGAZINE_SIZE)
+                    multiply(1.25, Property.RELOAD_SPEED)
+                    add(1, Property.AMMO_PER_SHOT)
+                    multiply(1.7, Property.BASE_DAMAGE)
+                },
+                Manufacturer.BANDIT to statModifierList {
+                    divide(1.9, Property.FIRE_RATE)
+                    subtract(0.003, Property.RECOIL)
+                    add(8, Property.MAGAZINE_SIZE)
+                    multiply(1.25, Property.RELOAD_SPEED)
+                    add(2, Property.AMMO_PER_SHOT)
+                    multiply(2.5, Property.BASE_DAMAGE)
+                }
+            )
         ),
 
         VLADOF(
@@ -112,6 +129,39 @@ object AssaultRifleParts {
                 multiply(1.05, Property.MAGAZINE_SIZE)
                 multiply(1.1, Property.BASE_DAMAGE)
             }
+        ),
+
+        VLADOF_MINIGUN(
+            Manufacturer.VLADOF,
+            Manufacturer.VLADOF.displayName + " Minigun",
+            statModifierList {
+                multiply(1.3, Property.FIRE_RATE)
+                add(0.004, Property.RECOIL)
+                multiply(1.15, Property.MAGAZINE_SIZE)
+                subtract(0.011, Property.ACCURACY)
+            },
+            statModifierList {
+                /* VLADOF */
+                add(6, Property.MAGAZINE_SIZE)
+                multiply(1.1, Property.BASE_DAMAGE)
+            },
+            otherManufacturerStatModifiers = mapOf(
+                Manufacturer.DAHL to statModifierList {
+                    add(0.003, Property.FIRE_RATE)
+                    add(2, Property.BURST_COUNT)
+                    add(2, Property.AMMO_PER_SHOT)
+                },
+                Manufacturer.JAKOBS to statModifierList {
+                    subtract(0.002, Property.RECOIL)
+                    subtract(0.01, Property.ACCURACY)
+                    add(2, Property.AMMO_PER_SHOT)
+                    add(2, Property.PELLET_COUNT)
+                },
+                Manufacturer.TORGUE to statModifierList {
+                    add(4, Property.MAGAZINE_SIZE)
+                    add(0.25, Property.EXTRA_SHOT_CHANCE)
+                },
+            )
         ),
         ;
 

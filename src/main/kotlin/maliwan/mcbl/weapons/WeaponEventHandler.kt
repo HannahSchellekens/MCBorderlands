@@ -126,6 +126,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
                         // First one must not be scheduled:
                         if (burstIndex == 0) {
+                            if (execution.extraShotChance.throwDice()) {
+                                shootGun(this, execution, consumeAmmo = false)
+                            }
+
                             shootGun(this, execution)
                         }
                         // Subsequent ones must be scheduled by burst delay:
@@ -162,7 +166,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     /**
      * Executes one gunshot from the given gun execution.
      */
-    fun shootGun(player: Player, gunExecution: GunExecution) {
+    fun shootGun(player: Player, gunExecution: GunExecution, consumeAmmo: Boolean = true) {
         val inventory = plugin.inventoryManager[player]
         val ammoLeft = inventory[gunExecution.weaponClass]
         if (gunExecution.clip <= 0 || ammoLeft <= 0) {
@@ -174,7 +178,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             player.shootGunBullet(gunExecution)
         }
         player.playSound(player.location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.PLAYERS, 5.0f, 1.0f)
-        removeAmmo(player, gunExecution)
+
+        if (consumeAmmo) {
+            removeAmmo(player, gunExecution)
+        }
 
         // Auto reload if clip is empty.
         if (gunExecution.clip <= 0) {

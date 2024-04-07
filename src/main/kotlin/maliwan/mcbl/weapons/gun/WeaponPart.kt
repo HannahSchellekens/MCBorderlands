@@ -38,6 +38,13 @@ interface WeaponPart {
      * manufacturer of the gun.
      */
     val manufacturerStatModifiers: List<StatModifier>
+
+    /**
+     * Stat modifiers for other manufacturers that bear this weapon part.
+     * Maps each manufacturer to the list of effective stat modifiers.
+     */
+    val otherManufacturerStatModifiers: Map<Manufacturer, List<StatModifier>>
+        get() = emptyMap()
 }
 
 /**
@@ -51,4 +58,5 @@ fun WeaponPart.applyStatModifiers(gunProperties: GunProperties) {
     if (manufacturer == gunProperties.manufacturer) {
         manufacturerStatModifiers.applyAll(gunProperties)
     }
+    otherManufacturerStatModifiers[gunProperties.manufacturer]?.applyAll(gunProperties)
 }

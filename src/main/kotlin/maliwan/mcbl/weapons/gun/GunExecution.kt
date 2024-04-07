@@ -49,6 +49,7 @@ open class GunExecution(
     properties.gravity,
     properties.bonusCritMultiplier,
     properties.assembly,
+    properties.extraShotChance
 ) {
 
     /**

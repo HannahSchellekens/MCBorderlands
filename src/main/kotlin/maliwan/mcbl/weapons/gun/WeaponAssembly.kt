@@ -53,6 +53,7 @@ sealed class WeaponAssembly(
             if (it.manufacturer == manufacturer) {
                 it.manufacturerStatModifiers.applyAll(properties)
             }
+            it.otherManufacturerStatModifiers[manufacturer]?.applyAll(properties)
         }
         return properties
     }

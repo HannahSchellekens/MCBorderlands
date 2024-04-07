@@ -178,6 +178,11 @@ open class GunProperties(
      * The separate parts of the gun.
      */
     var assembly: WeaponAssembly? = null,
+
+    /**
+     * The chance for firing an extra shot.
+     */
+    var extraShotChance: Chance = Chance.ZERO
 ) {
 
     /**
@@ -378,6 +383,7 @@ open class GunProperties(
         if (burstDelay != other.burstDelay) return false
         if (gravity != other.gravity) return false
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
+        if (extraShotChance != other.extraShotChance) return false
 
         return true
     }
@@ -412,6 +418,7 @@ open class GunProperties(
         result = 12289 * result + burstDelay.hashCode()
         result = 12289 * result + gravity.hashCode()
         result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
+        result = 12289 * result + extraShotChance.hashCode()
         return result
     }
 
