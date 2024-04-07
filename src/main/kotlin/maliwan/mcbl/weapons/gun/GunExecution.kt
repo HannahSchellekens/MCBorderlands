@@ -1,6 +1,8 @@
 package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.util.Chance
+import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.WeaponClass
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -83,6 +85,18 @@ class GunExecution(
      */
     var lastShotTimestamp: Long? = null
 
+    /**
+     * Accuracy multiplier for each consecutive shot.
+     */
+    private val recoilFactor: Double
+        get() = when (assembly?.manufacturer) {
+            Manufacturer.HYPERION -> when (assembly!!.weaponClass) {
+                WeaponClass.SHOTGUN -> 1.075
+                else -> 1.018
+            }
+            else -> properties.recoil
+        }
+
     override var accuracy: Chance
         get() {
             val now = System.currentTimeMillis()
@@ -90,7 +104,7 @@ class GunExecution(
                 consecutiveShots = 0
                 return properties.accuracy
             }
-            val newChance = properties.accuracy.chance * properties.recoil.pow(consecutiveShots)
+            val newChance = properties.accuracy.chance * recoilFactor.pow(consecutiveShots)
             return Chance(min(max(0.0, newChance), 1.0))
         }
         set(value) { properties.accuracy = value }

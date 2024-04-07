@@ -268,6 +268,15 @@ open class GunProperties(
             }
         }
 
+        // Manufacturer gimmicks.
+        when (manufacturer) {
+            Manufacturer.HYPERION -> {
+                placeSeparator()
+                lore += "${ChatColor.WHITE}• Sustained fire increases accuracy"
+            }
+            else -> Unit
+        }
+
         // Critical damage bonus.
         if (bonusCritMultiplier != null && bonusCritMultiplier!! > 0.0001) {
             placeSeparator()
