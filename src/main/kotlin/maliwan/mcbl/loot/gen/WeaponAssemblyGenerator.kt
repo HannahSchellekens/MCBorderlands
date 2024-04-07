@@ -30,6 +30,7 @@ interface WeaponAssemblyGenerator {
             WeaponClass.SHOTGUN -> ShotgunAssemblyGenerator(manufacturers, random)
             WeaponClass.SNIPER -> SniperAssemblyGenerator(manufacturers, random)
             WeaponClass.SMG -> SmgAssemblyGenerator(manufacturers, random)
+            WeaponClass.ASSAULT_RIFLE -> AssaultRifleAssemblyGenerator(manufacturers, random)
             else -> error("Weapon class <$weaponClass> is not supported.")
         }
     }

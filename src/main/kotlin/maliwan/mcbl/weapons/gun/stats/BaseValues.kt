@@ -13,6 +13,7 @@ object BaseValues {
         WeaponClass.SHOTGUN -> ShotgunBaseValues
         WeaponClass.SNIPER -> SniperBaseValues
         WeaponClass.SMG -> SmgBaseValues
+        WeaponClass.ASSAULT_RIFLE -> AssaultRifleBaseValues
         else -> error("Weapon class <$weaponClass> is not supported.")
     }
 }

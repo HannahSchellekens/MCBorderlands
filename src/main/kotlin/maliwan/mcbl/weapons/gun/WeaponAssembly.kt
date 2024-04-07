@@ -2,14 +2,8 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.gun.names.PistolNames
-import maliwan.mcbl.weapons.gun.names.ShotgunNames
-import maliwan.mcbl.weapons.gun.names.SmgNames
-import maliwan.mcbl.weapons.gun.names.SniperNames
-import maliwan.mcbl.weapons.gun.parts.PistolParts
-import maliwan.mcbl.weapons.gun.parts.ShotgunParts
-import maliwan.mcbl.weapons.gun.parts.SmgParts
-import maliwan.mcbl.weapons.gun.parts.SniperParts
+import maliwan.mcbl.weapons.gun.names.*
+import maliwan.mcbl.weapons.gun.parts.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -160,5 +154,28 @@ class SmgAssembly(
 
     override fun toString(): String {
         return "SmgAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
+    }
+}
+
+/**
+ * @author Hannah Schellekens
+ */
+class AssaultRifleAssembly(
+    val body: Manufacturer,
+    val barrel: AssaultRifleParts.Barrel,
+    val grip: AssaultRifleParts.Grip,
+    val stock: AssaultRifleParts.Stock,
+    val accessory: AssaultRifleParts.Accessory? = null,
+    capacitor: Capacitor? = null
+) : WeaponAssembly(WeaponClass.ASSAULT_RIFLE, body, capacitor, barrel, grip, stock, accessory) {
+
+    override val parts: List<WeaponPart>
+        get() = listOfNotNull(barrel, grip, stock, accessory)
+
+    override val gunName: String
+        get() = AssaultRifleNames.nameOf(manufacturer, barrel, accessory, capacitor)
+
+    override fun toString(): String {
+        return "AssaultRifleAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
     }
 }

@@ -37,6 +37,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "shotgun",
                 "sniper",
                 "smg",
+                "assaultRifle",
             )
         }
         else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
@@ -127,6 +128,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "shotgun" -> debug(player, WeaponClass.SHOTGUN)
             "sniper" -> debug(player, WeaponClass.SNIPER)
             "smg" -> debug(player, WeaponClass.SMG)
+            "assaultRifle" -> debug(player, WeaponClass.ASSAULT_RIFLE)
             else -> debug(player)
         }
 
