@@ -53,6 +53,13 @@ open class DamageParticles : Listener, Runnable {
         displays[display] = System.currentTimeMillis() + duration
     }
 
+    /**
+     * Cleans up all memory: removes all text displays.
+     */
+    fun cleanup() {
+        displays.clear()
+    }
+
     override fun run() {
         displays.forEach { (display, _) ->
             display.teleport(display.location.add(0.0, 0.02, 0.0))

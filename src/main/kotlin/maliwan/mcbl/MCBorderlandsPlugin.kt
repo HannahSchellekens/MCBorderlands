@@ -89,6 +89,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
     override fun onDisable() {
         weaponEventHandler.cleanup()
         hud.clearAll()
+        damageParticles.cleanup()
 
         logger.info("Disabled!")
     }
