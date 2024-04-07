@@ -1,4 +1,4 @@
-package maliwan.mcbl.weapons.gun.parts.behaviour
+package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.GunExecution
 import org.bukkit.entity.Player

@@ -6,10 +6,10 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.parts.behaviour.Grenadier
-import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.parts.behaviour.Spinigun
-import maliwan.mcbl.weapons.gun.parts.behaviour.TorgueBarrelAssaultRifle
+import maliwan.mcbl.weapons.gun.behaviour.Grenadier
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.Spinigun
+import maliwan.mcbl.weapons.gun.behaviour.TorgueBarrelAssaultRifle
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**

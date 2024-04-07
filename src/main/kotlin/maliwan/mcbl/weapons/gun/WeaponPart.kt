@@ -2,8 +2,8 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.forEachType
 
 /**
  * @author Hannah Schellekens

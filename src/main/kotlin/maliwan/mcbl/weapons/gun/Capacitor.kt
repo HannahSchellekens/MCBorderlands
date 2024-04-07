@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Elemental
-import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 
 /**
  * @author Hannah Schellekens

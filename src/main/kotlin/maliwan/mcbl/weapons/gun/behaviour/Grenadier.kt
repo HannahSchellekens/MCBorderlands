@@ -1,4 +1,4 @@
-package maliwan.mcbl.weapons.gun.parts.behaviour
+package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass

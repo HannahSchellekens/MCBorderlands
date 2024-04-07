@@ -2,11 +2,12 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
+import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.RocketLauncher
+import maliwan.mcbl.weapons.gun.behaviour.forEachType
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*
-import maliwan.mcbl.weapons.gun.parts.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.parts.behaviour.RocketLauncher
-import maliwan.mcbl.weapons.gun.parts.behaviour.forEachType
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -48,11 +49,19 @@ sealed class WeaponAssembly(
         get() {
             val mainParts = parts?.flatMap { it.behaviours } ?: emptyList()
             val capacitorBehaviour = capacitor?.behaviours ?: emptyList()
-            return mainParts + capacitorBehaviour
+            return mainParts + capacitorBehaviour + manufacturerGimmickBehaviours()
         }
 
     constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, capacitor: Capacitor?, vararg parts: WeaponPart?)
             : this(weaponClass, manufacturer, parts.filterNotNull(), capacitor)
+
+    /**
+     * Get all behaviours from the manufacturer's gimmkicks.
+     */
+    fun manufacturerGimmickBehaviours() = when (manufacturer) {
+        Manufacturer.TEDIORE -> listOf(GrenadeOnReload())
+        else -> emptyList()
+    }
 
     /**
      * Applies the stat modifiers of all weapon parts of this gun to the given gun properties.

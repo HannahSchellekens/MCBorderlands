@@ -274,6 +274,10 @@ open class GunProperties(
                 placeSeparator()
                 lore += "${ChatColor.WHITE}• Sustained fire increases accuracy"
             }
+            Manufacturer.TEDIORE -> {
+                placeSeparator()
+                lore += "${ChatColor.WHITE}• Explodes like a grenade when reloaded"
+            }
             else -> Unit
         }
 

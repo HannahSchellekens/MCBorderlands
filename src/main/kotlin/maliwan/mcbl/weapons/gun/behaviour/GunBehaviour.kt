@@ -1,4 +1,4 @@
-package maliwan.mcbl.weapons.gun.parts.behaviour
+package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.gun.GunExecution
@@ -75,6 +75,33 @@ interface PostGenerationBehaviour : GunBehaviour {
      *          The weapon assembly of the generated gun.
      */
     fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly)
+}
+
+/**
+ * Behaviour before a player reloaded.
+ */
+interface ReloadBehaviour : GunBehaviour {
+
+    /**
+     * Gets called before a player reloads their gun.
+     * Does not get called when the player cannot reload their gun.
+     *
+     * @param player
+     *          The player who reloaded their gun.
+     * @param gunExecution
+     *          The gun execution of the reloaded gun.
+     */
+    fun beforeReload(player: Player, gunExecution: GunExecution) = Unit
+
+    /**
+     * Gets called after a player reloaded their gun.
+     *
+     * @param player
+     *          The player who reloaded their gun.
+     * @param gunExecution
+     *          The gun execution of the reloaded gun.
+     */
+    fun afterReload(player: Player, gunExecution: GunExecution) = Unit
 }
 
 inline fun <reified T> List<GunBehaviour>.forEachType(action: (T) -> Unit) {

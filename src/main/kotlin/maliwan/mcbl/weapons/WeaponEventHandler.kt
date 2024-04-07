@@ -4,17 +4,16 @@ import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.*
-import maliwan.mcbl.weapons.gun.parts.behaviour.GunExecutionInitializationBehaviour
-import maliwan.mcbl.weapons.gun.parts.behaviour.PostBulletLandBehaviour
-import maliwan.mcbl.weapons.gun.parts.behaviour.PreGunShotBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.GunExecutionInitializationBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.PreGunShotBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.ReloadBehaviour
 import org.bukkit.*
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -28,7 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.roundToInt
 import kotlin.random.Random
 
 /**
@@ -237,6 +235,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             return
         }
 
+        gunExecution.assembly?.forEachBehaviour<ReloadBehaviour> {
+            it.beforeReload(player, gunExecution)
+        }
+
         // Set clip to 0 to prevent shooting during reload.
         gunExecution.clip = 0
         reload[player to gunExecution.properties] = System.currentTimeMillis()
@@ -257,6 +259,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             gunExecution.clip = min(gunExecution.magazineSize, plugin.inventoryManager[player][gunExecution.weaponClass])
             player.playSound(player.location, Sound.ENTITY_ARROW_HIT_PLAYER, SoundCategory.PLAYERS, 0.7f, 1.0f)
             reload.remove(player to gunExecution.properties)
+        }
+
+        gunExecution.assembly?.forEachBehaviour<ReloadBehaviour> {
+            it.afterReload(player, gunExecution)
         }
     }
 
@@ -355,7 +361,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
         plugin.damageParticles.showDamageDisplay(hitLocation?.clone() ?: particleLocation.clone(), event.damage)
 
-        rollElementalDot(targetEntity, bulletMeta)
+        rollElementalDot(plugin, targetEntity, bulletMeta)
 
         // Disable knockback for guns.
         targetEntity.setKnockbackResistance(1.0)
@@ -374,111 +380,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         bullets.remove(bullet)
-    }
-
-    /**
-     * Calculates whether splash damage must occur, and applies it.
-     */
-    fun splashDamage(location: Location, bulletMeta: BulletMeta) = bulletMeta.elements.forEach { element ->
-        if (element == Elemental.PHYSICAL) return@forEach
-
-        // Explosive does boom, contrary to the DoT effects of the other elements.
-        if (element == Elemental.EXPLOSIVE) {
-            val chance = bulletMeta.elementalChance[element] ?: return@forEach
-            if (chance.roll()) {
-                val radius = bulletMeta.splashRadius
-                location.world?.createExplosion(location, 0f)
-                location.nearbyEntities(radius).forEach entities@{ target ->
-                    if (target !is LivingEntity) return@entities
-                    val slag = elementalStatusEffects.slagMultiplier(target)
-                    target.temporarilyDisableKnockback(plugin)
-
-                    // Effectiveness type.
-                    val effectivenessType = EffectivenessType.typeOf(target.type)
-                    val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
-                        val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
-                        acc * elementDamageModifier
-                    }
-
-                    val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
-                    target.damage(totalDamage, bulletMeta.shooter)
-                    target.showHealthBar(plugin)
-
-                    if (totalDamage >= 0.01) {
-                        plugin.damageParticles.showDotDamageDisplay(
-                            target.location.add(0.0, target.height, 0.0),
-                            totalDamage,
-                            element
-                        )
-                    }
-                }
-            }
-        }
-        // Other elements do not do boom, but they do hurt. Proc roll is incorporated in [rollElementalDot].
-        else {
-            val radius = bulletMeta.splashRadius
-
-            // Show small splash animation at location.
-            repeat((8 * radius).toInt()) {
-                val splashLocation = location.clone().add(
-                    0.0.modifyRandom(radius),
-                    0.0.modifyRandom(radius),
-                    0.0.modifyRandom(radius)
-                )
-                splashLocation.showElementalParticle(element.color, 1, size = 1.3f)
-            }
-
-            // Use slightly larger radius because locations are counted from the ground position of the entity
-            // this compensates for larger entities.
-            location.nearbyEntities(radius + 0.25).forEach entities@{ target ->
-                if (target !is LivingEntity) return@entities
-                /* Slag cannot enhance its own damage */
-                val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
-                target.temporarilyDisableKnockback(plugin)
-
-                // Effectiveness type.
-                val effectivenessType = EffectivenessType.typeOf(target.type)
-                val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
-                    val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
-                    acc * elementDamageModifier
-                }
-
-                val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
-                target.damage(totalDamage, bulletMeta.shooter)
-                rollElementalDot(target, bulletMeta)
-                target.showHealthBar(plugin)
-
-                if (totalDamage > 0.01) {
-                    plugin.damageParticles.showDotDamageDisplay(
-                        target.location.add(0.0, target.height, 0.0),
-                        totalDamage,
-                        element
-                    )
-                }
-            }
-        }
-    }
-
-    /**
-     * Rolls if an elemental (DoT) effect can proc.
-     * The elemental effect will be applied to `target` and gets its info from `bulletMeta`.
-     */
-    fun rollElementalDot(target: LivingEntity, bulletMeta: BulletMeta) {
-        bulletMeta.elements.asSequence()
-            .filter { it == Elemental.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
-            .forEach {
-                // Check if the effect will be procced.
-                val chance = bulletMeta.elementalChance[it] ?: Chance.ZERO
-                if (chance.roll().not()) return@forEach
-
-                // Apply effect.
-                val duration = bulletMeta.elementalDuration[it] ?: return@forEach
-                val damage = bulletMeta.elementalDamage[it]!!
-                val policy = bulletMeta.elementalPolicy
-
-                val statusEffect = ElementalStatusEffect(it, duration, damage, inflictedBy = bulletMeta.shooter)
-                elementalStatusEffects.applyEffect(target, statusEffect, policy)
-            }
     }
 
     @EventHandler
@@ -500,7 +401,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
             val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
             val hitLocation = bullet.determineHitLocation(boundingBox) ?: bullet.location
-            splashDamage(hitLocation, bulletMeta)
+            splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
                 it.afterBulletLands(bullet, bulletMeta)
