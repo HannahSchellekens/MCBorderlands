@@ -16,8 +16,8 @@ import maliwan.mcbl.weapons.gun.behaviour.CyanTextProvider
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.RedTextProvider
 import maliwan.mcbl.weapons.gun.parts.Capacitor
-import maliwan.mcbl.weapons.gun.parts.LegendaryGunPart
-import maliwan.mcbl.weapons.gun.parts.LegendaryGunParts
+import maliwan.mcbl.weapons.gun.parts.UniqueGunPart
+import maliwan.mcbl.weapons.gun.parts.UniqueGunParts
 import maliwan.mcbl.weapons.gun.stats.*
 import java.util.*
 import kotlin.math.floor
@@ -39,8 +39,12 @@ open class WeaponGenerator(
     fun generate(): GunProperties {
         val rarity = rarityTable.roll(random)
 
-        if (rarity == Rarity.LEGENDARY) {
-            return generateLegendary()
+        when (rarity) {
+            Rarity.LEGENDARY -> return generateLegendary()
+            Rarity.RARE -> if (random.nextDouble() < 0.0667) {
+                return generateUnique(Rarity.RARE)
+            }
+            else -> Unit
         }
 
         val weaponClass = weaponClassTable.roll(random)
@@ -59,9 +63,9 @@ open class WeaponGenerator(
      */
     fun generateLegendary(ofType: WeaponClass? = null): GunProperties {
         val eligibleParts = if (ofType != null) {
-            LegendaryGunParts.parts.filter { it.weaponClass == ofType }
+            UniqueGunParts.legendaryParts.filter { it.weaponClass == ofType }
         }
-        else LegendaryGunParts.parts
+        else UniqueGunParts.legendaryParts
 
         val legendaryPart = eligibleParts.random()
         val manufacturer = legendaryPart.manufacturer
@@ -70,11 +74,34 @@ open class WeaponGenerator(
         val properties = newBaseValueProperties(manufacturer, weaponClass)
         val baseAssembly = WeaponAssemblyGenerator.forType(weaponClass, setOf(manufacturer), random).generate(Rarity.LEGENDARY)
         val assembly = when (legendaryPart) {
-            is LegendaryGunPart.LegendaryCapacitor -> baseAssembly.replaceCapacitor(legendaryPart.capacitor)
-            is LegendaryGunPart.LegendaryWeaponPart -> baseAssembly.replacePart(legendaryPart.part)
+            is UniqueGunPart.UniqueCapacitor -> baseAssembly.replaceCapacitor(legendaryPart.capacitor)
+            is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(legendaryPart.part)
         }
 
         return properties.applyAssembly(assembly, Rarity.LEGENDARY)
+    }
+
+    /**
+     * Generates a new unique weapon that is not legendary+.
+     */
+    fun generateUnique(rarity: Rarity, ofType: WeaponClass? = null): GunProperties {
+        val eligibleParts = if (ofType != null) {
+            UniqueGunParts.uniqueParts.filter { it.weaponClass == ofType }
+        }
+        else UniqueGunParts.uniqueParts
+
+        val uniquePart = eligibleParts.random()
+        val manufacturer = uniquePart.manufacturer
+        val weaponClass = uniquePart.weaponClass
+
+        val properties = newBaseValueProperties(manufacturer, weaponClass)
+        val baseAssembly = WeaponAssemblyGenerator.forType(weaponClass, setOf(manufacturer), random).generate(rarity)
+        val assembly = when (uniquePart) {
+            is UniqueGunPart.UniqueCapacitor -> baseAssembly.replaceCapacitor(uniquePart.capacitor)
+            is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(uniquePart.part)
+        }
+
+        return properties.applyAssembly(assembly, rarity)
     }
 
     /**

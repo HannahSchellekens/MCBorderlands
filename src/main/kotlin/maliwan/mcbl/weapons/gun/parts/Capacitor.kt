@@ -8,25 +8,11 @@ import maliwan.mcbl.weapons.gun.behaviour.Hellfire
 /**
  * @author Hannah Schellekens
  */
-//open class CapacitorOld(
-//
-//    val element: Elemental,
-//    val behaviours: List<GunBehaviour> = emptyList()
-//) {
-//
-//    open val partName: String = element.displayName
-//
-//    val nullIfPhysical: CapacitorOld?
-//        get() = if (element == Elemental.PHYSICAL) null else this
-//}
-
-/**
- * @author Hannah Schellekens
- */
 // Needs to be a separate enum class for serialization.
 // This way behaviour objects do not need to be deserialized.
 enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviours: GunBehaviour) {
 
+    NONE(Elemental.PHYSICAL, "None"),
     INCENDIARY(Elemental.INCENDIARY, "Incendiary"),
     SHOCK(Elemental.SHOCK, "Shock"),
     CORROSIVE(Elemental.CORROSIVE, "Corrisove"),

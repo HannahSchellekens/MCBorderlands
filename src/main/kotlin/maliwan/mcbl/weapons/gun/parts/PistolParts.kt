@@ -6,6 +6,9 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.LadyFinger
+import maliwan.mcbl.weapons.gun.behaviour.LadyFist
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -20,7 +23,8 @@ object PistolParts {
         override val manufacturer: Manufacturer,
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
-        override val manufacturerStatModifiers: List<StatModifier> = emptyList()
+        override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         MALIWAN(
@@ -141,6 +145,11 @@ object PistolParts {
                 add(3, Property.MAGAZINE_SIZE)
             }
         ),
+
+        // Unique barrels.
+
+        LADY_FINGER(Manufacturer.HYPERION, "Lady Finger", behaviours = listOf(LadyFinger())),
+        LADY_FIST(Manufacturer.HYPERION, "Lady Fist", behaviours = listOf(LadyFist())),
         ;
 
         override val partTypeName: String = "Barrel"
@@ -150,6 +159,11 @@ object PistolParts {
 
             val commonBarrels = setOf(
                 MALIWAN, VLADOF, BANDIT, DAHL, HYPERION, JAKOBS, TEDIORE, TORGUE
+            )
+
+            val uniqueBarrels = setOf(
+                LADY_FINGER,
+                LADY_FIST
             )
 
             val commonLootPool = commonBarrels.toUniformLootPool()

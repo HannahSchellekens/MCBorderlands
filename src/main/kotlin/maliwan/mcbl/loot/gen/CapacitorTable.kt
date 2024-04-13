@@ -50,8 +50,8 @@ object CapacitorTable {
         corrosive: Int,
         slag: Int,
         explosive: Int
-    ): LootPool<Capacitor?> = lootPoolOf(
-        null to nonElemental,
+    ): LootPool<Capacitor> = lootPoolOf(
+        Capacitor.NONE to nonElemental,
         Capacitor.INCENDIARY to incendiary,
         Capacitor.SHOCK to shock,
         Capacitor.CORROSIVE to corrosive,
