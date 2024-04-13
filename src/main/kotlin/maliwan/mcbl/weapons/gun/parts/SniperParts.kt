@@ -6,6 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -20,7 +21,8 @@ object SniperParts {
         override val manufacturer: Manufacturer,
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
-        override val manufacturerStatModifiers: List<StatModifier> = emptyList()
+        override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         DAHL(
@@ -99,6 +101,12 @@ object SniperParts {
                 multiply(1.1, Property.BASE_DAMAGE)
             }
         ),
+
+        // Unique barrels.
+
+        BUFFALO(Manufacturer.JAKOBS, "Buffalo", behaviours = listOf(Buffalo())),
+        COBRA(Manufacturer.JAKOBS, "Cobra", behaviours = listOf(Cobra())),
+        SLOTH(Manufacturer.DAHL, "Sloth", behaviours = listOf(Sloth())),
         ;
 
         override val partTypeName: String = "Barrel"

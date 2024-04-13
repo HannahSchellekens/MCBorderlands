@@ -45,7 +45,7 @@ open class DamageParticles : Listener, Runnable {
             isDefaultBackground = false
             isSeeThrough = true
             alignment = TextDisplay.TextAlignment.CENTER
-            billboard = Display.Billboard.VERTICAL
+            billboard = Display.Billboard.CENTER
             brightness = Display.Brightness(15, 15)
         }
         apply(display)
