@@ -12,9 +12,7 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.*
-import maliwan.mcbl.weapons.gun.behaviour.CyanTextProvider
-import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.RedTextProvider
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.UniqueGunPart
 import maliwan.mcbl.weapons.gun.parts.UniqueGunParts
@@ -101,7 +99,12 @@ open class WeaponGenerator(
             is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(uniquePart.part)
         }
 
-        return properties.applyAssembly(assembly, rarity)
+        var updatedAssembly = assembly
+        assembly.behaviours.forEachType<UpdateAssemblyBehaviour> {
+            updatedAssembly = it.updateAssembly(updatedAssembly)
+        }
+
+        return properties.applyAssembly(updatedAssembly, rarity)
     }
 
     /**

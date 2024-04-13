@@ -30,6 +30,22 @@ interface PreGunShotBehaviour : GunBehaviour {
 }
 
 /**
+ * Adds behaviour for just after a gun is shot.
+ */
+interface PostGunShotBehaviour : GunBehaviour {
+
+    /**
+     * Gets called just after a gun is shot.
+     *
+     * @param execution
+     *          From which execution the shot was.
+     * @param player
+     *          Who shot the gun.
+     */
+    fun afterGunShot(execution: GunExecution, player: Player)
+}
+
+/**
  * Adds behaviour to bullets landing, after the regular processing.
  */
 interface PostBulletLandBehaviour : GunBehaviour {
@@ -59,6 +75,21 @@ interface GunExecutionInitializationBehaviour : GunBehaviour {
      *          The owner of the execution.
      */
     fun onInitializedGunExecution(gunExecution: GunExecution, player: Player)
+}
+
+/**
+ * Post processor for assemblies allowing classes to modify the final weapon assembly.
+ */
+interface UpdateAssemblyBehaviour : GunBehaviour {
+
+    /**
+     * Gets called just after a weapon assembly is generated.
+     *
+     * @param assembly
+     *          The generated assembly.
+     * @return the modified assembly.
+     */
+    fun updateAssembly(assembly: WeaponAssembly): WeaponAssembly
 }
 
 /**

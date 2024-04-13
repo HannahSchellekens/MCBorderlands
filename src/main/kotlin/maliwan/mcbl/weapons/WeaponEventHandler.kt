@@ -4,10 +4,7 @@ import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.*
-import maliwan.mcbl.weapons.gun.behaviour.GunExecutionInitializationBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.PreGunShotBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.ReloadBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.*
 import org.bukkit.*
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -196,6 +193,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         if (consumeAmmo) {
             removeAmmo(player, gunExecution)
+        }
+
+        gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
+            it.afterGunShot(gunExecution, player)
         }
 
         // Auto reload if clip is empty.

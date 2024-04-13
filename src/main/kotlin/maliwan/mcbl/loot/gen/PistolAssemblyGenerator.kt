@@ -41,7 +41,7 @@ open class PistolAssemblyGenerator(
             accessoryPool(manufacturer).toUniformLootPool().roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random).nullIfPhysical
 
         return PistolAssembly(manufacturer, barrel, grip, accessory, capacitor)
     }

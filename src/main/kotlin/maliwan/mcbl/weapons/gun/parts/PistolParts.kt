@@ -6,9 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.LadyFinger
-import maliwan.mcbl.weapons.gun.behaviour.LadyFist
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -150,6 +148,8 @@ object PistolParts {
 
         LADY_FINGER(Manufacturer.HYPERION, "Lady Finger", behaviours = listOf(LadyFinger())),
         LADY_FIST(Manufacturer.HYPERION, "Lady Fist", behaviours = listOf(LadyFist())),
+        TEAPOT(Manufacturer.DAHL, "Teapot", behaviours = listOf(Teapot())),
+        GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
         ;
 
         override val partTypeName: String = "Barrel"
