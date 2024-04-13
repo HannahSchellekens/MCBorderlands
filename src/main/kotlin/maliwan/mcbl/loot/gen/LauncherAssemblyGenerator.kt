@@ -44,7 +44,7 @@ open class LauncherAssemblyGenerator(
             LauncherParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.LAUNCHER).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.LAUNCHER).roll(random).nullIfPhysical
 
         return LauncherAssembly(manufacturer, barrel, grip, exhaust, accessory, capacitor)
     }

@@ -42,7 +42,7 @@ open class SmgAssemblyGenerator(
             SmgParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SMG).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SMG).roll(random).nullIfPhysical
 
         return SmgAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

@@ -47,7 +47,7 @@ open class SniperAssemblyGenerator(
             SniperParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SNIPER).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SNIPER).roll(random).nullIfPhysical
 
         return SniperAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

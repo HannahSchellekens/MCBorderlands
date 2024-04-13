@@ -49,7 +49,7 @@ open class AssaultRifleAssemblyGenerator(
             AssaultRifleParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.ASSAULT_RIFLE).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.ASSAULT_RIFLE).roll(random).nullIfPhysical
 
         return AssaultRifleAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

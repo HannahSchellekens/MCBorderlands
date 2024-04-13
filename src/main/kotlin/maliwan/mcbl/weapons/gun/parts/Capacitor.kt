@@ -4,6 +4,7 @@ import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.gun.behaviour.Defiler
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.Hellfire
+import maliwan.mcbl.weapons.gun.behaviour.Tinderbox
 
 /**
  * @author Hannah Schellekens
@@ -28,6 +29,11 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
      * MALIWAN DEFILER PISTOL.
      */
     DEFILER(Elemental.CORROSIVE, "Defiler", Defiler()),
+
+    /**
+     * BANDIT TINDERBOX PISTOL.
+     */
+    TINDERBOX(Elemental.INCENDIARY, "Tinderbox", Tinderbox()),
     ;
 
     val element: Elemental = elemental

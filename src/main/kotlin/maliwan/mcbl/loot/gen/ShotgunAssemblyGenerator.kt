@@ -42,7 +42,7 @@ open class ShotgunAssemblyGenerator(
             ShotgunParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SHOTGUN).roll(random)?.nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SHOTGUN).roll(random).nullIfPhysical
 
         return ShotgunAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }
