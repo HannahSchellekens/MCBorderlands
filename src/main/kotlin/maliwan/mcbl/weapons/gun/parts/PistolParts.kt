@@ -150,6 +150,8 @@ object PistolParts {
         LADY_FIST(Manufacturer.HYPERION, "Lady Fist", behaviours = listOf(LadyFist())),
         TEAPOT(Manufacturer.DAHL, "Teapot", behaviours = listOf(Teapot())),
         GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
+        GWENS_HEAD(Manufacturer.DAHL, "Gwen's Head", behaviours = listOf(GwensHead())),
+        JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),
         ;
 
         override val partTypeName: String = "Barrel"
@@ -159,11 +161,6 @@ object PistolParts {
 
             val commonBarrels = setOf(
                 MALIWAN, VLADOF, BANDIT, DAHL, HYPERION, JAKOBS, TEDIORE, TORGUE
-            )
-
-            val uniqueBarrels = setOf(
-                LADY_FINGER,
-                LADY_FIST
             )
 
             val commonLootPool = commonBarrels.toUniformLootPool()

@@ -103,7 +103,6 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
     ): Boolean {
         val player = sender as? Player ?: return false
         val subCommand = args.getOrNull(0)
-        val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
 
         when (subCommand) {
             "update" -> {
@@ -130,13 +129,14 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
 
     fun generateWeaponFromArguments(player: Player, args: List<String>) {
         val number = args.firstNotNullOfOrNull { it.toIntOrNull() } ?: 1
+        val unique = args.any { "unique".equals(it, ignoreCase = true) }
 
         val weaponClass = WeaponClass.entries.firstOrNull { wc -> args.any { wc.name.equals(it, ignoreCase = true) } }
         val rarity = Rarity.entries.firstOrNull { r -> args.any { r.name.equals(it, ignoreCase = true) } }
         val manufacturer =
             Manufacturer.entries.firstOrNull { manu -> args.any { manu.name.equals(it, ignoreCase = true) } }
 
-        generateWeapon(player, weaponClass, rarity, manufacturer, amount = number)
+        generateWeapon(player, weaponClass, rarity, manufacturer, unique = unique, amount = number)
     }
 
     fun generateWeapon(
@@ -144,6 +144,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         weaponClass: WeaponClass? = null,
         rarity: Rarity? = null,
         manufacturer: Manufacturer? = null,
+        unique: Boolean = false,
         amount: Int = 1
     ) = repeat(amount) {
         val gunItem = ItemStack(Material.BOW, 1)
@@ -154,7 +155,14 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         val generator = WeaponGenerator(rarityTable, weaponClassTable, manufacturerTable)
 
         try {
-            val gunProperties = generator.generate()
+            val gunProperties = if (unique && rarity == Rarity.LEGENDARY) {
+                generator.generateLegendary(weaponClassTable.roll())
+            }
+            else if (unique) {
+                generator.generateUnique(rarityTable.roll(), weaponClassTable.roll())
+            }
+            else generator.generate()
+
             gunProperties.applyToItem(gunItem)
             player.inventory.addItem(gunItem)
         }
@@ -244,6 +252,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
 
         val genArguments = WeaponClass.entries.map { it.name.lowercase() } +
                 Rarity.entries.map { it.name.lowercase() } +
-                Manufacturer.entries.map { it.name.lowercase() }
+                Manufacturer.entries.map { it.name.lowercase() } +
+                listOf("unique")
     }
 }

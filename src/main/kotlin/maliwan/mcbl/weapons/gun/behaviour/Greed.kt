@@ -19,7 +19,7 @@ open class Greed : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, 
     }
 
     override fun updateAssembly(assembly: WeaponAssembly): WeaponAssembly {
-        // Always corrosive
+        // Always incendiary.
         return assembly.replaceCapacitor(Capacitor.INCENDIARY)
     }
 
