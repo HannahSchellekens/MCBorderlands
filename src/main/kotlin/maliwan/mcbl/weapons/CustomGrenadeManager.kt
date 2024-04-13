@@ -8,19 +8,19 @@ import org.bukkit.util.Vector
 /**
  * @author Hannah Schellekens
  */
-open class GrenadeManager(val plugin: MCBorderlandsPlugin) : Runnable {
+open class CustomGrenadeManager(val plugin: MCBorderlandsPlugin) : Runnable {
 
-    private val grenades = ArrayList<Grenade>()
+    private val grenades = ArrayList<CustomGrenade>()
 
-    fun throwGrenade(grenade: Grenade) {
-        grenades.add(grenade)
+    fun throwGrenade(customGrenade: CustomGrenade) {
+        grenades.add(customGrenade)
     }
 
-    fun findsHit(grenade: Grenade): Boolean {
-        val entity = grenade.itemDisplay
+    fun findsHit(customGrenade: CustomGrenade): Boolean {
+        val entity = customGrenade.itemDisplay
         val loc = entity.location.clone().add(0.0, 0.5, 0.0)
-        return (loc.block.type.isSolid || entity.world.getNearbyEntities(loc, 0.1, 0.1, 0.1)
-            .any { it is LivingEntity && it != grenade.source })
+        return (loc.block.type.isSolid || entity.world.getNearbyEntities(loc, 0.2, 0.2, 0.2)
+            .any { it is LivingEntity && it != customGrenade.source })
     }
 
     override fun run() {
@@ -55,9 +55,17 @@ open class GrenadeManager(val plugin: MCBorderlandsPlugin) : Runnable {
     }
 
     /**
+     * Removes all active grenades (deletes entities and clears memory).
+     */
+    fun cleanup() {
+        grenades.forEach { it.itemDisplay.remove() }
+        grenades.clear()
+    }
+
+    /**
      * @author Hannah Schellekens
      */
-    data class Grenade(
+    data class CustomGrenade(
 
         /**
          * The item display that displays the grenade.

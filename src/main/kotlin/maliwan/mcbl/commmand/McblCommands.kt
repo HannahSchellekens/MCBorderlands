@@ -1,9 +1,8 @@
 package maliwan.mcbl.commmand
 
 import maliwan.mcbl.*
+import maliwan.mcbl.loot.*
 import maliwan.mcbl.loot.gen.WeaponGenerator
-import maliwan.mcbl.loot.lootPoolOf
-import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
@@ -18,6 +17,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import java.util.NoSuchElementException
 
 /**
  * @author Hannah Schellekens
@@ -33,15 +33,11 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         if (args.size == 1) {
             return mutableListOf(
                 "update",
-                "pistol",
-                "shotgun",
-                "sniper",
-                "smg",
-                "assaultRifle",
-                "launcher",
+                "gen"
             )
-        }
-        else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
+        } else if (args.size >= 2 && "gen".equals(args.first(), ignoreCase = true)) {
+            return genArguments.toMutableList()
+        } else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
             return listOf(
                 "name",
                 "baseDamage",
@@ -78,27 +74,23 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "extraShotChance",
                 "freeShotChance",
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
-        }
-        else if (args.size < 2) {
+        } else if (args.size < 2) {
             return mutableListOf("update")
-        }
-        else if ("manufacturer".equals(args[1], ignoreCase = true)) {
-            return Manufacturer.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        }
-        else if ("rarity".equals(args[1], ignoreCase = true)) {
+        } else if ("manufacturer".equals(args[1], ignoreCase = true)) {
+            return Manufacturer.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
+                .toMutableList()
+        } else if ("rarity".equals(args[1], ignoreCase = true)) {
             return Rarity.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        }
-        else if ("weaponClass".equals(args[1], ignoreCase = true)) {
-            return WeaponClass.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        }
-        else if ("element:add".equals(args[1], ignoreCase = true)) {
-            return Elemental.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        }
-        else if ("element:policy".equals(args[1], ignoreCase = true)) {
+        } else if ("weaponClass".equals(args[1], ignoreCase = true)) {
+            return WeaponClass.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
+                .toMutableList()
+        } else if ("element:add".equals(args[1], ignoreCase = true)) {
+            return Elemental.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
+                .toMutableList()
+        } else if ("element:policy".equals(args[1], ignoreCase = true)) {
             return ElementalStatusEffects.ApplyPolicy.entries
                 .map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        }
-        else {
+        } else {
             return null
         }
     }
@@ -128,28 +120,45 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 updateBowProperties(player, args[1], args.toList().subList(2, args.size))
                 return true
             }
-            "pistol" -> debug(player, WeaponClass.PISTOL, amount = amount)
-            "shotgun" -> debug(player, WeaponClass.SHOTGUN, amount = amount)
-            "sniper" -> debug(player, WeaponClass.SNIPER, amount = amount)
-            "smg" -> debug(player, WeaponClass.SMG, amount = amount)
-            "assaultRifle" -> debug(player, WeaponClass.ASSAULT_RIFLE, amount = amount)
-            "launcher" -> debug(player, WeaponClass.LAUNCHER, amount = amount)
-            else -> debug(player, amount = 1)
+
+            "gen" -> generateWeaponFromArguments(player, amount, args.asList().subList(1, args.size))
+            else -> Unit
         }
 
         return true
     }
 
-    fun debug(player: Player, weaponClass: WeaponClass? = null, amount: Int = 1) = repeat(amount) {
+    fun generateWeaponFromArguments(player: Player, amount: Int, args: List<String>) {
+        val weaponClass = WeaponClass.entries.firstOrNull { wc -> args.any { wc.name.equals(it, ignoreCase = true) } }
+        val rarity = Rarity.entries.firstOrNull { r -> args.any { r.name.equals(it, ignoreCase = true) } }
+        val manufacturer =
+            Manufacturer.entries.firstOrNull { manu -> args.any { manu.name.equals(it, ignoreCase = true) } }
+
+        generateWeapon(player, weaponClass, rarity, manufacturer, amount = amount)
+    }
+
+    fun generateWeapon(
+        player: Player,
+        weaponClass: WeaponClass? = null,
+        rarity: Rarity? = null,
+        manufacturer: Manufacturer? = null,
+        amount: Int = 1
+    ) = repeat(amount) {
         val gunItem = ItemStack(Material.BOW, 1)
 
-        val generator = weaponClass?.let {
-            WeaponGenerator(weaponClassTable = lootPoolOf(it to 1))
-        } ?: WeaponGenerator()
+        val rarityTable = rarity?.let { lootPoolOf(it to 1) } ?: RarityTable.Treasure.regular
+        val weaponClassTable = weaponClass?.let { lootPoolOf(it to 1) } ?: WeaponClassTable.generation
+        val manufacturerTable = manufacturer?.let { lootPoolOf(it to 1) } ?: ManufacturerTable.Weapons.generation
+        val generator = WeaponGenerator(rarityTable, weaponClassTable, manufacturerTable)
 
-        val gunProperties = generator.generate()
-        gunProperties.applyToItem(gunItem)
-        player.inventory.addItem(gunItem)
+        try {
+            val gunProperties = generator.generate()
+            gunProperties.applyToItem(gunItem)
+            player.inventory.addItem(gunItem)
+        }
+        catch (e: NoSuchElementException) {
+            player.sendMessage("Could not generate weapon. Maybe an unsupported weapon class for the given manufacturer was rolled.")
+        }
     }
 
     fun updateBowProperties(player: Player, property: String, values: List<String>) {
@@ -188,6 +197,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 elementalDuration.clear()
                 elementalDamage.clear()
             }
+
             "element:add" -> update {
                 val element = Elemental.valueOf(values[0])
                 val chance = Chance(values[1].toDoubleOrNull() ?: error("Invalid double: ${values[1]}"))
@@ -198,7 +208,11 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 elementalDuration[element] = duration
                 elementalDamage[element] = damage
             }
-            "element:policy" -> update { elementalPolicy = ElementalStatusEffects.ApplyPolicy.valueOf(value.uppercase()) }
+
+            "element:policy" -> update {
+                elementalPolicy = ElementalStatusEffects.ApplyPolicy.valueOf(value.uppercase())
+            }
+
             "splashRadius" -> update { splashRadius = value.toDoubleOrNull() ?: error("No double: $value") }
             "splashDamage" -> update { splashDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
             "recoilAngle:none" -> update { recoilAngle = null }
@@ -212,9 +226,22 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "burstCount" -> update { burstCount = value.toIntOrNull() ?: error("No int: $value") }
             "burstDelay" -> update { burstDelay = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
             "gravity" -> update { gravity = value.toDoubleOrNull() ?: error("No double: $value") }
-            "bonusCritMultiplier" -> update { bonusCritMultiplier = value.toDoubleOrNull() ?: error("No double: $value") }
-            "extraShotChance" -> update { extraShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "bonusCritMultiplier" -> update {
+                bonusCritMultiplier = value.toDoubleOrNull() ?: error("No double: $value")
+            }
+
+            "extraShotChance" -> update {
+                extraShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value"))
+            }
+
             "freeShotChance" -> update { freeShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
         }
+    }
+
+    companion object {
+
+        val genArguments = WeaponClass.entries.map { it.name.lowercase() } +
+                Rarity.entries.map { it.name.lowercase() } +
+                Manufacturer.entries.map { it.name.lowercase() }
     }
 }

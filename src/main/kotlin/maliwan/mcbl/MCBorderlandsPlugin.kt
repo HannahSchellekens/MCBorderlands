@@ -9,7 +9,7 @@ import maliwan.mcbl.loot.ammo.AmmoObtain
 import maliwan.mcbl.loot.chests.LootChestPopulator
 import maliwan.mcbl.loot.drops.AmmoDropOnDeath
 import maliwan.mcbl.loot.drops.WeaponDropOnDeath
-import maliwan.mcbl.weapons.GrenadeManager
+import maliwan.mcbl.weapons.CustomGrenadeManager
 import maliwan.mcbl.weapons.WeaponEventHandler
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -26,7 +26,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
     /**
      * Handles physics/events for custom grenades.
      */
-    val grenadeManager = GrenadeManager(this)
+    val customGrenadeManager = CustomGrenadeManager(this)
 
     /**
      * Manages general play behaviour, like e.g. increasing default health pools.
@@ -89,7 +89,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
         // Damage particle
         server.scheduler.scheduleSyncRepeatingTask(this, damageParticles, 1L, 1L)
         // Grenades
-        server.scheduler.scheduleSyncRepeatingTask(this, grenadeManager, 1L, 1L)
+        server.scheduler.scheduleSyncRepeatingTask(this, customGrenadeManager, 1L, 1L)
 
         logger.info("Enabled!")
     }
@@ -98,6 +98,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
         weaponEventHandler.cleanup()
         hud.clearAll()
         damageParticles.cleanup()
+        customGrenadeManager.cleanup()
 
         logger.info("Disabled!")
     }
