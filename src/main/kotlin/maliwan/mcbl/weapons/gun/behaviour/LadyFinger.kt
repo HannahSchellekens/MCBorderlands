@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.*
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 
 /**
  * @author Hannah Schellekens
@@ -11,6 +12,7 @@ open class LadyFinger : UniqueGun, PostGenerationBehaviour {
     override val redText = "Omnia vincit amor"
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
+        PistolParts.Barrel.DAHL.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
     }
 

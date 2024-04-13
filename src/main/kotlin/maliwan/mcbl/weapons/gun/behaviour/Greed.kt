@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -15,6 +16,7 @@ open class Greed : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, 
     override val redText = "Thief."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
+        PistolParts.Barrel.JAKOBS.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
     }
 

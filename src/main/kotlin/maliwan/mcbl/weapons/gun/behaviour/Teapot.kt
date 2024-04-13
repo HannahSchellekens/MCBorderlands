@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 
 /**
  * @author Hannah Schellekens
@@ -12,6 +13,7 @@ open class Teapot : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour 
     override val redText = "Havin' a tea Partay, drinkin' mah\nTeeea!"
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
+        PistolParts.Barrel.TEDIORE.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
         properties.splashDamage = properties.baseDamage * 0.8

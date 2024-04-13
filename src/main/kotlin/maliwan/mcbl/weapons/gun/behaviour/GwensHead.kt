@@ -17,6 +17,7 @@ open class GwensHead : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehavio
     override val redText = "Thinking outside the box."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
+        PistolParts.Barrel.HYPERION.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
         properties.burstCount = 7

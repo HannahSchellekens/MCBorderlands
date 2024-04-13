@@ -146,12 +146,14 @@ object PistolParts {
 
         // Unique barrels.
 
-        LADY_FINGER(Manufacturer.HYPERION, "Lady Finger", behaviours = listOf(LadyFinger())),
-        LADY_FIST(Manufacturer.HYPERION, "Lady Fist", behaviours = listOf(LadyFist())),
-        TEAPOT(Manufacturer.DAHL, "Teapot", behaviours = listOf(Teapot())),
         GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
-        GWENS_HEAD(Manufacturer.DAHL, "Gwen's Head", behaviours = listOf(GwensHead())),
+        GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
         JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),
+        LADY_FINGER(Manufacturer.DAHL, "Lady Finger", behaviours = listOf(LadyFinger())),
+        LADY_FIST(Manufacturer.DAHL, "Lady Fist", behaviours = listOf(LadyFist())),
+        LAW(Manufacturer.DAHL, "Law", behaviours = listOf(Law())),
+        POCKET_ROCKET(Manufacturer.TORGUE, "Pocket Rocket", behaviours = listOf(PocketRocket())),
+        TEAPOT(Manufacturer.TEDIORE, "Teapot", behaviours = listOf(Teapot())),
         ;
 
         override val partTypeName: String = "Barrel"

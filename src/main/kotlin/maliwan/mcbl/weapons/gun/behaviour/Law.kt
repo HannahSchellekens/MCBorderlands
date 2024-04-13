@@ -1,27 +1,31 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.*
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.PistolParts
+import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 
 /**
  * @author Hannah Schellekens
  */
-open class LadyFist : UniqueGun, PostGenerationBehaviour {
+open class Law : UniqueGun, PostGenerationBehaviour {
 
-    override val baseName = "Lady Fist"
-    override val redText = "Love is a Lady Finger. True love is\na Lady Fist."
+    override val baseName = "Law"
+    override val redText = "De Da."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
         PistolParts.Barrel.DAHL.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
+
+        // No order shield effects yet as shields are TBA.
     }
 
     companion object {
 
         val statModifiers = statModifierList {
-            add(8, StatModifier.Property.BONUS_CRIT_MULTIPLIER)
-            multiply(0.75, StatModifier.Property.BASE_DAMAGE)
-            add(3, StatModifier.Property.MAGAZINE_SIZE)
+            add(6.0, StatModifier.Property.MELEE)
         }
     }
 }
