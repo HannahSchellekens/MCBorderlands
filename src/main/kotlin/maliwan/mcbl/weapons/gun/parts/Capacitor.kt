@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.weapons.Elemental
+import maliwan.mcbl.weapons.gun.behaviour.Defiler
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.Hellfire
 
@@ -35,7 +36,12 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     /**
      * MALIWAN HELLFIRE SMG.
      */
-    HELLFIRE(Elemental.INCENDIARY, "HellFire", Hellfire())
+    HELLFIRE(Elemental.INCENDIARY, "HellFire", Hellfire()),
+
+    /**
+     * MALIWAN DEFILER PISTOL.
+     */
+    DEFILER(Elemental.CORROSIVE, "Defiler", Defiler()),
     ;
 
     val element: Elemental = elemental
@@ -56,7 +62,8 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
         )
 
         val legendaryCapacitors = setOf(
-            HELLFIRE
+            HELLFIRE,
+            DEFILER
         )
     }
 }

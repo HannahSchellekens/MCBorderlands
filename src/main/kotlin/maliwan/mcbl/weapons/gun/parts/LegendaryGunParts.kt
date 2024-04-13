@@ -10,7 +10,8 @@ import maliwan.mcbl.weapons.gun.WeaponPart
 object LegendaryGunParts {
 
     val parts: List<LegendaryGunPart> = listOf(
-        LegendaryGunPart.LegendaryCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE)
+        LegendaryGunPart.LegendaryCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
+        LegendaryGunPart.LegendaryCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
     )
 }
 
