@@ -33,11 +33,16 @@ open class PistolAssemblyGenerator(
         val barrel = PistolParts.Barrel.commonLootPool.roll(random)
         val grip = PistolParts.Grip.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
-            PistolParts.Accessory.commonLootPool.roll(random)
+            accessoryPool(manufacturer).toUniformLootPool().roll(random)
         }
         else null
         val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random).nullIfPhysical
 
         return PistolAssembly(manufacturer, barrel, grip, accessory, capacitor)
+    }
+
+    private fun accessoryPool(manufacturer: Manufacturer) = when (manufacturer) {
+        Manufacturer.JAKOBS -> PistolParts.Accessory.commonJakobsAccessories
+        else -> PistolParts.Accessory.commonAccessories
     }
 }

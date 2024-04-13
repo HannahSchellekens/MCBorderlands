@@ -14,13 +14,13 @@ open class AmmoInventory {
      * The maximum amount of ammo allowed for each weapon class.
      */
     val maxAmmo: MutableMap<WeaponClass, Int>  = mutableMapOf(
-        // Defaults based on green lvl BL2 amounts
-        WeaponClass.ASSAULT_RIFLE to 420,
-        WeaponClass.PISTOL to 300,
-        WeaponClass.LAUNCHER to 15,
-        WeaponClass.SHOTGUN to 100,
-        WeaponClass.SMG to 540,
-        WeaponClass.SNIPER to 60
+        // Defaults based on green lvl BL2 SDU amounts
+        WeaponClass.ASSAULT_RIFLE to 560,
+        WeaponClass.PISTOL to 400,
+        WeaponClass.LAUNCHER to 18,
+        WeaponClass.SHOTGUN to 120,
+        WeaponClass.SMG to 720,
+        WeaponClass.SNIPER to 72
     )
 
     /**

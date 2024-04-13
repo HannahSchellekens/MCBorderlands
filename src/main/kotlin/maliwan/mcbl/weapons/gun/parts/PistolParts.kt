@@ -377,6 +377,19 @@ object PistolParts {
                 divide(1.03, Property.BASE_DAMAGE)
             }
         ),
+
+        MASHER(
+            Manufacturer.JAKOBS,
+            "Masher",
+            statModifierList {
+                add(4, Property.PELLET_COUNT)
+                subtract(0.04, Property.ACCURACY)
+                divide(1.8, Property.BASE_DAMAGE)
+                subtract(0.007, Property.RECOIL)
+                divide(1.4, Property.MAGAZINE_SIZE)
+                divide(1.1, Property.FIRE_RATE)
+            }
+        ),
         ;
 
         override val partTypeName: String = "Acc."
@@ -392,6 +405,10 @@ object PistolParts {
                 MAGAZINE,
                 DAMAGE,
                 FIRE_RATE
+            )
+
+            val commonJakobsAccessories = commonAccessories + setOf(
+                MASHER
             )
 
             val commonLootPool = commonAccessories.toUniformLootPool()

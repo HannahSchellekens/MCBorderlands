@@ -121,20 +121,22 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 return true
             }
 
-            "gen" -> generateWeaponFromArguments(player, amount, args.asList().subList(1, args.size))
+            "gen" -> generateWeaponFromArguments(player, args.asList().subList(1, args.size))
             else -> Unit
         }
 
         return true
     }
 
-    fun generateWeaponFromArguments(player: Player, amount: Int, args: List<String>) {
+    fun generateWeaponFromArguments(player: Player, args: List<String>) {
+        val number = args.firstNotNullOfOrNull { it.toIntOrNull() } ?: 1
+
         val weaponClass = WeaponClass.entries.firstOrNull { wc -> args.any { wc.name.equals(it, ignoreCase = true) } }
         val rarity = Rarity.entries.firstOrNull { r -> args.any { r.name.equals(it, ignoreCase = true) } }
         val manufacturer =
             Manufacturer.entries.firstOrNull { manu -> args.any { manu.name.equals(it, ignoreCase = true) } }
 
-        generateWeapon(player, weaponClass, rarity, manufacturer, amount = amount)
+        generateWeapon(player, weaponClass, rarity, manufacturer, amount = number)
     }
 
     fun generateWeapon(

@@ -92,6 +92,7 @@ class GunExecution(
         get() = when (assembly?.manufacturer) {
             Manufacturer.HYPERION -> when (assembly!!.weaponClass) {
                 WeaponClass.SHOTGUN -> 1.075
+                WeaponClass.SMG -> 1.009
                 else -> 1.018
             }
             else -> properties.recoil
