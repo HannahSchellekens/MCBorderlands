@@ -1,13 +1,9 @@
 package maliwan.mcbl.weapons.gun.names
 
 import maliwan.mcbl.util.TabTable
-import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
-import maliwan.mcbl.weapons.gun.Capacitor
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.AssaultRifleParts
-import maliwan.mcbl.weapons.gun.parts.PistolParts
-import maliwan.mcbl.weapons.gun.parts.SmgParts
-import maliwan.mcbl.weapons.gun.parts.SniperParts
 
 /**
  * @author Hannah Schellekens
@@ -34,7 +30,8 @@ object AssaultRifleNames {
         accessory: AssaultRifleParts.Accessory? = null,
         capacitor: Capacitor? = null
     ): String {
-        val baseName = nameTable[barrel, manufacturer]
+        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val baseName = customName ?: nameTable[barrel, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 
         val prefix = if (accessory != null) {

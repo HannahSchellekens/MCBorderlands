@@ -11,15 +11,14 @@ import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.gun.Capacitor
-import maliwan.mcbl.weapons.gun.GunProperties
-import maliwan.mcbl.weapons.gun.WeaponAssembly
-import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
-import maliwan.mcbl.weapons.gun.forEachBehaviour
+import maliwan.mcbl.weapons.gun.*
+import maliwan.mcbl.weapons.gun.behaviour.CyanTextProvider
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.forEachType
+import maliwan.mcbl.weapons.gun.behaviour.RedTextProvider
+import maliwan.mcbl.weapons.gun.parts.Capacitor
+import maliwan.mcbl.weapons.gun.parts.LegendaryGunPart
+import maliwan.mcbl.weapons.gun.parts.LegendaryGunParts
 import maliwan.mcbl.weapons.gun.stats.*
-import org.bukkit.Bukkit
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.min
@@ -39,8 +38,12 @@ open class WeaponGenerator(
      */
     fun generate(): GunProperties {
         val rarity = rarityTable.roll(random)
-        val weaponClass = weaponClassTable.roll(random)
 
+        if (rarity == Rarity.LEGENDARY) {
+            return generateLegendary()
+        }
+
+        val weaponClass = weaponClassTable.roll(random)
         val producers = Manufacturer.producersOf(weaponClass)
         val manufacturerPool = manufacturerTable.retainResults(producers)
         val manufacturer = manufacturerPool.roll(random)
@@ -48,24 +51,68 @@ open class WeaponGenerator(
         val properties = newBaseValueProperties(manufacturer, weaponClass)
         val assembly = WeaponAssemblyGenerator.forType(weaponClass, setOf(manufacturer), random).generate(rarity)
 
-        // First add elementals so their values can be modified by gun parts.
-        properties.addElementals(assembly)
-        assembly.applyToGun(properties)
+        return properties.applyAssembly(assembly, rarity)
+    }
 
-        properties.rarity = rarity
-        properties.weaponClass = weaponClass
-        properties.manufacturer = manufacturer
-        properties.name = assembly.gunName
-        properties.assembly = assembly
+    /**
+     * Generates a new legendary weapon.
+     */
+    fun generateLegendary(ofType: WeaponClass? = null): GunProperties {
+        val eligibleParts = if (ofType != null) {
+            LegendaryGunParts.parts.filter { it.weaponClass == ofType }
+        }
+        else LegendaryGunParts.parts
 
-        properties.applyGradeScaling()
-        properties.addManufacturerGimmick(assembly)
+        val legendaryPart = eligibleParts.random()
+        val manufacturer = legendaryPart.manufacturer
+        val weaponClass = legendaryPart.weaponClass
 
-        assembly.forEachBehaviour<PostGenerationBehaviour> {
-            it.onFinishGeneration(properties, assembly)
+        val properties = newBaseValueProperties(manufacturer, weaponClass)
+        val baseAssembly = WeaponAssemblyGenerator.forType(weaponClass, setOf(manufacturer), random).generate(Rarity.LEGENDARY)
+        val assembly = when (legendaryPart) {
+            is LegendaryGunPart.LegendaryCapacitor -> baseAssembly.replaceCapacitor(legendaryPart.capacitor)
+            is LegendaryGunPart.LegendaryWeaponPart -> baseAssembly.replacePart(legendaryPart.part)
         }
 
-        return properties
+        return properties.applyAssembly(assembly, Rarity.LEGENDARY)
+    }
+
+    /**
+     * Applies all effects/stats of the gun assembly to the properties.
+     */
+    private fun GunProperties.applyAssembly(assembly: WeaponAssembly, rarity: Rarity): GunProperties {
+        // First add elementals so their values can be modified by gun parts.
+        addElementals(assembly)
+        assembly.applyModifiersToGun(this)
+
+        this.rarity = rarity
+        weaponClass = assembly.weaponClass
+        manufacturer = assembly.manufacturer
+        name = assembly.gunName
+        this.assembly = assembly
+
+        applyGradeScaling()
+        addManufacturerGimmick(assembly)
+
+        assembly.applyCustomLore(this)
+
+        assembly.forEachBehaviour<PostGenerationBehaviour> {
+            it.onFinishGeneration(this, assembly)
+        }
+
+        return this
+    }
+
+    /**
+     * Applies custom names and red/cyan text to gun.
+     */
+    private fun WeaponAssembly.applyCustomLore(properties: GunProperties) {
+        behaviours.forEach {
+            when (it) {
+                is RedTextProvider -> properties.redText = it.redText
+                is CyanTextProvider -> properties.cyanText = it.cyanText
+            }
+        }
     }
 
     /**

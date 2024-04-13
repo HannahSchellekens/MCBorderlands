@@ -1,6 +1,7 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.util.countMap
 import maliwan.mcbl.weapons.Elemental
 import org.bukkit.ChatColor
 import org.bukkit.attribute.Attribute
@@ -24,7 +25,11 @@ fun LivingEntity.showHealthBar(
         else -> ""
     }
 
-    val statusPrefix = statusEffects.sorted().joinToString("") { it.chatColor + it.symbol }
+    val counts = statusEffects.countMap()
+    val statusPrefix = statusEffects.sorted().distinct().joinToString("") {
+        val count = if ((counts[it] ?: 0) > 1) counts[it]?.toString() ?: "" else ""
+        it.chatColor + count + it.symbol
+    }
 
     val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: return
     val barLength = if (maxHealth <= smallThreshold) smallLength else largeLength

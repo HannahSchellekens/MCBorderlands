@@ -37,14 +37,19 @@ open class AssaultRifleAssemblyGenerator(
 
     override fun generate(rarity: Rarity): AssaultRifleAssembly {
         val manufacturer = manufacturerPool.roll(random)
-        val barrel = AssaultRifleParts.Barrel.commonLootPool.roll(random)
+
+        val barrel = if (rarity == Rarity.LEGENDARY) {
+            AssaultRifleParts.Barrel.commonBarrels.filter { it.manufacturer == manufacturer }.random()
+        }
+        else AssaultRifleParts.Barrel.commonLootPool.roll(random)
+
         val grip = AssaultRifleParts.Grip.commonLootPool.roll(random)
         val stock = AssaultRifleParts.Stock.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             AssaultRifleParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.ASSAULT_RIFLE).roll(random).nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.ASSAULT_RIFLE).roll(random)?.nullIfPhysical
 
         return AssaultRifleAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

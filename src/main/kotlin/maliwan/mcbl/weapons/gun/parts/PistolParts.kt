@@ -386,7 +386,7 @@ object PistolParts {
                 subtract(0.04, Property.ACCURACY)
                 divide(1.8, Property.BASE_DAMAGE)
                 subtract(0.007, Property.RECOIL)
-                divide(1.4, Property.MAGAZINE_SIZE)
+                divide(1.5, Property.MAGAZINE_SIZE)
                 divide(1.1, Property.FIRE_RATE)
             }
         ),

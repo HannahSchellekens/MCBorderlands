@@ -45,6 +45,22 @@ fun LivingEntity.temporarilyDisableKnockback(plugin: MCBorderlandsPlugin) {
 }
 
 /**
+ * Executes the action with iframes disabled for the living entity.
+ * Iframes get disabled on the next server tick.
+ */
+fun LivingEntity.temporarilyDisableIframes(plugin: MCBorderlandsPlugin) {
+    val oldNoDamageTicks = noDamageTicks
+    val oldNoDamageTicksMax = maximumNoDamageTicks
+    noDamageTicks = 0
+    maximumNoDamageTicks = 0
+
+    plugin.scheduleTask(1L) {
+        noDamageTicks = oldNoDamageTicks
+        maximumNoDamageTicks = oldNoDamageTicksMax
+    }
+}
+
+/**
  * Calculates for each type of living entity what the head position of the entity is.
  *
  * This is not the same as eye location: that is (I guess) the origin of the head from which the head rotation

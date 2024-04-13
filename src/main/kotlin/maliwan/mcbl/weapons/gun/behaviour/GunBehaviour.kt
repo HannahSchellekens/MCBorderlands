@@ -78,6 +78,48 @@ interface PostGenerationBehaviour : GunBehaviour {
 }
 
 /**
+ * Gun has a custom base name.
+ */
+interface CustomBaseNameProvider : GunBehaviour {
+
+    /**
+     * The custom base name of this gun.
+     */
+    val baseName: String
+
+    fun applyToGun(properties: GunProperties) {
+        properties.name = baseName
+    }
+}
+
+/**
+ * Gun has custom red text.
+ */
+interface RedTextProvider : GunBehaviour {
+
+    /**
+     * The red text of the gun.
+     */
+    val redText: String
+}
+
+/**
+ * Gun has custom cyan text.
+ */
+interface CyanTextProvider : GunBehaviour {
+
+    /**
+     * The cyan text of the gun.
+     */
+    val cyanText: String
+}
+
+/**
+ * Gun has unique properties.
+ */
+interface UniqueGun : CustomBaseNameProvider, RedTextProvider
+
+/**
  * Behaviour before a player reloaded.
  */
 interface ReloadBehaviour : GunBehaviour {

@@ -3,6 +3,7 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.armorPoints
 import maliwan.mcbl.entity.showHealthBar
+import maliwan.mcbl.entity.temporarilyDisableIframes
 import maliwan.mcbl.entity.temporarilyDisableKnockback
 import maliwan.mcbl.util.*
 import org.bukkit.damage.DamageSource
@@ -163,8 +164,14 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                     else -> DamageSource.builder(DamageType.MAGIC).build()
                 }
 
+                print("Health before: %.2f".format(entity.health))
+
                 entity.temporarilyDisableKnockback(plugin)
+                entity.temporarilyDisableIframes(plugin)
                 entity.damage(totalDamage, cause)
+
+
+                println(", Health after: %.2f, Damage: %.2f".format(entity.health, totalDamage))
                 plugin.damageParticles.showDotDamageDisplay(
                     entity.location.add(0.0, entity.height, 0.0),
                     totalDamage,

@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.SmgAssembly
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.parts.SmgParts
 import java.util.*
 
@@ -29,14 +30,19 @@ open class SmgAssemblyGenerator(
 
     override fun generate(rarity: Rarity): SmgAssembly {
         val manufacturer = manufacturerPool.roll(random)
-        val barrel = SmgParts.Barrel.commonLootPool.roll(random)
+
+        val barrel = if (rarity == Rarity.LEGENDARY) {
+            SmgParts.Barrel.commonBarrels.filter { it.manufacturer == manufacturer }.random()
+        }
+        else SmgParts.Barrel.commonLootPool.roll(random)
+
         val grip = SmgParts.Grip.commonLootPool.roll(random)
         val stock = SmgParts.Stock.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             SmgParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SMG).roll(random).nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SMG).roll(random)?.nullIfPhysical
 
         return SmgAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

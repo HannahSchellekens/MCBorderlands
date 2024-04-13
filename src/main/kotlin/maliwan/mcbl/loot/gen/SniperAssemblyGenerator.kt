@@ -35,14 +35,19 @@ open class SniperAssemblyGenerator(
 
     override fun generate(rarity: Rarity): SniperAssembly {
         val manufacturer = manufacturerPool.roll(random)
-        val barrel = SniperParts.Barrel.commonLootPool.roll(random)
+
+        val barrel = if (rarity == Rarity.LEGENDARY) {
+            SniperParts.Barrel.commonBarrels.filter { it.manufacturer == manufacturer }.random()
+        }
+        else SniperParts.Barrel.commonLootPool.roll(random)
+
         val grip = SniperParts.Grip.commonLootPool.roll(random)
         val stock = SniperParts.Stock.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             SniperParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SNIPER).roll(random).nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SNIPER).roll(random)?.nullIfPhysical
 
         return SniperAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

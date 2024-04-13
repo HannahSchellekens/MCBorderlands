@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.ShotgunAssembly
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.parts.ShotgunParts
 import java.util.*
 
@@ -29,14 +30,19 @@ open class ShotgunAssemblyGenerator(
 
     override fun generate(rarity: Rarity): ShotgunAssembly {
         val manufacturer = manufacturerPool.roll(random)
-        val barrel = ShotgunParts.Barrel.commonLootPool.roll(random)
+
+        val barrel = if (rarity == Rarity.LEGENDARY) {
+            ShotgunParts.Barrel.commonBarrels.filter { it.manufacturer == manufacturer }.random()
+        }
+        else ShotgunParts.Barrel.commonLootPool.roll(random)
+
         val grip = ShotgunParts.Grip.commonLootPool.roll(random)
         val stock = ShotgunParts.Stock.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             ShotgunParts.Accessory.commonLootPool.roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SHOTGUN).roll(random).nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.SHOTGUN).roll(random)?.nullIfPhysical
 
         return ShotgunAssembly(manufacturer, barrel, grip, stock, accessory, capacitor)
     }

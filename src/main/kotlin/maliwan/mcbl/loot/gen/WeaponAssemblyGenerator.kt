@@ -2,8 +2,7 @@ package maliwan.mcbl.loot.gen
 
 import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.weapons.*
-import maliwan.mcbl.weapons.gun.Capacitor
-import maliwan.mcbl.weapons.gun.LauncherAssembly
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import java.util.*
 
@@ -40,7 +39,7 @@ interface WeaponAssemblyGenerator {
 /**
  * From which loot pool to determine the elemental capacitor.
  */
-fun capacitorLootpool(manufacturer: Manufacturer, weaponClass: WeaponClass = WeaponClass.PISTOL): LootPool<Capacitor> {
+fun capacitorLootpool(manufacturer: Manufacturer, weaponClass: WeaponClass = WeaponClass.PISTOL): LootPool<Capacitor?> {
     return when (weaponClass) {
         WeaponClass.SNIPER -> when (manufacturer) {
             Manufacturer.MALIWAN -> CapacitorTable.elementOnly

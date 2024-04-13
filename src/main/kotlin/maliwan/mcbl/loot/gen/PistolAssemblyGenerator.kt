@@ -30,13 +30,18 @@ open class PistolAssemblyGenerator(
 
     override fun generate(rarity: Rarity): PistolAssembly {
         val manufacturer = manufacturerPool.roll(random)
-        val barrel = PistolParts.Barrel.commonLootPool.roll(random)
+
+        val barrel = if (rarity == Rarity.LEGENDARY) {
+            PistolParts.Barrel.commonBarrels.filter { it.manufacturer == manufacturer }.random()
+        }
+        else PistolParts.Barrel.commonLootPool.roll(random)
+
         val grip = PistolParts.Grip.commonLootPool.roll(random)
         val accessory = if (random.nextDouble() < AccessoryTable.chanceByRarity(rarity)) {
             accessoryPool(manufacturer).toUniformLootPool().roll(random)
         }
         else null
-        val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random).nullIfPhysical
+        val capacitor = capacitorLootpool(manufacturer, WeaponClass.PISTOL).roll(random)?.nullIfPhysical
 
         return PistolAssembly(manufacturer, barrel, grip, accessory, capacitor)
     }

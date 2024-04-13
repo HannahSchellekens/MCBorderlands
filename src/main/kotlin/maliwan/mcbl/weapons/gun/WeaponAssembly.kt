@@ -66,7 +66,7 @@ sealed class WeaponAssembly(
     /**
      * Applies the stat modifiers of all weapon parts of this gun to the given gun properties.
      */
-    open fun applyToGun(properties: GunProperties): GunProperties {
+    open fun applyModifiersToGun(properties: GunProperties): GunProperties {
         parts?.forEach {
             it.statModifiers.applyAll(properties)
             if (it.manufacturer == manufacturer) {
@@ -228,4 +228,69 @@ class LauncherAssembly(
     override fun toString(): String {
         return "LauncherAssembly(body=$body, barrel=$barrel, grip=$grip, exhaust=$exhaust, accessory=$accessory)"
     }
+}
+
+/**
+ * Replaces a part in this assembly by another weapon part.
+ */
+fun WeaponAssembly.replacePart(part: WeaponPart) = when (this) {
+    is PistolAssembly -> PistolAssembly(
+        manufacturer,
+        if (part is PistolParts.Barrel) part else barrel,
+        if (part is PistolParts.Grip) part else grip,
+        if (part is PistolParts.Accessory) part else accessory,
+        capacitor
+    )
+    is ShotgunAssembly -> ShotgunAssembly(
+        manufacturer,
+        if (part is ShotgunParts.Barrel) part else barrel,
+        if (part is ShotgunParts.Grip) part else grip,
+        if (part is ShotgunParts.Stock) part else stock,
+        if (part is ShotgunParts.Accessory) part else accessory,
+        capacitor
+    )
+    is SniperAssembly -> SniperAssembly(
+        manufacturer,
+        if (part is SniperParts.Barrel) part else barrel,
+        if (part is SniperParts.Grip) part else grip,
+        if (part is SniperParts.Stock) part else stock,
+        if (part is SniperParts.Accessory) part else accessory,
+        capacitor
+    )
+    is SmgAssembly -> SmgAssembly(
+        manufacturer,
+        if (part is SmgParts.Barrel) part else barrel,
+        if (part is SmgParts.Grip) part else grip,
+        if (part is SmgParts.Stock) part else stock,
+        if (part is SmgParts.Accessory) part else accessory,
+        capacitor
+    )
+    is AssaultRifleAssembly -> AssaultRifleAssembly(
+        manufacturer,
+        if (part is AssaultRifleParts.Barrel) part else barrel,
+        if (part is AssaultRifleParts.Grip) part else grip,
+        if (part is AssaultRifleParts.Stock) part else stock,
+        if (part is AssaultRifleParts.Accessory) part else accessory,
+        capacitor
+    )
+    is LauncherAssembly -> LauncherAssembly(
+        manufacturer,
+        if (part is LauncherParts.Barrel) part else barrel,
+        if (part is LauncherParts.Grip) part else grip,
+        if (part is LauncherParts.Exhaust) part else exhaust,
+        if (part is LauncherParts.Accessory) part else accessory,
+        capacitor
+    )
+}
+
+/**
+ * Replaces the capacitor in this assembly by another capacitor.
+ */
+fun WeaponAssembly.replaceCapacitor(newCapacitor: Capacitor) = when (this) {
+    is PistolAssembly -> PistolAssembly(manufacturer, barrel, grip, accessory, newCapacitor)
+    is ShotgunAssembly -> ShotgunAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)
+    is SniperAssembly -> SniperAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)
+    is SmgAssembly -> SmgAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)
+    is AssaultRifleAssembly -> AssaultRifleAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)
+    is LauncherAssembly -> LauncherAssembly(manufacturer, barrel, grip, exhaust, accessory, newCapacitor)
 }

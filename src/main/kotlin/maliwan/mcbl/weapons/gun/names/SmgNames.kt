@@ -3,9 +3,8 @@ package maliwan.mcbl.weapons.gun.names
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
-import maliwan.mcbl.weapons.gun.Capacitor
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.SmgParts
-import maliwan.mcbl.weapons.gun.parts.SniperParts
 
 /**
  * @author Hannah Schellekens
@@ -50,7 +49,11 @@ object SmgNames {
 
         // Maliwan Barrel has 5 different names, based on the elemental type.
         val index = capacitor?.element.maliwanBaseNameIndex
-        val baseName = if (capacitor != null && barrel == SmgParts.Barrel.MALIWAN) {
+        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val baseName = if (customName != null) {
+            customName
+        }
+        else if (capacitor != null && barrel == SmgParts.Barrel.MALIWAN) {
             candidateBaseNames[index]
         }
         else candidateBaseNames.first()

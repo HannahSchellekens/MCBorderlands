@@ -3,7 +3,7 @@ package maliwan.mcbl.loot.gen
 import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.weapons.Elemental
-import maliwan.mcbl.weapons.gun.Capacitor
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 
 /**
  * @author Hannah Schellekens
@@ -50,12 +50,12 @@ object CapacitorTable {
         corrosive: Int,
         slag: Int,
         explosive: Int
-    ): LootPool<Capacitor> = lootPoolOf(
-        Capacitor(Elemental.PHYSICAL) to nonElemental,
-        Capacitor(Elemental.INCENDIARY) to incendiary,
-        Capacitor(Elemental.SHOCK) to shock,
-        Capacitor(Elemental.CORROSIVE) to corrosive,
-        Capacitor(Elemental.SLAG) to slag,
-        Capacitor(Elemental.EXPLOSIVE) to explosive
+    ): LootPool<Capacitor?> = lootPoolOf(
+        null to nonElemental,
+        Capacitor.INCENDIARY to incendiary,
+        Capacitor.SHOCK to shock,
+        Capacitor.CORROSIVE to corrosive,
+        Capacitor.SLAG to slag,
+        Capacitor.EXPLOSIVE to explosive
     )
 }

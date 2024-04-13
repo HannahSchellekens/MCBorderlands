@@ -4,6 +4,10 @@ import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.gun.*
+import maliwan.mcbl.weapons.gun.behaviour.CustomBaseNameProvider
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.forEachType
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 
 /**
  * @author Hannah Schellekens
@@ -27,4 +31,31 @@ object WeaponNames {
             is LauncherAssembly -> LauncherNames.nameOf(manufacturer, barrel, accessory, capacitor)
         }
     }
+}
+
+/**
+ * Checks this weapon part provides a custom base name.
+ * Returns this name, or `null` when there is no custom base name.
+ */
+fun WeaponPart.customBaseName() = customBaseName(behaviours)
+
+/**
+ * Checks this capacitor provides a custom base name.
+ * Returns this name, or `null` when there is no custom base name.
+ */
+fun Capacitor.customBaseName() = customBaseName(behaviours)
+
+/**
+ * Checks if one of these gun behaviours provides a custom base name.
+ * Returns this name, or `null` when there is no custom base name.
+ */
+fun customBaseName(behaviours: List<GunBehaviour>): String? {
+    val names = ArrayList<String>()
+    behaviours.forEachType<CustomBaseNameProvider> {
+        names += it.baseName
+    }
+    return if (names.isEmpty()) {
+        null
+    }
+    else names.joinToString(" ")
 }

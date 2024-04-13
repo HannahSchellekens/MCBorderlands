@@ -18,7 +18,7 @@ enum class Elemental(
 
     PHYSICAL("", ChatColor.WHITE.toString(), "⚔", Color.WHITE, Ticks(0)),
     EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), "\uD83D\uDCA3", Color.YELLOW, Ticks(0)),
-    INCENDIARY("Incendiary", ChatColor.GOLD.toString(), "\uD83D\uDD25", Color.ORANGE, Ticks(80)),
+    INCENDIARY("Incendiary", ChatColor.GOLD.toString(), "\uD83D\uDD25", Color.ORANGE, Ticks(100)),
     SHOCK("Shock", ChatColor.BLUE.toString(), "⚡", Color.fromRGB(37, 150, 190), Ticks(40)),
     CORROSIVE("Corrosive", ChatColor.GREEN.toString(), "☣", Color.LIME, Ticks(160)),
     SLAG("Slag", ChatColor.DARK_PURPLE.toString(), "⬇", Color.PURPLE, Ticks(160))
