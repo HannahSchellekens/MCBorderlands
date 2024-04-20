@@ -11,8 +11,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 fun LivingEntity.showHealthBar(
-    smallLength: Int = 15,
-    largeLength: Int = 25,
+    smallLength: Int = 10,
+    largeLength: Int = 20,
     smallThreshold: Double = 19.5,
     color: ChatColor = ChatColor.RED,
     statusEffects: List<Elemental> = emptyList()
@@ -42,15 +42,16 @@ fun LivingEntity.showHealthBar(
     }
     else "$statusPrefix ${ChatColor.GRAY}[$color${"|".repeat(bars)}${ChatColor.DARK_GRAY}${"|".repeat(grey)}${ChatColor.GRAY}] %.1f".format(health).trim()
 
-    // TODO: Change to display entity to not hijack the entity name.
-    customName = barText
+    val title = enemyLevel()?.title
+    val titlePrefix = title?.let { "${ChatColor.WHITE}$it " } ?: ""
+    customName = "$titlePrefix$barText"
     isCustomNameVisible = true
 }
 
 fun LivingEntity.showHealthBar(
     plugin: MCBorderlandsPlugin,
-    smallLength: Int = 15,
-    largeLength: Int = 25,
+    smallLength: Int = 10,
+    largeLength: Int = 20,
     smallThreshold: Double = 19.5,
     color: ChatColor = ChatColor.RED
 ) {

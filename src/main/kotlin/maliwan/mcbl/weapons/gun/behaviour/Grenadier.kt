@@ -18,7 +18,7 @@ open class Grenadier : PostGenerationBehaviour {
         val rifle = assembly as? AssaultRifleAssembly ?: return
         if (rifle.barrel != AssaultRifleParts.Barrel.TORGUE) return
 
-        properties.gravity = 0.04
+        properties.gravity = 0.03
         properties.bulletSpeed /= 1.5
     }
 }

@@ -1,8 +1,8 @@
 package maliwan.mcbl.loot.drops
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.entity.genericMaxHealth
-import maliwan.mcbl.loot.RarityTable
+import maliwan.mcbl.entity.EnemyLevel
+import maliwan.mcbl.entity.enemyLevel
 import maliwan.mcbl.loot.gen.WeaponGenerator
 import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.weapons.Rarity
@@ -53,19 +53,18 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
     fun dropWeaponOnDeath(event: EntityDeathEvent) {
         val living = event.entity
 
-        // Determine if there will be a drop.
-        val dropChance = if (living.genericMaxHealth >= 50.0) {
-            BADASS_DROP_CHANCE
+        val baseLevel = living.enemyLevel() ?: EnemyLevel.REGULAR
+        val level = when (living.type) {
+            in shittyWeaponDrops -> baseLevel.previousLevel.previousLevel
+            in lowWeaponDrops -> baseLevel.previousLevel
+            in highWeaponDrops -> baseLevel.nextLevel
+            else -> baseLevel
         }
-        else dropChance(living.type)
 
+        val dropChance = baseLevel.dropChance
         if (Random.nextDouble() > dropChance) return
 
-        // Determine rarity table.
-        val lootPool = if (living.genericMaxHealth >= 50.0) {
-            RarityTable.WorldDrops.badass
-        }
-        else lootTable(living.type)
+        val lootPool = level.weaponTable
 
         val generator = WeaponGenerator(rarityTable = lootPool)
         val gun = generator.generate()
@@ -75,20 +74,6 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
     }
 
     companion object {
-
-        const val BADASS_DROP_CHANCE: Double = 0.25
-
-        fun dropChance(entityType: EntityType) = when (entityType) {
-            in shittyWeaponDrops, in lowWeaponDrops -> 0.01
-            in highWeaponDrops -> 1.0
-            else -> 0.075
-        }
-
-        fun lootTable(entityType: EntityType) = when (entityType) {
-            in shittyWeaponDrops -> RarityTable.WorldDrops.shitty
-            in highWeaponDrops -> RarityTable.WorldDrops.superBadass
-            else -> RarityTable.WorldDrops.regular
-        }
 
         val shittyWeaponDrops = setOf(
             EntityType.SILVERFISH,

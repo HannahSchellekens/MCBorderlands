@@ -17,6 +17,7 @@ open class Defiler : UniqueGun, PostGenerationBehaviour {
 
         properties.splashRadius *= 1.5
         properties.reloadSpeed = Ticks((properties.reloadSpeed.ticks * 1.2).toInt())
+        properties.elementalPolicy = ElementalStatusEffects.ApplyPolicy.ADD
     }
 
     companion object {

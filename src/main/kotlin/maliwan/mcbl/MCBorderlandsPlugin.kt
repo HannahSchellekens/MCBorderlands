@@ -1,6 +1,7 @@
 package maliwan.mcbl
 
 import maliwan.mcbl.commmand.McblCommands
+import maliwan.mcbl.entity.EnemySpawner
 import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.gui.Hud
@@ -53,6 +54,11 @@ class MCBorderlandsPlugin : JavaPlugin() {
      */
     val itemParticles = ItemParticles(this)
 
+    /**
+     * Spawns custom enemies and badasses.
+     */
+    val enemySpawner = EnemySpawner(this)
+
     private fun registerAllEvents() {
         val plugin = this@MCBorderlandsPlugin
         server.pluginManager.apply {
@@ -64,6 +70,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
             registerEvents(WeaponDropOnDeath(plugin), plugin)
             registerEvents(LootChestPopulator(plugin), plugin)
             registerEvents(damageParticles, plugin)
+            registerEvents(enemySpawner, plugin)
         }
     }
 

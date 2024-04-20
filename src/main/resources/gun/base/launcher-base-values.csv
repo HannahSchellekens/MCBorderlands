@@ -6,7 +6,7 @@ fireRate	1	1	1	1	2.2
 burstCount	1	1	1	1	1
 elementalChance	0.28	0.6	0.24	0.24	0.24
 elementalDamage	1.62	2.03	1.62	1.62	1.35
-accuracy	0.788	0.899	0.749	0.717	0.788
+accuracy	0.818	0.929	0.779	0.747	0.818
 recoil	0.8	0.84	0.82	0.8	0.83
 gravity	0.005	0.005	0.005	0.005	0.005
 bulletSpeed	60	60	60	40	60

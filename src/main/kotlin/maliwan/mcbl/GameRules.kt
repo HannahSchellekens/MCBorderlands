@@ -19,7 +19,7 @@ import kotlin.math.min
  */
 open class GameRules(val plugin: MCBorderlandsPlugin) : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     fun moreBaseHealth(event: EntitySpawnEvent) {
         // Make all entities a bit more beefy to compensate for elemental damage modifiers.
         val entity = event.entity as? LivingEntity ?: return
