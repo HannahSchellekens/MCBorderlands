@@ -4,14 +4,10 @@ import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
-import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.LauncherParts
-import maliwan.mcbl.weapons.gun.parts.PistolParts
-import org.bukkit.Bukkit
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
 /**
@@ -31,7 +27,7 @@ open class Creamer : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, 
     }
 
     override fun scheduleEffects(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta) {
-        handler.scheduleEffect(bullet, 120L) { it, projectile, meta ->
+        handler.scheduleEffect(bullet, 250L) { _, projectile, meta ->
             val direction = projectile.velocity
             val speed = direction.length()
             val world = projectile.world

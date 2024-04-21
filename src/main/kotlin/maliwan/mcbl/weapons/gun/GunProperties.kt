@@ -195,6 +195,11 @@ open class GunProperties(
      * A value of 0.0 means that the bullet does not apply transfusion healing.
      */
     var transfusion: Double = 0.0,
+
+    /**
+     * How many times the bullet will bounce off surfaces.
+     */
+    var bounces: Int = 0
 ) {
 
     /**
@@ -215,6 +220,7 @@ open class GunProperties(
             gravity = gravity,
             bonusCritMultiplier = bonusCritMultiplier,
             transfusion = transfusion,
+            bouncesLeft = bounces
         )
     }
 
@@ -425,6 +431,8 @@ open class GunProperties(
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
         if (extraShotChance != other.extraShotChance) return false
         if (freeShotChance != other.freeShotChance) return false
+        if (transfusion != other.transfusion) return false
+        if (bounces != other.bounces) return false
 
         return true
     }
@@ -461,6 +469,8 @@ open class GunProperties(
         result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
         result = 12289 * result + extraShotChance.hashCode()
         result = 12289 * result + freeShotChance.hashCode()
+        result = 12289 * result + transfusion.hashCode()
+        result = 12289 * result + bounces.hashCode()
         return result
     }
 

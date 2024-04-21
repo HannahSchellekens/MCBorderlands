@@ -1,8 +1,11 @@
 package maliwan.mcbl.commmand
 
-import maliwan.mcbl.*
-import maliwan.mcbl.loot.*
+import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.loot.ManufacturerTable
+import maliwan.mcbl.loot.RarityTable
+import maliwan.mcbl.loot.WeaponClassTable
 import maliwan.mcbl.loot.gen.WeaponGenerator
+import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
@@ -17,7 +20,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.util.NoSuchElementException
 
 /**
  * @author Hannah Schellekens
@@ -243,8 +245,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "extraShotChance" -> update {
                 extraShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value"))
             }
-
             "freeShotChance" -> update { freeShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "transfusion" -> update { transfusion = value.toDoubleOrNull() ?: error("No double: $value") }
+            "bounces" -> update { bounces = value.toIntOrNull() ?: error("No int: $value") }
         }
     }
 

@@ -7,8 +7,8 @@ import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.Creamer
-import maliwan.mcbl.weapons.gun.behaviour.Greed
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.TwelvePounder
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -94,6 +94,7 @@ object LauncherParts {
         // Unique barrels.
 
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
+        TWELVE_POUNDER(Manufacturer.TORGUE, "12Pwndr", behaviours = listOf(TwelvePounder())),
         ;
 
         override val partTypeName: String = "Barrel"

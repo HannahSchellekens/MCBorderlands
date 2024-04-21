@@ -2,14 +2,18 @@ package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
-import maliwan.mcbl.util.*
+import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.compareTo
+import maliwan.mcbl.util.determineHitLocation
+import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
-import org.bukkit.*
-import org.bukkit.entity.Entity
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
-import org.bukkit.entity.Projectile
+import org.bukkit.ChatColor
+import org.bukkit.Material
+import org.bukkit.Sound
+import org.bukkit.SoundCategory
+import org.bukkit.block.BlockFace
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
@@ -22,7 +26,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.util.Vector
-import java.util.PriorityQueue
+import java.util.*
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -301,9 +305,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     }
 
     fun shootGunBullet(player: LivingEntity, gunProperties: GunProperties, directionDelta: Vector? = null) {
+        val bulletType = gunProperties.assembly?.behaviours?.first<BulletTypeProvider, EntityType> {
+            it.bulletType
+        } ?: EntityType.ARROW
+
         val initialDirection = player.eyeLocation.direction.clone()
         val direction = initialDirection.add(directionDelta ?: Vector())
-        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties) ?: return
+        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties, bulletType) ?: return
         val bulletMeta = gunProperties.bulletMeta(player)
         bullets[bullet] = bulletMeta
 
@@ -417,6 +425,17 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val bullet = event.entity
         val bulletMeta = bullets[bullet]
         if (bulletMeta != null) {
+            // Bounce if bounces are left:
+            if (event.hitEntity == null && event.hitBlock != null && event.hitBlockFace != null && bulletMeta.bouncesLeft > 0) {
+                val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
+                event.isCancelled = true
+                bulletMeta.bouncesLeft--
+
+                bullets.remove(bullet)
+                bullets[newBullet] = bulletMeta
+                return
+            }
+
             bullet.remove()
 
             val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
@@ -433,6 +452,26 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 bullets.remove(bullet)
             }
         }
+    }
+
+    /**
+     * Bounces the given bullet off the given surface, returns the newly created projectile.
+     * Does not delete the original.
+     */
+    fun bounceBullet(bullet: Entity, surface: BlockFace): Entity {
+        val newVelocity = bullet.velocity.clone()
+        when (surface) {
+            BlockFace.EAST, BlockFace.WEST -> newVelocity.setX(newVelocity.x * -1.0)
+            BlockFace.UP, BlockFace.DOWN -> newVelocity.setY(newVelocity.y * -1.0)
+            BlockFace.NORTH, BlockFace.SOUTH -> newVelocity.setZ(newVelocity.z * -1.0)
+            else -> Unit
+        }
+
+        bullet.velocity = newVelocity
+
+        val newBullet = bullet.world.spawnEntity(bullet.location, bullet.type)
+        newBullet.velocity = newVelocity
+        return newBullet
     }
 
     @EventHandler

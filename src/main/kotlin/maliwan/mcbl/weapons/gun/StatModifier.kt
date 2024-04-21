@@ -4,9 +4,9 @@ import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.asList
 import maliwan.mcbl.util.toChance
-import org.bukkit.Bukkit
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 
 /**
  * @author Hannah Schellekens
@@ -98,7 +98,7 @@ open class StatModifier(
         ),
         MAGAZINE_SIZE(
             { it.magazineSize.toDouble().asList() },
-            { stats, it -> stats.magazineSize = floor(it.first()).toInt() }
+            { stats, it -> stats.magazineSize = max(1, floor(it.first()).toInt()) }
         ),
         PELLET_COUNT(
             { it.pelletCount.toDouble().asList() },

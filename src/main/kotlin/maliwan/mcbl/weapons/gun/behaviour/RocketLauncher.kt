@@ -19,8 +19,6 @@ import org.bukkit.entity.Player
 open class RocketLauncher : PostGenerationBehaviour, PreGunShotBehaviour, PostBulletLandBehaviour {
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
-        properties.bulletSpeed = 90.0
-
         // Transfer 100% weapon damage to explosive damage.
         if (properties.elements.isEmpty()) {
             properties.elements.add(Elemental.EXPLOSIVE)

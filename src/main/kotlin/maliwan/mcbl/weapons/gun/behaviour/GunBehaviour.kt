@@ -6,7 +6,9 @@ import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import org.bukkit.entity.Entity
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 
 /**
  * Classes implementing this interface provide extra behaviour to guns outside the generic
@@ -128,6 +130,18 @@ interface PostGenerationBehaviour : GunBehaviour {
 }
 
 /**
+ * Determines which type of projectile the gun shoots.
+ */
+interface BulletTypeProvider: GunBehaviour {
+
+    /**
+     * The type of bullet that gets shot.
+     * Must be a [Projectile].
+     */
+    val bulletType: EntityType
+}
+
+/**
  * Gun has a custom base name.
  */
 interface CustomBaseNameProvider : GunBehaviour {
@@ -214,4 +228,16 @@ inline fun <reified T> List<GunBehaviour>.forEachType(action: (T) -> Unit) {
             action(behaviour)
         }
     }
+}
+
+inline fun <reified T : GunBehaviour, U> List<GunBehaviour>.first(producer: (T) -> U?): U? {
+    forEach { behaviour ->
+        if (behaviour is T) {
+            val item = producer(behaviour)
+            if (item != null) {
+                return item
+            }
+        }
+    }
+    return null
 }

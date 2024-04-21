@@ -6,8 +6,6 @@ import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import org.bukkit.entity.LivingEntity
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 /**
  * @author Hannah Schellekens
@@ -93,6 +91,11 @@ data class BulletMeta(
      * A value of 0.0 means that the bullet does not apply transfusion healing.
      */
     val transfusion: Double = 0.0,
+
+    /**
+     * How many times the bullet can still bounce.
+     */
+    var bouncesLeft: Int = 0,
 ) {
 
     /**

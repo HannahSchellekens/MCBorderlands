@@ -29,7 +29,7 @@ object LauncherBaseValues : BaseValueProvider {
      * Creates a new [GunProperties] object for launchers that is populated by the base values of `manufacturer`.
      * Does not include elemental properties, they have to be applied when the specific element is applied.
      */
-    fun newGunProperties(manufacturer: Manufacturer) = GunProperties(
+    fun newGunProperties(manufacturer: Manufacturer): GunProperties = GunProperties(
         baseDamage = baseValue(manufacturer, Stat.baseDamage),
         magazineSize = baseValue(manufacturer, Stat.magazineSize),
         reloadSpeed = baseValue(manufacturer, Stat.reloadTime),
