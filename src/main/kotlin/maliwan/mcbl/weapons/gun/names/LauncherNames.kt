@@ -42,6 +42,7 @@ object LauncherNames {
         val baseName = customName ?: nameTable[barrel.manufacturer, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 
+        val default = barrel.defaultPrefix() ?: capacitor?.defaultPrefix() ?: accessory?.defaultPrefix()
         val prefix = if (accessory != null) {
             accessoryTable[accessory, manufacturer]
                 ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and accessory $accessory")
@@ -50,6 +51,9 @@ object LauncherNames {
         else if (capacitor != null && manufacturer == Manufacturer.MALIWAN) {
             maliwanElementTable[capacitor.element, Manufacturer.MALIWAN]
                 ?: throw IllegalArgumentException("No maliwan elemental prefix found for launcher with capacitor $capacitor")
+        }
+        else if (default != null) {
+            default
         }
         else if (capacitor != null) {
             WeaponNames.elementTable[capacitor.element, manufacturer]

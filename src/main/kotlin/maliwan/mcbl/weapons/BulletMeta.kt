@@ -85,7 +85,14 @@ data class BulletMeta(
      * Normally a critical is x2 damage. The bonus crit multiplier multiplies this multiplier.
      * `null` for no bonus crit multiplier.
      */
-    var bonusCritMultiplier: Double? = null
+    var bonusCritMultiplier: Double? = null,
+
+    /**
+     * The percentage of damage that must be converted to healing for the shooter.
+     * Negative values damage the user.
+     * A value of 0.0 means that the bullet does not apply transfusion healing.
+     */
+    val transfusion: Double = 0.0,
 ) {
 
     /**

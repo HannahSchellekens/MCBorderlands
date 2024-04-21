@@ -58,9 +58,13 @@ object SmgNames {
         }
         else candidateBaseNames.first()
 
+        val default = barrel.defaultPrefix() ?: capacitor?.defaultPrefix() ?: accessory?.defaultPrefix()
         val prefix = if (accessory != null) {
             accessoryTable[accessory, manufacturer]
                 ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and accessory $accessory")
+        }
+        else if (default != null) {
+            default
         }
         else if (capacitor != null && barrel != SmgParts.Barrel.MALIWAN /* Maliwan barrels have element baked in base name */) {
             WeaponNames.elementTable[capacitor.element, manufacturer]

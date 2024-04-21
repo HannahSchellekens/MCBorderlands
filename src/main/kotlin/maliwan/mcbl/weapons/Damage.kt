@@ -1,13 +1,12 @@
 package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.entity.armorPoints
-import maliwan.mcbl.entity.showHealthBar
-import maliwan.mcbl.entity.temporarilyDisableKnockback
+import maliwan.mcbl.entity.*
 import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.util.nearbyEntities
 import maliwan.mcbl.util.showElementalParticle
+import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 
@@ -39,8 +38,14 @@ fun splashDamage(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: Bu
                     }
 
                     val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
+                    target.temporarilyDisableIframes(plugin)
                     target.damage(totalDamage, bulletMeta.shooter)
                     target.showHealthBar(plugin)
+
+                    // Heal when transfusion effect is active. Does not account for armour.
+                    // Might not even be that big of a deal.
+                    val healAmount = totalDamage * bulletMeta.transfusion
+                    bulletMeta.shooter.heal(healAmount)
 
                     if (totalDamage >= 0.01) {
                         plugin.damageParticles.showDotDamageDisplay(

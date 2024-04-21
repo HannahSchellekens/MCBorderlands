@@ -21,10 +21,14 @@ import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.util.Vector
+import java.util.PriorityQueue
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
+
+typealias ScheduledBulletEffect = (handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta) -> Unit
 
 /**
  * @author Hannah Schellekens
@@ -45,6 +49,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      * All bullets that have been shot
      */
     val bullets = HashMap<Entity, BulletMeta>()
+
+    /**
+     * All scheduled bullet effects.
+     * A list of Tuples: `(milli time for effect execution, affected bullet, action)`.
+     */
+    val scheduledBulletEffects = PriorityQueue<BulletEffect>()
 
     /**
      * The current gun executions by the players.
@@ -187,7 +197,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // Shoot for each pellet.
         repeat(gunExecution.pelletCount) { _ ->
-            player.shootGunBullet(gunExecution)
+            shootGunBullet(player, gunExecution)
         }
         player.playSound(player.location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.PLAYERS, 5.0f, 1.0f)
 
@@ -290,15 +300,20 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         } else false
     }
 
-    fun Player.shootGunBullet(gunProperties: GunProperties) {
-        val direction = eyeLocation.direction
-        val bullet = shootBullet(eyeLocation, direction, gunProperties) ?: return
-        val bulletMeta = gunProperties.bulletMeta(this)
+    fun shootGunBullet(player: LivingEntity, gunProperties: GunProperties, directionDelta: Vector? = null) {
+        val initialDirection = player.eyeLocation.direction.clone()
+        val direction = initialDirection.add(directionDelta ?: Vector())
+        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties) ?: return
+        val bulletMeta = gunProperties.bulletMeta(player)
         bullets[bullet] = bulletMeta
 
         val millisDelay = (1000.0 / gunProperties.fireRate).toLong()
         val nextShotAllowedOn = System.currentTimeMillis() + millisDelay
-        shotTimestamps[this] = nextShotAllowedOn
+        shotTimestamps[player] = nextShotAllowedOn
+
+        gunProperties.assembly?.behaviours?.forEachType<BulletEffectBehaviour> {
+            it.scheduleEffects(this, bullet, bulletMeta)
+        }
     }
 
     fun Player.applyRecoil(gunProperties: GunProperties) {
@@ -375,6 +390,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             // Update health bar after the damage has been dealt.
             targetEntity.showHealthBar(plugin)
         }
+
+        // Transfusion effect.
+        val healAmount = event.finalDamage * bulletMeta.transfusion
+        bulletMeta.shooter.heal(healAmount)
 
         bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
             it.afterBulletLands(bullet, bulletMeta)
@@ -466,8 +485,58 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     override fun run() {
         applyBulletGravity()
         cleanExpiredBullets()
+        flushExpiredEffects()
         elementalStatusEffects.tick()
         particles.tick()
+    }
+
+    /**
+     * Registers this bullet, so it will apply the MCBorderlands weapon engine to it.
+     */
+    fun registerBullet(bullet: Entity, bulletMeta: BulletMeta) {
+        bullets[bullet] = bulletMeta
+    }
+
+    /**
+     * Schedules an effect to be executed by the bullet if it still exists.
+     *
+     * @param bullet
+     *          The bullet entity that must execute the effect.
+     * @param inMillis
+     *          In how many milliseconds the effect must be executed.
+     * @param action
+     *          The action to execute when the effect should be executed.
+     */
+    fun scheduleEffect(bullet: Entity, inMillis: Long, action: ScheduledBulletEffect) {
+        if (bullet !in bullets) {
+            return
+        }
+        val scheduleTime = System.currentTimeMillis() + inMillis
+        scheduledBulletEffects.add(BulletEffect(scheduleTime, bullet, action))
+    }
+
+    private fun flushExpiredEffects() {
+        // Priority queue: sorted by lowest number, so first execution time.
+        val now = System.currentTimeMillis()
+        while (scheduledBulletEffects.isNotEmpty()) {
+            val first = scheduledBulletEffects.first()
+            val (executeTime, bullet, effect) = first
+
+            // Only execute on existing bullets.
+            val bulletMeta = bullets[bullet]
+            if (bulletMeta == null) {
+                scheduledBulletEffects.remove(first)
+                continue
+            }
+
+            // There are no effects left to schedule.
+            if (now < executeTime) {
+                break
+            }
+
+            effect(this, bullet, bulletMeta)
+            scheduledBulletEffects.remove(first)
+        }
     }
 
     private fun applyBulletGravity() = bullets.forEach { (bullet, meta) ->
@@ -486,6 +555,20 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         toRemove.forEach {
             bullets.remove(it)
             it.remove()
+        }
+    }
+
+    /**
+     * @author Hannah Schellekens
+     */
+    data class BulletEffect(
+        val scheduledMillis: Long,
+        val bullet: Entity,
+        val effect: ScheduledBulletEffect
+    ) : Comparable<BulletEffect> {
+
+        override fun compareTo(other: BulletEffect): Int {
+            return scheduledMillis.compareTo(other.scheduledMillis)
         }
     }
 }

@@ -10,6 +10,8 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * [Attribute.GENERIC_MAX_HEALTH]
@@ -22,6 +24,18 @@ val LivingEntity.genericMaxHealth: Double
  */
 val Entity.armorPoints: Double
     get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: 0.0
+
+/**
+ * Heals the target with the given amount of health.
+ * Will never apply a negative amount of health or set the health above the health limit.
+ */
+fun LivingEntity.heal(amount: Double) {
+    val minHealth = 0.0
+    val maxHealth = genericMaxHealth
+    val newAmount = health + amount
+
+    health = min(max(newAmount, minHealth), maxHealth)
+}
 
 /**
  * Set knockback resistance (scale 0.0 for no resistance, to 1.0 for full resistance).

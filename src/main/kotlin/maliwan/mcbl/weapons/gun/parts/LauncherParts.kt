@@ -6,6 +6,8 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.behaviour.Creamer
+import maliwan.mcbl.weapons.gun.behaviour.Greed
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.statModifierList
 
@@ -22,6 +24,7 @@ object LauncherParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         BANDIT(
@@ -87,6 +90,10 @@ object LauncherParts {
                 multiply(1.08, Property.BASE_DAMAGE)
             }
         ),
+
+        // Unique barrels.
+
+        CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
         ;
 
         override val partTypeName: String = "Barrel"

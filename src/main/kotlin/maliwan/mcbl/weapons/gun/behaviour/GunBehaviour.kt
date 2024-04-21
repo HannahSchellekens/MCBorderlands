@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.BulletMeta
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
@@ -59,6 +60,24 @@ interface PostBulletLandBehaviour : GunBehaviour {
      *          The meta information about the bullet.
      */
     fun afterBulletLands(bullet: Entity, meta: BulletMeta)
+}
+
+/**
+ * Adds effects to firing the bullet.
+ */
+interface BulletEffectBehaviour : GunBehaviour {
+
+    /**
+     * Schedules a new bullet effect.
+     *
+     * @param handler
+     *          The weapon handler for the plugin.
+     * @param bullet
+     *          The bullet that was shot.
+     * @param bulletMeta
+     *          Metadata for this bullet.
+     */
+    fun scheduleEffects(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta)
 }
 
 /**
@@ -149,6 +168,18 @@ interface CyanTextProvider : GunBehaviour {
  * Gun has unique properties.
  */
 interface UniqueGun : CustomBaseNameProvider, RedTextProvider
+
+/**
+ * Gun has a default prefix for gun names that should be used
+ * when no accessory is present.
+ */
+interface DefaultPrefixProvider : GunBehaviour {
+
+    /**
+     * The default prefix for the gun when no accessory is present.
+     */
+    val defaultPrefix: String
+}
 
 /**
  * Behaviour before a player reloaded.

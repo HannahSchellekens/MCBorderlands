@@ -54,7 +54,8 @@ class GunExecution(
     properties.bonusCritMultiplier,
     properties.assembly,
     properties.extraShotChance,
-    properties.freeShotChance
+    properties.freeShotChance,
+    properties.transfusion
 ) {
 
     val originalFireRate: Double = properties.fireRate

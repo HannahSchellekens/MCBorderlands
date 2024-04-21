@@ -187,7 +187,14 @@ open class GunProperties(
     /**
      * The chance for a shot to not consume ammo.
      */
-    var freeShotChance: Chance = Chance.ZERO
+    var freeShotChance: Chance = Chance.ZERO,
+
+    /**
+     * The percentage of damage that must be converted to healing for the shooter.
+     * Negative values damage the user.
+     * A value of 0.0 means that the bullet does not apply transfusion healing.
+     */
+    var transfusion: Double = 0.0,
 ) {
 
     /**
@@ -206,7 +213,8 @@ open class GunProperties(
             splashRadius = splashRadius,
             splashDamage = splashDamage,
             gravity = gravity,
-            bonusCritMultiplier = bonusCritMultiplier
+            bonusCritMultiplier = bonusCritMultiplier,
+            transfusion = transfusion,
         )
     }
 
@@ -310,6 +318,12 @@ open class GunProperties(
             placeSeparator()
             val bonus = if (weaponClass == WeaponClass.LAUNCHER) "" else "bonus "
             lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} ${bonus}elemental damage"
+        }
+
+        // Transfusion.
+        if (transfusion > 0.0001) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Heals ${"%.1f".format(transfusion * 100)}% of damage dealt"
         }
 
         // Custom information.
