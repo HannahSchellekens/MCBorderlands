@@ -2,7 +2,6 @@ package maliwan.mcbl.loot.gen
 
 import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.loot.lootPoolOf
-import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 
 /**
@@ -29,6 +28,11 @@ object CapacitorTable {
      * Will only roll elemental capacitors sometimes.
      */
     val elementSome = capacitorLootPool(100, 10, 10, 10, 10, 1)
+
+    /**
+     * Equal chance for all elements to show up except explosive.
+     */
+    val elementOnlyNoExplosive = capacitorLootPool(0, 100, 100, 100, 100, 0)
 
     /**
      * Will never roll elemental capacitors, but sometimes explosive.

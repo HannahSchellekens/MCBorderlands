@@ -96,6 +96,20 @@ object SmgParts {
             }
         ),
 
+        ERIDIAN(
+            Manufacturer.ERIDIAN,
+            Manufacturer.ERIDIAN.displayName,
+            statModifierList {
+                subtract(0.002, Property.RECOIL)
+                multiply(1.8, Property.MAGAZINE_SIZE)
+                add(1, Property.AMMO_PER_SHOT)
+                multiply(1.2, Property.ELEMENTAL_CHANCE)
+                multiply(1.8, Property.BASE_DAMAGE)
+                multiply(1.4, Property.ELEMENTAL_DAMAGE)
+            },
+            behaviours = listOf(PlasmaCaster())
+        ),
+
         // Unique barrels.
 
         BAD_TOUCH(Manufacturer.MALIWAN, "Bad Touch", behaviours = listOf(BadTouch())),

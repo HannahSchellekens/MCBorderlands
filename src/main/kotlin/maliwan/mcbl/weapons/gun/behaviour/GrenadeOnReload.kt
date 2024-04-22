@@ -5,8 +5,10 @@ import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.CustomGrenadeManager.CustomGrenade
+import maliwan.mcbl.weapons.Elemental
+import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.GunExecution
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -66,8 +68,8 @@ open class GrenadeOnReload : ReloadBehaviour {
             elementalDamage = gunExecution.elementalDamage,
             elementalPolicy = gunExecution.elementalPolicy,
             splashRadius = when (gunExecution.weaponClass) {
-                WeaponClass.LAUNCHER -> gunExecution.splashRadius
-                else -> 1.0
+                WeaponClass.LAUNCHER -> gunExecution.splashRadius * 1.1
+                else -> 1.5
             },
         )
 

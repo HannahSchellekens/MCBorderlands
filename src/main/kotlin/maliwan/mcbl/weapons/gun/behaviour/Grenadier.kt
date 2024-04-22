@@ -20,5 +20,6 @@ open class Grenadier : PostGenerationBehaviour {
 
         properties.gravity = 0.03
         properties.bulletSpeed /= 1.5
+        properties.bounces = 3
     }
 }
