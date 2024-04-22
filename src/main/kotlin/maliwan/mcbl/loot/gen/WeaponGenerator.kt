@@ -84,9 +84,9 @@ open class WeaponGenerator(
      */
     fun generateUnique(rarity: Rarity, ofType: WeaponClass? = null): GunProperties {
         val eligibleParts = if (ofType != null) {
-            UniqueGunParts.uniqueParts.filter { it.weaponClass == ofType }
+            UniqueGunParts.rareParts.filter { it.weaponClass == ofType }
         }
-        else UniqueGunParts.uniqueParts
+        else UniqueGunParts.rareParts
 
         val uniquePart = eligibleParts.random()
         val manufacturer = uniquePart.manufacturer

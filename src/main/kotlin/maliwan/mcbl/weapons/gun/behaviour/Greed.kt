@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.PistolParts
@@ -25,7 +26,7 @@ open class Greed : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, 
         return assembly.replaceCapacitor(Capacitor.INCENDIARY)
     }
 
-    override fun afterGunShot(execution: GunExecution, player: Player) {
+    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player) {
         // Running while shooting is not possible to simulate.
         // However, granting a small short speed boost on use is in line with the theme.
         player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 60, 0, true, false, false))

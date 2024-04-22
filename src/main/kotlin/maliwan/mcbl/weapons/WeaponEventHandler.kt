@@ -210,7 +210,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
-            it.afterGunShot(gunExecution, player)
+            it.afterGunShot(this, gunExecution, player)
         }
 
         // Auto reload if clip is empty.

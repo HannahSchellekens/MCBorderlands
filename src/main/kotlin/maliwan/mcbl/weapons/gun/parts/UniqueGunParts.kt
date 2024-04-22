@@ -14,7 +14,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
     )
 
-    val uniqueParts: List<UniqueGunPart> = listOf(
+    val rareParts: List<UniqueGunPart> = listOf(
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.PISTOL, Capacitor.TINDERBOX),
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.LAUNCHER, Capacitor.ROASTER_SHOCK),
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.LAUNCHER, Capacitor.ROASTER_INCENDIARY),
@@ -37,6 +37,8 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.BUFFALO),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.COBRA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.SNIPER, SniperParts.Barrel.CHERE_AMIE),
+
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SMG, SmgParts.Barrel.BANE),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.CREAMER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.TWELVE_POUNDER),

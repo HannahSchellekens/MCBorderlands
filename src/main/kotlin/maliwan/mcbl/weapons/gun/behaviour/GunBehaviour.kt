@@ -40,12 +40,14 @@ interface PostGunShotBehaviour : GunBehaviour {
     /**
      * Gets called just after a gun is shot.
      *
+     * @param handler
+     *          Weapon handler of the plugin that handled this shot.
      * @param execution
      *          From which execution the shot was.
      * @param player
      *          Who shot the gun.
      */
-    fun afterGunShot(execution: GunExecution, player: Player)
+    fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player)
 }
 
 /**
