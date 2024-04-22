@@ -39,6 +39,9 @@ open class WeaponGenerator(
 
         when (rarity) {
             Rarity.LEGENDARY -> return generateLegendary()
+            Rarity.EPIC -> if (random.nextDouble() < 0.02) {
+                return generateUnique(Rarity.EPIC)
+            }
             Rarity.RARE -> if (random.nextDouble() < 0.0667) {
                 return generateUnique(Rarity.RARE)
             }
@@ -83,10 +86,15 @@ open class WeaponGenerator(
      * Generates a new unique weapon that is not legendary+.
      */
     fun generateUnique(rarity: Rarity, ofType: WeaponClass? = null): GunProperties {
-        val eligibleParts = if (ofType != null) {
-            UniqueGunParts.rareParts.filter { it.weaponClass == ofType }
+        val baseParts = when (rarity) {
+            Rarity.EPIC -> UniqueGunParts.epicParts
+            else -> UniqueGunParts.rareParts
         }
-        else UniqueGunParts.rareParts
+
+        val eligibleParts = if (ofType != null) {
+            baseParts.filter { it.weaponClass == ofType }
+        }
+        else baseParts
 
         val uniquePart = eligibleParts.random()
         val manufacturer = uniquePart.manufacturer

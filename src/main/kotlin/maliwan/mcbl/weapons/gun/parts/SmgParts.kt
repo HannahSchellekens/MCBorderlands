@@ -6,10 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.Bane
-import maliwan.mcbl.weapons.gun.behaviour.Chulainn
-import maliwan.mcbl.weapons.gun.behaviour.Commerce
-import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -104,6 +101,7 @@ object SmgParts {
         BANE(Manufacturer.DAHL, "Bane", behaviours = listOf(Bane())),
         CHULAINN(Manufacturer.TEDIORE, "Chulainn", behaviours = listOf(Chulainn())),
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
+        CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         ;
 
         override val partTypeName: String = "Barrel"
