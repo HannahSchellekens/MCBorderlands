@@ -98,10 +98,12 @@ object SmgParts {
 
         // Unique barrels.
 
+        BAD_TOUCH(Manufacturer.MALIWAN, "Bad Touch", behaviours = listOf(BadTouch())),
         BANE(Manufacturer.DAHL, "Bane", behaviours = listOf(Bane())),
         CHULAINN(Manufacturer.TEDIORE, "Chulainn", behaviours = listOf(Chulainn())),
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
         CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
+        GOOD_TOUCH(Manufacturer.MALIWAN, "Good Touch", behaviours = listOf(GoodTouch())),
         ;
 
         override val partTypeName: String = "Barrel"
