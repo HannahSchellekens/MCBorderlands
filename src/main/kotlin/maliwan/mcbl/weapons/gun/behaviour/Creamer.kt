@@ -1,14 +1,12 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
-import maliwan.mcbl.util.modifyRandom
+import maliwan.mcbl.util.modifyAccuracy
+import maliwan.mcbl.util.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.LauncherParts
-import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
-import org.bukkit.util.Vector
 
 /**
  * @author Hannah Schellekens
@@ -40,16 +38,8 @@ open class Creamer : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, 
             )
 
             repeat(2) {
-                val accuracyModifier = 0.425
-                val newDirection = Vector(
-                    direction.x.modifyRandom(accuracyModifier),
-                    direction.y.modifyRandom(accuracyModifier),
-                    direction.z.modifyRandom(accuracyModifier)
-                )
-                val child = world.spawnEntity(projectile.location, EntityType.ARROW) as Arrow
-                child.velocity = newDirection.normalize().multiply(speed)
-                child.setGravity(false)
-
+                val newDirection = direction.modifyAccuracy(0.425)
+                val child = world.spawnBullet(projectile.location, newDirection, speed)
                 handler.registerBullet(child, childMeta)
             }
         }

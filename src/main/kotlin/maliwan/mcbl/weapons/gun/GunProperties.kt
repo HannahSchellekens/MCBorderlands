@@ -3,6 +3,7 @@ package maliwan.mcbl.weapons.gun
 import maliwan.mcbl.Keys
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.gun.behaviour.FibWeaponCard
 import org.bukkit.ChatColor
 import org.bukkit.entity.Item
 import org.bukkit.entity.LivingEntity
@@ -231,39 +232,12 @@ open class GunProperties(
         val itemMeta = itemStack.itemMeta ?: return
         itemMeta.setDisplayName("${rarity.colourPrefix}$name")
 
+        val fib = assembly?.behaviours?.firstOrNull { it is FibWeaponCard } as? FibWeaponCard
+
         val lore = ArrayList<String>()
-        lore += "${ChatColor.GRAY}${rarity.displayName} • ${weaponClass.displayName} • ${manufacturer.displayName}"
-
-        val pelletPrefix = if (pelletCount == 1) "" else "${ChatColor.WHITE}$pelletCount${ChatColor.GRAY}×"
-        lore += "${ChatColor.GRAY}Damage: ♥$pelletPrefix${ChatColor.WHITE}${baseDamage.display}"
-        lore += "${ChatColor.GRAY}Accuracy: \uD83C\uDFAF${ChatColor.WHITE}${accuracy.percentageDisplay}"
-        lore += "${ChatColor.GRAY}Fire Rate: \uD83D\uDD2B${ChatColor.WHITE}%.1f".format(fireRate)
-        lore += "${ChatColor.GRAY}Reload Speed: ♻${ChatColor.WHITE}%.1f".format(reloadSpeed.seconds)
-        lore += "${ChatColor.GRAY}Magazine Size: □${ChatColor.WHITE}%d".format(magazineSize)
-
-        // Element
-        elements.forEach { element ->
-            val parts = ArrayList<String>(2)
-
-            // Chance
-            if (element != Elemental.EXPLOSIVE) {
-                parts += "${elementalChance[element]?.percentageDisplay}"
-            }
-
-            // Damage
-            val perSecond = if (element.noDotMultiplier < 0.001) "" else "/sec"
-            if (element != Elemental.EXPLOSIVE && (elementalDamage[element]?.damage ?: 0.0) > 0.01) {
-                parts += ((elementalDamage[element]!! * 2.0).heartDisplay + perSecond)
-            }
-
-            val suffix = if (parts.isEmpty()) "" else parts.joinToString(
-                separator ="${ChatColor.GRAY} • ",
-                prefix = " ${ChatColor.GRAY}(",
-                postfix = "${ChatColor.GRAY})"
-            ) { "${ChatColor.WHITE}$it" }
-
-            lore += "${element.chatColor}${element.symbol} ${element.displayName}$suffix"
-        }
+        lore.addGunTypeToCard()
+        lore.addBaseStatsToCard(fib)
+        lore.addElementStatsToCard(fib)
 
         var separator: () -> Unit = { lore += "" }
         fun placeSeparator() = run { separator(); separator = {} }
@@ -283,51 +257,54 @@ open class GunProperties(
         }
 
         // Manufacturer gimmicks.
-        when (manufacturer) {
-            Manufacturer.HYPERION -> {
-                placeSeparator()
-                lore += "${ChatColor.WHITE}• Sustained fire increases accuracy"
+        if (fib == null || fib.showGeneratedInfo) {
+            when (manufacturer) {
+                Manufacturer.HYPERION -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}• Sustained fire increases accuracy"
+                }
+
+                Manufacturer.TEDIORE -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}• Explodes like a grenade when reloaded"
+                }
+                else -> Unit
             }
-            Manufacturer.TEDIORE -> {
-                placeSeparator()
-                lore += "${ChatColor.WHITE}• Explodes like a grenade when reloaded"
-            }
-            else -> Unit
         }
 
         // Critical damage bonus.
-        if (bonusCritMultiplier != null && bonusCritMultiplier!! > 0.0001) {
+        if (bonusCritMultiplier != null && bonusCritMultiplier!! > 0.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• +${bonusCritMultiplier!!.formatPercentage(0)} Critical Hit Damage"
         }
 
         // Melee damage bonus.
-        if (meleeDamage.damage > 1.0001) {
+        if (meleeDamage.damage > 1.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• +${meleeDamage.heartDisplay} Melee Damage"
         }
 
         // Consumes ammo per shot.
-        if (ammoPerShot > 1) {
+        if (ammoPerShot > 1 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Consumes %d ammo per shot".format(ammoPerShot)
         }
 
         // Reduced ammo per shot.
-        if (freeShotChance.chance > 0.01) {
+        if (freeShotChance.chance > 0.01 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Consumes reduced ammo per shot"
         }
 
         // Bonus elemental damage.
-        if (splashDamage.damage > 0.0001) {
+        if (splashDamage.damage > 0.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             val bonus = if (weaponClass == WeaponClass.LAUNCHER) "" else "bonus "
             lore += "${ChatColor.WHITE}• Deals ${splashDamage.heartDisplay} ${bonus}elemental damage"
         }
 
         // Transfusion.
-        if (transfusion > 0.0001) {
+        if (transfusion > 0.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Heals ${"%.1f".format(transfusion * 100)}% of damage dealt"
         }
@@ -385,6 +362,54 @@ open class GunProperties(
         itemMeta.lore = lore
         setPersistantData(itemMeta)
         itemStack.setItemMeta(itemMeta)
+    }
+
+    private fun MutableList<String>.addGunTypeToCard() {
+        this += "${ChatColor.GRAY}${rarity.displayName} • ${weaponClass.displayName} • ${manufacturer.displayName}"
+    }
+
+    private fun MutableList<String>.addBaseStatsToCard(fib: FibWeaponCard?) {
+        val showDamage = baseDamage * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+        val showAccuracy = 100 * accuracy.chance * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+        val showFireRate = fireRate * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+        val showReloadSpeed = reloadSpeed.seconds * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+        val showMagSize = magazineSize * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+
+        val pelletPrefix = if (pelletCount == 1 || fib != null) "" else "${ChatColor.WHITE}$pelletCount${ChatColor.GRAY}×"
+        this += "${ChatColor.GRAY}Damage: ♥$pelletPrefix${ChatColor.WHITE}${showDamage.heartDisplay}"
+        this += "${ChatColor.GRAY}Accuracy: \uD83C\uDFAF${ChatColor.WHITE}%.1f".format(showAccuracy) + "%"
+        this += "${ChatColor.GRAY}Fire Rate: \uD83D\uDD2B${ChatColor.WHITE}%.1f".format(showFireRate)
+        this += "${ChatColor.GRAY}Reload Speed: ♻${ChatColor.WHITE}%.1f".format(showReloadSpeed)
+        this += "${ChatColor.GRAY}Magazine Size: □${ChatColor.WHITE}%d".format(showMagSize.toInt())
+    }
+
+    private fun MutableList<String>.addElementStatsToCard(fib: FibWeaponCard?) {
+        elements.forEach { element ->
+            val parts = ArrayList<String>(2)
+
+            // Chance
+            if (element != Elemental.EXPLOSIVE) {
+                val chance = 100 * (elementalChance[element]?.chance ?: 0.0) * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+                parts += "%.1f".format(chance) + "%"
+            }
+
+            // Damage
+            val damage = elementalDamage[element]?.damage ?: 0.0
+            val showDamage = damage * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+
+            val perSecond = if (element.noDotMultiplier < 0.001) "" else "/sec"
+            if (element != Elemental.EXPLOSIVE && showDamage > 0.01) {
+                parts += Damage(showDamage * 2.0).heartDisplay + perSecond
+            }
+
+            val suffix = if (parts.isEmpty()) "" else parts.joinToString(
+                separator ="${ChatColor.GRAY} • ",
+                prefix = " ${ChatColor.GRAY}(",
+                postfix = "${ChatColor.GRAY})"
+            ) { "${ChatColor.WHITE}$it" }
+
+            this += "${element.chatColor}${element.symbol} ${element.displayName}$suffix"
+        }
     }
 
     fun setPersistantData(itemMeta: ItemMeta) = itemMeta.persistentDataContainer.apply {

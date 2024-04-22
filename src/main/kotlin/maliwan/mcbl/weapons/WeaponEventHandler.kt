@@ -431,8 +431,14 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 event.isCancelled = true
                 bulletMeta.bouncesLeft--
 
+                bullet.remove()
                 bullets.remove(bullet)
                 bullets[newBullet] = bulletMeta
+
+                bulletMeta.assembly?.forEachBehaviour<PostBulletBounceBehaviour> {
+                    it.afterBulletBounce(this, newBullet, bulletMeta)
+                }
+
                 return
             }
 

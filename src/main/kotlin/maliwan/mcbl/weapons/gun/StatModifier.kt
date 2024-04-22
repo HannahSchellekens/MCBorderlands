@@ -100,6 +100,10 @@ open class StatModifier(
             { it.magazineSize.toDouble().asList() },
             { stats, it -> stats.magazineSize = max(1, floor(it.first()).toInt()) }
         ),
+        BOUNCE_COUNT(
+            { it.bounces.toDouble().asList() },
+            { stats, it -> stats.bounces = max(1, floor(it.first()).toInt()) }
+        ),
         PELLET_COUNT(
             { it.pelletCount.toDouble().asList() },
             { stats, it -> stats.pelletCount = floor(it.first()).toInt() }

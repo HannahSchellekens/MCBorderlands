@@ -146,6 +146,9 @@ object PistolParts {
 
         // Unique barrels.
 
+        FIBBER_CRIT(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberCrit())),
+        FIBBER_SHOTGUN(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberShotgun())),
+        FIBBER_RICOCHET(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberRicochet())),
         GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
         GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
         JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),

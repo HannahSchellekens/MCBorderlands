@@ -83,6 +83,25 @@ interface BulletEffectBehaviour : GunBehaviour {
 }
 
 /**
+ * Functionality for after a bullet bounces.
+ */
+interface PostBulletBounceBehaviour : GunBehaviour {
+
+    /**
+     * Gets called after a bullet has bounced off a surface.
+     * The amount of bounces left has been decreased before this method call.
+     *
+     * @param handler
+     *          The weapon handler.
+     * @param bullet
+     *          The bullet that bounced off a surface.
+     * @param bulletMeta
+     *          The bullet meta of the bullet that bounced off a surface.
+     */
+    fun afterBulletBounce(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta)
+}
+
+/**
  * Post processor for after the gun execution has been initialized.
  */
 interface GunExecutionInitializationBehaviour : GunBehaviour {
@@ -220,6 +239,28 @@ interface ReloadBehaviour : GunBehaviour {
      *          The gun execution of the reloaded gun.
      */
     fun afterReload(player: Player, gunExecution: GunExecution) = Unit
+}
+
+/**
+ * Modifies the visuals on the weapon card to show false information.
+ */
+interface FibWeaponCard : GunBehaviour {
+
+    /**
+     * With what to multiply the original values with.
+     */
+    val fibMultiplierBase: Double
+
+    /**
+     * The maximum deviation from the [fibMultiplierBase].
+     */
+    val fibMultiplierFuzz: Double
+
+    /**
+     * Whether to show gun effect hints that are generated based on the gun stats.
+     * For example: manufacturer gimmicks, transfusion percentages, bonus elemental damage...
+     */
+    val showGeneratedInfo: Boolean
 }
 
 inline fun <reified T> List<GunBehaviour>.forEachType(action: (T) -> Unit) {
