@@ -22,8 +22,6 @@ open class Creamer : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
         LauncherParts.Barrel.MALIWAN.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
-
-        properties.transfusion = 0.02
     }
 
     override fun scheduleEffects(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta) {
@@ -62,6 +60,7 @@ open class Creamer : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, 
         val statModifiers = statModifierList {
             multiply(1.2, StatModifier.Property.BASE_DAMAGE)
             subtract(10, StatModifier.Property.PROJECTILE_SPEED)
+            add(0.02, StatModifier.Property.TRANSFUSION)
         }
     }
 }

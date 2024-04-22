@@ -150,6 +150,10 @@ open class StatModifier(
                 }
             }
         ),
+        TRANSFUSION(
+            { it.transfusion.asList() },
+            { stats, it -> stats.transfusion = it.first() }
+        ),
         ;
     }
 

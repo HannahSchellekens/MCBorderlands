@@ -154,6 +154,7 @@ object PistolParts {
         LAW(Manufacturer.DAHL, "Law", behaviours = listOf(Law())),
         POCKET_ROCKET(Manufacturer.TORGUE, "Pocket Rocket", behaviours = listOf(PocketRocket())),
         REX(Manufacturer.JAKOBS, "Rex", behaviours = listOf(Rex())),
+        RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
         TEAPOT(Manufacturer.TEDIORE, "Teapot", behaviours = listOf(Teapot())),
         ;
 

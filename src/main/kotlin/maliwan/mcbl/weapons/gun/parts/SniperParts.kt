@@ -105,6 +105,7 @@ object SniperParts {
         // Unique barrels.
 
         BUFFALO(Manufacturer.JAKOBS, "Buffalo", behaviours = listOf(Buffalo())),
+        CHERE_AMIE(Manufacturer.HYPERION, "Chère-Amie", behaviours = listOf(ChereAmie())),
         COBRA(Manufacturer.JAKOBS, "Cobra", behaviours = listOf(Cobra())),
         SLOTH(Manufacturer.DAHL, "Sloth", behaviours = listOf(Sloth())),
         ;
