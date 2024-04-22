@@ -226,6 +226,16 @@ open class GunProperties(
     }
 
     /**
+     * Adds an elemental effect to this gun.
+     */
+    fun addElement(elemental: Elemental, damage: Damage, duration: Ticks, chance: Chance) {
+        elements.add(elemental)
+        elementalDamage[elemental] = damage
+        elementalDuration[elemental] = duration
+        elementalChance[elemental] = chance
+    }
+
+    /**
      * Changes the item meta to reflect this gun's properties in the item info box.
      */
     fun applyToItem(itemStack: ItemStack) {
