@@ -8,7 +8,7 @@ import maliwan.mcbl.weapons.gun.parts.PistolParts
  */
 open class FibberShotgun : UniqueGun, PostGenerationBehaviour, FibWeaponCard {
 
-    override val baseName = "FibberS"
+    override val baseName = "Fibber"
     override val redText = "Would I lie to you?"
     override val fibMultiplierBase = 1.75
     override val fibMultiplierFuzz = 0.35

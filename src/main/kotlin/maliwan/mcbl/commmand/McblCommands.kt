@@ -75,6 +75,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "bonusCritMultiplier",
                 "extraShotChance",
                 "freeShotChance",
+                "transfusion",
+                "bounces",
+                "isPiercing"
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         } else if (args.size < 2) {
             return mutableListOf("update")
@@ -248,6 +251,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "freeShotChance" -> update { freeShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
             "transfusion" -> update { transfusion = value.toDoubleOrNull() ?: error("No double: $value") }
             "bounces" -> update { bounces = value.toIntOrNull() ?: error("No int: $value") }
+            "isPiercing" -> update { isPiercing = value.toBoolean() }
         }
     }
 

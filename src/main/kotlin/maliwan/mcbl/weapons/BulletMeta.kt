@@ -96,6 +96,11 @@ data class BulletMeta(
      * How many times the bullet can still bounce.
      */
     var bouncesLeft: Int = 0,
+
+    /**
+     * Whether the bullet should pierce entities or not.
+     */
+    var isPiercing: Boolean = false
 ) {
 
     /**

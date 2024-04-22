@@ -13,7 +13,7 @@ import org.bukkit.entity.Entity
  */
 open class FibberRicochet : UniqueGun, PostGenerationBehaviour, FibWeaponCard, PostBulletBounceBehaviour {
 
-    override val baseName = "FibberR"
+    override val baseName = "Fibber"
     override val redText = "Would I lie to you?"
     override val fibMultiplierBase = 3.3
     override val fibMultiplierFuzz = 0.84

@@ -2,10 +2,7 @@ package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
-import maliwan.mcbl.util.Chance
-import maliwan.mcbl.util.compareTo
-import maliwan.mcbl.util.determineHitLocation
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
 import org.bukkit.ChatColor
@@ -423,6 +420,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     @EventHandler
     fun removeBulletsAndSplash(event: ProjectileHitEvent) {
         val bullet = event.entity
+        val world = bullet.world
+        val location = bullet.location
+        val direction = bullet.velocity
+
         val bulletMeta = bullets[bullet]
         if (bulletMeta != null) {
             // Bounce if bounces are left:
@@ -445,7 +446,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             bullet.remove()
 
             val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
-            val hitLocation = bullet.determineHitLocation(boundingBox) ?: bullet.location
+            val hitLocation = bullet.determineHitLocation(boundingBox) ?: location
             splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
@@ -456,6 +457,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             // the damage event requires this bullet data to apply correct damage calculations.
             if (bulletMeta.assembly is LauncherAssembly || event.hitEntity !is LivingEntity) {
                 bullets.remove(bullet)
+            }
+
+            // Check if bullet must pierce, if so, create new bullet.
+            if (event.hitEntity != null && bulletMeta.isPiercing) {
+                // Continue slightly ahead to prevent getting stuck in the target.
+                val target = event.hitEntity!!
+                val size = max(target.boundingBox.widthX, target.boundingBox.widthZ) * 1.3
+                val ahead = location.add(direction.clone().normalize().multiply(max(size, target.height)))
+                val newBullet = world.spawnBullet(ahead, direction, direction.length())
+                registerBullet(newBullet, bulletMeta.copy())
             }
         }
     }

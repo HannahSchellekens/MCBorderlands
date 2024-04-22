@@ -200,7 +200,12 @@ open class GunProperties(
     /**
      * How many times the bullet will bounce off surfaces.
      */
-    var bounces: Int = 0
+    var bounces: Int = 0,
+
+    /**
+     * Whether bullets pierce enemies.
+     */
+    var isPiercing: Boolean = false
 ) {
 
     /**
@@ -221,7 +226,8 @@ open class GunProperties(
             gravity = gravity,
             bonusCritMultiplier = bonusCritMultiplier,
             transfusion = transfusion,
-            bouncesLeft = bounces
+            bouncesLeft = bounces,
+            isPiercing = isPiercing,
         )
     }
 
@@ -468,6 +474,7 @@ open class GunProperties(
         if (freeShotChance != other.freeShotChance) return false
         if (transfusion != other.transfusion) return false
         if (bounces != other.bounces) return false
+        if (isPiercing != other.isPiercing) return false
 
         return true
     }
@@ -506,6 +513,7 @@ open class GunProperties(
         result = 12289 * result + freeShotChance.hashCode()
         result = 12289 * result + transfusion.hashCode()
         result = 12289 * result + bounces.hashCode()
+        result = 12289 * result + isPiercing.hashCode()
         return result
     }
 
