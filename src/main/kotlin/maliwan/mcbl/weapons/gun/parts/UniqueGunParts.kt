@@ -55,6 +55,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.HAIL),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.DOG),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.ROKSALT),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SHOTGUN, ShotgunParts.Barrel.HEART_BREAKER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SHOTGUN, ShotgunParts.Barrel.HYDRA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SHOTGUN, ShotgunParts.Barrel.ORPHAN_MAKER),
