@@ -197,7 +197,7 @@ class AssaultRifleAssembly(
         get() = listOfNotNull(barrel, grip, stock, accessory)
 
     override val gunName: String
-        get() = AssaultRifleNames.nameOf(manufacturer, barrel, accessory, capacitor)
+        get() = AssaultRifleNames.nameOf(manufacturer, barrel, accessory, capacitor, grip.customBaseName())
 
     override fun toString(): String {
         return "AssaultRifleAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"

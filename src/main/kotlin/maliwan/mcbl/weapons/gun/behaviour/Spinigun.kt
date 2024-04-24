@@ -26,6 +26,7 @@ open class Spinigun(
 
 ) : PreGunShotBehaviour, GunExecutionInitializationBehaviour {
 
+    // TODO: Fix: This goes wrong for multiple people as this spinigun class is shared.
     private var lastShot = 0L
 
     override fun beforeGunShot(execution: GunExecution, player: Player) {

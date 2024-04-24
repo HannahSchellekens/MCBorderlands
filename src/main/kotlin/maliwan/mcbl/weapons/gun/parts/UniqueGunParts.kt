@@ -46,8 +46,9 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.RUBI),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.PISTOL, PistolParts.Barrel.POCKET_ROCKET),
 
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.BOOM_PUPPY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Grip.CHOPPER),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.DAMNED_COWBOY),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.BOOM_PUPPY),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.SNIPER, SniperParts.Barrel.SLOTH),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.BUFFALO),

@@ -2,8 +2,8 @@ package maliwan.mcbl.weapons.gun.names
 
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Manufacturer
-import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.AssaultRifleParts
+import maliwan.mcbl.weapons.gun.parts.Capacitor
 
 /**
  * @author Hannah Schellekens
@@ -28,9 +28,10 @@ object AssaultRifleNames {
         manufacturer: Manufacturer,
         barrel: AssaultRifleParts.Barrel,
         accessory: AssaultRifleParts.Accessory? = null,
-        capacitor: Capacitor? = null
+        capacitor: Capacitor? = null,
+        customBaseName: String? = null
     ): String {
-        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val customName = customBaseName ?: barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
         val baseName = customName ?: nameTable[barrel, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 

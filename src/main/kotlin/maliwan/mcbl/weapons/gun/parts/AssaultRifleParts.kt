@@ -171,6 +171,7 @@ object AssaultRifleParts {
         // Unique barrels.
 
         BOOM_PUPPY(Manufacturer.TORGUE, "Boom Puppy", behaviours = listOf(BoomPuppy())),
+        DAMNED_COWBOY(Manufacturer.BANDIT, "Damned Cowboy", behaviours = listOf(DamnedCowboy())),
         ;
 
         override val partTypeName: String = "Barrel"
@@ -275,7 +276,7 @@ object AssaultRifleParts {
         ),
 
         // Unique Grips.
-        CHOPPER(Manufacturer.VLADOF, "CHOPPER", behaviours = listOf(Chopper(), Spinigun())),
+        CHOPPER(Manufacturer.VLADOF, "CHOPPER", behaviours = listOf(Chopper())),
         ;
 
         override val partTypeName: String = "Grip"

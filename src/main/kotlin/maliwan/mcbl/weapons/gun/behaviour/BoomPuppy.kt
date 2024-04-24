@@ -25,6 +25,7 @@ open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider
         properties.isPiercing = true
         properties.bounces = 6
         properties.splashDamage = properties.baseDamage
+        properties.baseDamage *= 0.5
     }
 
     override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {
@@ -48,7 +49,7 @@ open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider
         val statModifiers = statModifierList {
             divide(1.2, StatModifier.Property.FIRE_RATE)
             subtract(2, StatModifier.Property.AMMO_PER_SHOT)
-            multiply(1.75, StatModifier.Property.SPLASH_RADIUS)
+            multiply(2.25, StatModifier.Property.SPLASH_RADIUS)
             multiply(0.22, StatModifier.Property.PROJECTILE_SPEED)
             multiply(3.5, StatModifier.Property.GRAVITY)
         }
