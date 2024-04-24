@@ -6,6 +6,8 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.behaviour.Blockhead
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -20,7 +22,8 @@ object ShotgunParts {
         override val manufacturer: Manufacturer,
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
-        override val manufacturerStatModifiers: List<StatModifier> = emptyList()
+        override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         BANDIT(
@@ -100,6 +103,10 @@ object ShotgunParts {
                 multiply(1.2, Property.BASE_DAMAGE)
             }
         ),
+
+        // Unique barrels.
+
+        BLOCKHEAD(Manufacturer.TEDIORE, "Blockhead", behaviours = listOf(Blockhead())),
         ;
 
         override val partTypeName: String = "Barrel"
