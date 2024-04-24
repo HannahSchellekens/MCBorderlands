@@ -78,4 +78,9 @@ value class Damage(val damage: Double) {
     operator fun times(other: Double) = Damage(damage * other)
     operator fun plus(other: Double) = Damage(damage + other)
     operator fun plus(other: Damage) = Damage(damage + other.damage)
+
+    companion object {
+
+        val ZERO = Damage(0.0)
+    }
 }

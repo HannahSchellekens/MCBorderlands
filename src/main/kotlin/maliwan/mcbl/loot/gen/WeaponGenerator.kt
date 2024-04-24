@@ -146,9 +146,11 @@ open class WeaponGenerator(
      */
     private fun WeaponAssembly.applyCustomLore(properties: GunProperties) {
         behaviours.forEach {
-            when (it) {
-                is RedTextProvider -> properties.redText = it.redText
-                is CyanTextProvider -> properties.cyanText = it.cyanText
+            if (it is RedTextProvider) {
+                properties.redText = it.redText
+            }
+            if (it is CyanTextProvider) {
+                properties.cyanText = it.cyanText
             }
         }
     }
