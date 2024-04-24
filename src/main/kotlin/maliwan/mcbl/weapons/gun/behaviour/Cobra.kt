@@ -2,19 +2,16 @@ package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
-import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.parts.SniperParts
-import org.bukkit.entity.Player
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 
 /**
  * @author Hannah Schellekens
  */
-open class Cobra : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour {
+open class Cobra : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, DefaultPrefixProvider {
 
     override val baseName = "Cobra"
     override val redText = "Found out about this, I was like,\n\"DAAAMN, I'm bringing that gun BACK!\""
+    override val defaultPrefix = "Tiny Tina's"
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
         SniperParts.Barrel.DAHL.applyStatModifiers(properties)

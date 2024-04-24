@@ -44,10 +44,12 @@ interface PostGunShotBehaviour : GunBehaviour {
      *          Weapon handler of the plugin that handled this shot.
      * @param execution
      *          From which execution the shot was.
+     * @param bullets
+     *          The bullet entities that were shot (one entity per pellet).
      * @param player
      *          Who shot the gun.
      */
-    fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player)
+    fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player)
 }
 
 /**

@@ -8,6 +8,7 @@ import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.SmgParts
 import maliwan.mcbl.weapons.gun.stats.*
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -41,7 +42,7 @@ open class Chulainn : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour, 
         return assembly.replaceCapacitor(Capacitor.SLAG)
     }
 
-    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player) {
+    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {
         // Self-slag.
         handler.elementalStatusEffects.applyEffect(player, ElementalStatusEffect(
             Elemental.SLAG,

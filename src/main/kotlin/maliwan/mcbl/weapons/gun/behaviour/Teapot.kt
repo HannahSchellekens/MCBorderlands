@@ -7,10 +7,11 @@ import maliwan.mcbl.weapons.gun.parts.PistolParts
 /**
  * @author Hannah Schellekens
  */
-open class Teapot : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour {
+open class Teapot : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, DefaultPrefixProvider {
 
     override val baseName = "Teapot"
     override val redText = "Havin' a tea Partay, drinkin' mah\nTeeea!"
+    override val defaultPrefix = "Tiny Tina's"
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
         PistolParts.Barrel.TEDIORE.applyStatModifiers(properties)

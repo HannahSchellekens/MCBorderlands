@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.SmgParts
 import org.bukkit.Sound
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -25,7 +26,7 @@ open class Bane : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour {
         statModifiers.applyAll(properties)
     }
 
-    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player) {
+    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {
         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 80, 3, true, false, false))
 
         player.playSound(player.location, Sound.ENTITY_HORSE_DEATH, 1f, Random.nextFloat() * 0.85f)

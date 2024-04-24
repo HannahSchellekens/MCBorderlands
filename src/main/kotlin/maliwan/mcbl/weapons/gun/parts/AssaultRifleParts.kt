@@ -6,10 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.Grenadier
-import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.Spinigun
-import maliwan.mcbl.weapons.gun.behaviour.TorgueBarrelAssaultRifle
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -170,6 +167,10 @@ object AssaultRifleParts {
             ),
             behaviours = listOf(Spinigun())
         ),
+
+        // Unique barrels.
+
+        BOOM_PUPPY(Manufacturer.TORGUE, "Boom Puppy", behaviours = listOf(BoomPuppy())),
         ;
 
         override val partTypeName: String = "Barrel"

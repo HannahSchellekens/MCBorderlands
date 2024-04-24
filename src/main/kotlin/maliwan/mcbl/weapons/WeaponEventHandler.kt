@@ -197,8 +197,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         // Shoot for each pellet.
+        val bullets = ArrayList<Entity>()
         repeat(gunExecution.pelletCount) { _ ->
-            shootGunBullet(player, gunExecution)
+            shootGunBullet(player, gunExecution)?.let { bullets.add(it) }
         }
         player.playSound(player.location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.PLAYERS, 5.0f, 1.0f)
 
@@ -207,7 +208,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
-            it.afterGunShot(this, gunExecution, player)
+            it.afterGunShot(this, gunExecution, bullets, player)
         }
 
         // Auto reload if clip is empty.
@@ -301,14 +302,14 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         } else false
     }
 
-    fun shootGunBullet(player: LivingEntity, gunProperties: GunProperties, directionDelta: Vector? = null) {
+    fun shootGunBullet(player: LivingEntity, gunProperties: GunProperties, directionDelta: Vector? = null): Entity? {
         val bulletType = gunProperties.assembly?.behaviours?.first<BulletTypeProvider, EntityType> {
             it.bulletType
         } ?: EntityType.ARROW
 
         val initialDirection = player.eyeLocation.direction.clone()
         val direction = initialDirection.add(directionDelta ?: Vector())
-        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties, bulletType) ?: return
+        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties, bulletType) ?: return null
         val bulletMeta = gunProperties.bulletMeta(player)
         bullets[bullet] = bulletMeta
 
@@ -319,6 +320,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         gunProperties.assembly?.behaviours?.forEachType<BulletEffectBehaviour> {
             it.scheduleEffects(this, bullet, bulletMeta)
         }
+
+        return bullet
     }
 
     fun Player.applyRecoil(gunProperties: GunProperties) {

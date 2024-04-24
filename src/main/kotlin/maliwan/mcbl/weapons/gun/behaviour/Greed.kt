@@ -4,6 +4,7 @@ import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.PistolParts
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -26,7 +27,7 @@ open class Greed : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, 
         return assembly.replaceCapacitor(Capacitor.INCENDIARY)
     }
 
-    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, player: Player) {
+    override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {
         // Running while shooting is not possible to simulate.
         // However, granting a small short speed boost on use is in line with the theme.
         player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 60, 0, true, false, false))

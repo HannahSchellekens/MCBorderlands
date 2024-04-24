@@ -120,6 +120,10 @@ open class StatModifier(
             { it.ammoPerShot.toDouble().asList() },
             { stats, it -> stats.ammoPerShot = it.first().toInt() }
         ),
+        SPLASH_RADIUS(
+            { it.splashRadius.asList() },
+            { stats, it -> stats.splashRadius = it.first() }
+        ),
         BONUS_CRIT_MULTIPLIER(
             { (it.bonusCritMultiplier ?: 0.0).asList() },
             { stats, it -> stats.bonusCritMultiplier = if (it.first() < 0.001) null else it.first() }
