@@ -7,6 +7,7 @@ import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.Blockhead
+import maliwan.mcbl.weapons.gun.behaviour.Dog
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.statModifierList
 
@@ -107,6 +108,7 @@ object ShotgunParts {
         // Unique barrels.
 
         BLOCKHEAD(Manufacturer.TEDIORE, "Blockhead", behaviours = listOf(Blockhead())),
+        DOG(Manufacturer.BANDIT, "Dog", behaviours = listOf(Dog())),
         ;
 
         override val partTypeName: String = "Barrel"
