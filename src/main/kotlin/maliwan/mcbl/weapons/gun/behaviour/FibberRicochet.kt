@@ -1,12 +1,14 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
-import maliwan.mcbl.util.modifyAccuracy
+import maliwan.mcbl.util.VECTOR_UP
 import maliwan.mcbl.util.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.PistolParts
 import org.bukkit.entity.Entity
+import org.bukkit.util.Vector
+import kotlin.math.PI
 
 /**
  * @author Hannah Schellekens
@@ -32,11 +34,22 @@ open class FibberRicochet : UniqueGun, PostGenerationBehaviour, FibWeaponCard, P
     }
 
     override fun afterBulletBounce(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta) {
-        repeat(8) {
-            val newDirection = bullet.velocity.normalize().modifyAccuracy(0.085)
+        fun spawnBullet(newDirection: Vector) {
             val child = bullet.world.spawnBullet(bullet.location, newDirection, bullet.velocity.length())
             handler.registerBullet(child, bulletMeta.copy())
         }
+
+        val dir = bullet.velocity.normalize()
+        val rotationAxis = dir.clone().crossProduct(dir.clone().crossProduct(VECTOR_UP))
+
+        repeat(8) {
+            spawnBullet(dir.clone().rotateAroundNonUnitAxis(rotationAxis, PI / 50))
+            rotationAxis.rotateAroundNonUnitAxis(dir, PI / 4)
+        }
+        spawnBullet(dir)
+
+        handler.unregisterBullet(bullet)
+        bullet.remove()
     }
 
     companion object {

@@ -567,6 +567,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     }
 
     /**
+     * Unregisters this bullet; removes it from the weapon engine.
+     */
+    fun unregisterBullet(bullet: Entity) {
+        bullets.remove(bullet)
+    }
+
+    /**
      * Schedules an effect to be executed by the bullet if it still exists.
      *
      * @param bullet
