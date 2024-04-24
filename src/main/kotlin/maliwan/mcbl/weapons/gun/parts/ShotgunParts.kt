@@ -6,10 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.Blockhead
-import maliwan.mcbl.weapons.gun.behaviour.Dog
-import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.HeartBreaker
+import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -111,6 +108,7 @@ object ShotgunParts {
         BLOCKHEAD(Manufacturer.TEDIORE, "Blockhead", behaviours = listOf(Blockhead())),
         DOG(Manufacturer.BANDIT, "Dog", behaviours = listOf(Dog())),
         HEART_BREAKER(Manufacturer.HYPERION, "Heart Breaker", behaviours = listOf(HeartBreaker())),
+        HYDRA(Manufacturer.JAKOBS, "Hydra", behaviours = listOf(Hydra())),
         ;
 
         override val partTypeName: String = "Barrel"
