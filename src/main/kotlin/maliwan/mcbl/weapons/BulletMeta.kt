@@ -100,7 +100,12 @@ data class BulletMeta(
     /**
      * Whether the bullet should pierce entities or not.
      */
-    var isPiercing: Boolean = false
+    var isPiercing: Boolean = false,
+
+    /**
+     * Whether the bullets themselves will deal the listed damage on the weapon card.
+     */
+    var directDamage: Boolean = true
 ) {
 
     /**

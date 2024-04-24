@@ -58,6 +58,7 @@ class GunExecution(
     properties.transfusion,
     properties.bounces,
     properties.isPiercing,
+    properties.directDamage,
 ) {
 
     val originalFireRate: Double = properties.fireRate

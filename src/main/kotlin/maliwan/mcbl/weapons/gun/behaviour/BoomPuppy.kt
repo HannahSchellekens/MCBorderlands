@@ -28,7 +28,7 @@ open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider
         properties.isPiercing = true
         properties.bounces = 6
         properties.splashDamage = properties.baseDamage
-        properties.baseDamage *= 0.5
+        properties.directDamage = false
     }
 
     override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {

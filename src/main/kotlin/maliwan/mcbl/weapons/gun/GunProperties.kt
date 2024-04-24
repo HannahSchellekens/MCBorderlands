@@ -205,7 +205,12 @@ open class GunProperties(
     /**
      * Whether bullets pierce enemies.
      */
-    var isPiercing: Boolean = false
+    var isPiercing: Boolean = false,
+
+    /**
+     * Whether the bullets themselves will deal the listed damage on the weapon card.
+     */
+    var directDamage: Boolean = true
 ) {
 
     /**
@@ -228,6 +233,7 @@ open class GunProperties(
             transfusion = transfusion,
             bouncesLeft = bounces,
             isPiercing = isPiercing,
+            directDamage = directDamage,
         )
     }
 
@@ -475,6 +481,7 @@ open class GunProperties(
         if (transfusion != other.transfusion) return false
         if (bounces != other.bounces) return false
         if (isPiercing != other.isPiercing) return false
+        if (directDamage != other.directDamage) return false
 
         return true
     }
@@ -514,6 +521,7 @@ open class GunProperties(
         result = 12289 * result + transfusion.hashCode()
         result = 12289 * result + bounces.hashCode()
         result = 12289 * result + isPiercing.hashCode()
+        result = 12289 * result + directDamage.hashCode()
         return result
     }
 

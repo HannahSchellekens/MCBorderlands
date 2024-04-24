@@ -350,6 +350,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             return
         }
 
+        if (bulletMeta.directDamage.not()) {
+            // Just splash damage: is handled by ProjectileHitEvent.
+            bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
+                it.afterBulletLands(bullet, bulletMeta)
+            }
+
+            bullets.remove(bullet)
+            return
+        }
+
         // Disable iframes for bullets, save old values to restore them later.
         val oldNoDamageTicks = targetEntity.noDamageTicks
         val oldNoDamageTicksMax = targetEntity.maximumNoDamageTicks
