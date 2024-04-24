@@ -172,6 +172,7 @@ object AssaultRifleParts {
 
         BOOM_PUPPY(Manufacturer.TORGUE, "Boom Puppy", behaviours = listOf(BoomPuppy())),
         DAMNED_COWBOY(Manufacturer.BANDIT, "Damned Cowboy", behaviours = listOf(DamnedCowboy())),
+        HAIL(Manufacturer.DAHL, "Hail", behaviours = listOf(Hail())),
         ;
 
         override val partTypeName: String = "Barrel"

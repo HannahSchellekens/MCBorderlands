@@ -468,7 +468,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 val target = event.hitEntity!!
                 val size = max(target.boundingBox.widthX, target.boundingBox.widthZ) * 1.3
                 val ahead = location.add(direction.clone().normalize().multiply(max(size, target.height)))
-                val newBullet = world.spawnBullet(ahead, direction, direction.length())
+                val newBullet = world.spawnBullet(ahead, direction, direction.length(), type = bullet.type)
                 registerBullet(newBullet, bulletMeta.copy())
             }
         }

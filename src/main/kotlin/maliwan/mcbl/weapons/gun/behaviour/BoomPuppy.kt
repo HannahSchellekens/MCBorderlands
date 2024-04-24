@@ -6,17 +6,20 @@ import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.AssaultRifleParts
 import maliwan.mcbl.weapons.splashDamage
 import org.bukkit.entity.Entity
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
 /**
  * @author Hannah Schellekens
  */
-open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, PostBulletBounceBehaviour, PostGunShotBehaviour {
+open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, PostBulletBounceBehaviour,
+    PostGunShotBehaviour, BulletTypeProvider {
 
     override val baseName = "Boom Puppy"
     override val redText = "Boom! Boom! Boom! BOOM!\nBOOOM!!!! GOOD DOGGY!!!"
     override val defaultPrefix = "Tiny Tina's"
+    override val bulletType = EntityType.SNOWBALL
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
         AssaultRifleParts.Barrel.TORGUE.applyStatModifiers(properties)
