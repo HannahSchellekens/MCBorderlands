@@ -175,6 +175,7 @@ object AssaultRifleParts {
         HAIL(Manufacturer.DAHL, "Hail", behaviours = listOf(Hail())),
         SCORPIO(Manufacturer.JAKOBS, "Scorpio", behaviours = listOf(Scorpio())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
+        STOMPER(Manufacturer.JAKOBS, "Stomper", behaviours = listOf(Stomper())),
         ;
 
         override val partTypeName: String = "Barrel"

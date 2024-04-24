@@ -50,6 +50,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SCORPIO),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.DAMNED_COWBOY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.STINKPOT),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.STOMPER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.BOOM_PUPPY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.HAIL),
 
