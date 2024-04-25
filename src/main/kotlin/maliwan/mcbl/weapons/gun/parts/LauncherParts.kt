@@ -6,6 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
+import maliwan.mcbl.weapons.gun.behaviour.Badaboom
 import maliwan.mcbl.weapons.gun.behaviour.Creamer
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.TwelvePounder
@@ -93,6 +94,7 @@ object LauncherParts {
 
         // Unique barrels.
 
+        BADABOOM(Manufacturer.BANDIT, "Badaboom", behaviours = listOf(Badaboom())),
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
         TWELVE_POUNDER(Manufacturer.TORGUE, "12Pwndr", behaviours = listOf(TwelvePounder())),
         ;

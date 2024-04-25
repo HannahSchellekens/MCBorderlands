@@ -134,7 +134,10 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
 
     fun generateWeaponFromArguments(player: Player, args: List<String>) {
         val number = args.firstNotNullOfOrNull { it.toIntOrNull() } ?: 1
-        val unique = args.any { "unique".equals(it, ignoreCase = true) }
+        val unique = args.any {
+            "unique".equals(it, ignoreCase = true) || "legendary".equals(it, ignoreCase = true) ||
+                    "pearlescent".equals(it, ignoreCase = true)
+        }
 
         val weaponClass = WeaponClass.entries.firstOrNull { wc -> args.any { wc.name.equals(it, ignoreCase = true) } }
         val rarity = Rarity.entries.firstOrNull { r -> args.any { r.name.equals(it, ignoreCase = true) } }

@@ -10,8 +10,10 @@ import maliwan.mcbl.weapons.gun.WeaponPart
 object UniqueGunParts {
 
     val legendaryParts: List<UniqueGunPart> = listOf(
-        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
+        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
+
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.LAUNCHER, LauncherParts.Barrel.BADABOOM),
     )
 
     val epicParts: List<UniqueGunPart> = listOf(
