@@ -286,7 +286,7 @@ fun WeaponAssembly.replacePart(part: WeaponPart) = when (this) {
 /**
  * Replaces the capacitor in this assembly by another capacitor.
  */
-fun WeaponAssembly.replaceCapacitor(newCapacitor: Capacitor) = when (this) {
+fun WeaponAssembly.replaceCapacitor(newCapacitor: Capacitor?) = when (this) {
     is PistolAssembly -> PistolAssembly(manufacturer, barrel, grip, accessory, newCapacitor)
     is ShotgunAssembly -> ShotgunAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)
     is SniperAssembly -> SniperAssembly(manufacturer, barrel, grip, stock, accessory, newCapacitor)

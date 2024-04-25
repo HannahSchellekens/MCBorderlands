@@ -6,7 +6,7 @@ import maliwan.mcbl.weapons.gun.*
 /**
  * @author Hannah Schellekens
  */
-open class Hellfire : UniqueGun, PostGenerationBehaviour {
+open class HellFire : UniqueGun, PostGenerationBehaviour {
 
     override val baseName = "HellFire"
     override val redText = "We don't need no water..."
@@ -24,10 +24,11 @@ open class Hellfire : UniqueGun, PostGenerationBehaviour {
     companion object {
 
         val statModifiers = statModifierList {
-            add(0.025, StatModifier.Property.ELEMENTAL_CHANCE)
+            add(0.0525, StatModifier.Property.ELEMENTAL_CHANCE)
             multiply(1.15, StatModifier.Property.MAGAZINE_SIZE)
             subtract(0.015, StatModifier.Property.ACCURACY)
-            divide(1.01, StatModifier.Property.BASE_DAMAGE)
+            multiply(1.1, StatModifier.Property.ELEMENTAL_DAMAGE)
+            multiply(1.1, StatModifier.Property.FIRE_RATE)
         }
     }
 }

@@ -18,7 +18,7 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     EXPLOSIVE(Elemental.EXPLOSIVE, "Explosive"),
 
     // Unique capacitors.
-    HELLFIRE(Elemental.INCENDIARY, "HellFire", Hellfire()), /* SMG */
+    HELLFIRE(Elemental.INCENDIARY, "HellFire", HellFire()), /* SMG */
     DEFILER(Elemental.CORROSIVE, "Defiler", Defiler()), /* PISTOL */
     TINDERBOX(Elemental.INCENDIARY, "Tinderbox", Tinderbox()), /* PISTOL */
     ROASTER_SHOCK(Elemental.SHOCK, "Roaster", Roaster(Elemental.SHOCK)), /* LAUNCHER */

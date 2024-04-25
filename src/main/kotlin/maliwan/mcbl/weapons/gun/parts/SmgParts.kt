@@ -112,12 +112,14 @@ object SmgParts {
 
         // Unique barrels.
 
+        ANARCHY(Manufacturer.TEDIORE, "Anarchy", behaviours = listOf(Anarchy())),
         BAD_TOUCH(Manufacturer.MALIWAN, "Bad Touch", behaviours = listOf(BadTouch())),
         BANE(Manufacturer.DAHL, "Bane", behaviours = listOf(Bane())),
         BONE_SHREDDER(Manufacturer.BANDIT, "Bone Shredder", behaviours = listOf(BoneShredder())),
         CHULAINN(Manufacturer.TEDIORE, "Chulainn", behaviours = listOf(Chulainn())),
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
         CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
+        DOUBLE_ANARCHY(Manufacturer.TEDIORE, "Double Anarchy", behaviours = listOf(DoubleAnarchy())),
         GOOD_TOUCH(Manufacturer.MALIWAN, "Good Touch", behaviours = listOf(GoodTouch())),
         ;
 
