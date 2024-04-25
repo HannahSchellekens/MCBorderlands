@@ -1,15 +1,12 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
-import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.parts.ShotgunParts
-import org.bukkit.entity.Entity
 
 /**
  * @author Hannah Schellekens
  */
-open class OrphanMaker : UniqueGun, CyanTextProvider, PostGenerationBehaviour, DefaultPrefixProvider,
-    PostBulletLandBehaviour {
+open class OrphanMaker : UniqueGun, CyanTextProvider, PostGenerationBehaviour, DefaultPrefixProvider {
 
     override val baseName = "Orphan Maker"
     override val redText = "Makes Orphans. Often."
@@ -21,10 +18,6 @@ open class OrphanMaker : UniqueGun, CyanTextProvider, PostGenerationBehaviour, D
         statModifiers.applyAll(properties)
 
         properties.pelletCount = 2
-    }
-
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta) {
-
     }
 
     companion object {

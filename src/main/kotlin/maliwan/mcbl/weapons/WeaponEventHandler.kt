@@ -184,7 +184,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     /**
      * Executes one gunshot from the given gun execution.
      */
-    fun shootGun(player: Player, gunExecution: GunExecution, consumeAmmo: Boolean = true) {
+    fun shootGun(player: Player, gunExecution: GunExecution, consumeAmmo: Boolean = true, triggerAfterGunShot: Boolean = true) {
         val inventory = plugin.inventoryManager[player]
         val ammoLeft = inventory[gunExecution.weaponClass]
         if (gunExecution.clip <= 0 || ammoLeft <= 0) {
@@ -206,8 +206,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             removeAmmo(player, gunExecution)
         }
 
-        gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
-            it.afterGunShot(this, gunExecution, bullets, player)
+        if (triggerAfterGunShot) {
+            gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
+                it.afterGunShot(this, gunExecution, bullets, player)
+            }
         }
 
         // Auto reload if clip is empty.
@@ -352,7 +354,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         if (bulletMeta.directDamage.not()) {
             // Just splash damage: is handled by ProjectileHitEvent.
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-                it.afterBulletLands(bullet, bulletMeta)
+                it.afterBulletLands(bullet, bulletMeta, null)
             }
 
             bullets.remove(bullet)
@@ -413,7 +415,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         bulletMeta.shooter.heal(healAmount)
 
         bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-            it.afterBulletLands(bullet, bulletMeta)
+            it.afterBulletLands(bullet, bulletMeta, targetEntity)
         }
 
         bullets.remove(bullet)
@@ -462,7 +464,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-                it.afterBulletLands(bullet, bulletMeta)
+                it.afterBulletLands(bullet, bulletMeta, null)
             }
 
             // Only remove the bullet when not hitting a living entity because

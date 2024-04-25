@@ -11,6 +11,7 @@ import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
 /**
@@ -31,7 +32,7 @@ open class RocketLauncher : PostGenerationBehaviour, PreGunShotBehaviour, PostBu
         properties.splashDamage += properties.baseDamage
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta) {
+    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?) {
         val particle = if (meta.splashRadius > 2.75) Particle.EXPLOSION_HUGE else Particle.EXPLOSION_LARGE
         bullet.world.spawnParticle(particle, bullet.location, 1)
         bullet.world.playSound(bullet.location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 12f, 1f)

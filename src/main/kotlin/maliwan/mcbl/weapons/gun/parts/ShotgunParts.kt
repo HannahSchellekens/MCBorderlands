@@ -111,6 +111,7 @@ object ShotgunParts {
         HYDRA(Manufacturer.JAKOBS, "Hydra", behaviours = listOf(Hydra())),
         ORPHAN_MAKER(Manufacturer.JAKOBS, "Orphan Maker", behaviours = listOf(OrphanMaker())),
         ROKSALT(Manufacturer.JAKOBS, "RokSalt", behaviours = listOf(RokSalt())),
+        SLEDGES_SHOTGUN(Manufacturer.JAKOBS, "Sledge's", behaviours = listOf(SledgesShotgun())),
         ;
 
         override val partTypeName: String = "Barrel"

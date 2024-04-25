@@ -5,10 +5,7 @@ import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
-import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
-import org.bukkit.entity.Projectile
+import org.bukkit.entity.*
 
 /**
  * Classes implementing this interface provide extra behaviour to guns outside the generic
@@ -64,8 +61,10 @@ interface PostBulletLandBehaviour : GunBehaviour {
      *          The bullet entity that landed.
      * @param meta
      *          The meta information about the bullet.
+     * @param targetEntity
+     *          The target entity that was hit (directly) by the bullet.
      */
-    fun afterBulletLands(bullet: Entity, meta: BulletMeta)
+    fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?)
 }
 
 /**
