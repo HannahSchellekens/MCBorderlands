@@ -8,7 +8,7 @@ import maliwan.mcbl.weapons.gun.parts.SmgParts
  */
 open class DoubleAnarchy : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour {
 
-    override val baseName = "Anarchy"
+    override val baseName = "Double Anarchy"
     override val redText = "I thought the HellFire was OP..."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {

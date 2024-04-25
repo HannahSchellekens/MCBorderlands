@@ -121,6 +121,7 @@ object SmgParts {
         CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         DOUBLE_ANARCHY(Manufacturer.TEDIORE, "Double Anarchy", behaviours = listOf(DoubleAnarchy())),
         GOOD_TOUCH(Manufacturer.MALIWAN, "Good Touch", behaviours = listOf(GoodTouch())),
+        SLAGGA(Manufacturer.BANDIT, "Slagga", behaviours = listOf(Slagga())),
         ;
 
         override val partTypeName: String = "Barrel"

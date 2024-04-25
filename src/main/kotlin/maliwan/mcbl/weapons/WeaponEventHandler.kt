@@ -115,8 +115,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         event.player.apply {
             if (isShotCooldownOver()) {
-                // Slightly increase it. experiments show fire rate is generally lower than expected.
-                val fireRate = execution.fireRate / 0.8
+                val fireRate = execution.fireRate
 
                 // Fire Rate: for regular clicking there is a max fire rate of 6 shots per second.
                 // Use scheduled bursts to fake a higher fire rate.
