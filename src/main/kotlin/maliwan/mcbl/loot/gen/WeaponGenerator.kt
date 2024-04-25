@@ -79,7 +79,12 @@ open class WeaponGenerator(
             is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(legendaryPart.part)
         }
 
-        return properties.applyAssembly(assembly, Rarity.LEGENDARY)
+        var updatedAssembly = assembly
+        assembly.behaviours.forEachType<UpdateAssemblyBehaviour> {
+            updatedAssembly = it.updateAssembly(updatedAssembly)
+        }
+
+        return properties.applyAssembly(updatedAssembly, Rarity.LEGENDARY)
     }
 
     /**

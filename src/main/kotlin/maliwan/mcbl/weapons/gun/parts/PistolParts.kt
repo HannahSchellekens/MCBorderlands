@@ -150,6 +150,7 @@ object PistolParts {
         FIBBER_SHOTGUN(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberShotgun())),
         FIBBER_RICOCHET(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberRicochet())),
         GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
+        GUB(Manufacturer.BANDIT, "Gub", behaviours = listOf(Gub())),
         GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
         JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),
         LADY_FINGER(Manufacturer.DAHL, "Lady Finger", behaviours = listOf(LadyFinger())),
