@@ -56,3 +56,30 @@ fun World.spawnBullet(location: Location, direction: Vector, speed: Double, type
     bullet.setGravity(false)
     return bullet
 }
+
+/**
+ * Simulates the arc of the trajectory of a projectile.
+ *
+ * @param velocity
+ *          The starting velocity of the projectile.
+ * @param tickCount
+ *          Look forward this many ticks.
+ * @param gravity
+ *          The gravity in blocks/tick.
+ * @param action
+ *          The action to execute for every location and tick index.
+ */
+fun Location.simulateBulletArc(
+    velocity: Vector,
+    tickCount: Int,
+    gravity: Double,
+    action: (location: Vector, tick: Int) -> Unit
+) {
+    val currentLocation = toVector()
+
+    repeat(tickCount) {
+        currentLocation.add(velocity)
+        currentLocation.add(Vector(0.0, gravity, 0.0))
+        action(currentLocation, it)
+    }
+}

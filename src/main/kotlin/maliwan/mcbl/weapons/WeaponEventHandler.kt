@@ -625,7 +625,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
     private fun homingEffect() = bullets.forEach { (bullet, meta) ->
         if (meta.homingStrength > 0.00001) {
-            bullet.tickHomingBullet(bullet, meta)
+            tickHomingBullet(bullet, meta)
         }
     }
 

@@ -123,6 +123,11 @@ data class BulletMeta(
      * 1.0 means instant homing.
      */
     var homingStrength: Double = 0.0,
+
+    /**
+     * The target to home in to.
+     */
+    var homingTarget: LivingEntity? = null,
 ) {
 
     /**
