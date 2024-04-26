@@ -18,3 +18,10 @@ fun Vector.modifyAccuracy(maxModifier: Double) = Vector(
     y.modifyRandom(maxModifier),
     z.modifyRandom(maxModifier)
 )
+
+/**
+ * Keeps the direction, but sets the length of the vector.
+ */
+fun Vector.setLength(length: Double): Vector {
+    return normalize().multiply(length)
+}

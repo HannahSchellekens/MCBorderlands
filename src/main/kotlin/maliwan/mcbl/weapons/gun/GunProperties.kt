@@ -210,7 +210,24 @@ open class GunProperties(
     /**
      * Whether the bullets themselves will deal the listed damage on the weapon card.
      */
-    var directDamage: Boolean = true
+    var directDamage: Boolean = true,
+
+    /**
+     * How many ticks to look forward for potential targets to home in on.
+     */
+    var homingTargetDistance: Double = 0.0,
+
+    /**
+     * In how many blocks radius to look for possible targets after traversing [homingTargetDistance].
+     */
+    var homingTargetRadius: Double = 0.0,
+
+    /**
+     * How quickly to home in on targets.
+     * 0.0 means no homing.
+     * 1.0 means instant homing.
+     */
+    var homingStrength: Double = 0.0,
 ) {
 
     /**
@@ -234,6 +251,9 @@ open class GunProperties(
             bouncesLeft = bounces,
             isPiercing = isPiercing,
             directDamage = directDamage,
+            homingTargetDistance = homingTargetDistance,
+            homingTargetRadius = homingTargetRadius,
+            homingStrength = homingStrength,
         )
     }
 

@@ -77,7 +77,10 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "freeShotChance",
                 "transfusion",
                 "bounces",
-                "isPiercing"
+                "isPiercing",
+                "homingTargetDistance",
+                "homingTargetRadius",
+                "homingStrength"
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         } else if (args.size < 2) {
             return mutableListOf("update")
@@ -258,6 +261,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "transfusion" -> update { transfusion = value.toDoubleOrNull() ?: error("No double: $value") }
             "bounces" -> update { bounces = value.toIntOrNull() ?: error("No int: $value") }
             "isPiercing" -> update { isPiercing = value.toBoolean() }
+            "homingTargetDistance" -> update { homingTargetDistance = value.toDoubleOrNull() ?: error("No double: $value") }
+            "homingTargetRadius" -> update { homingTargetRadius = value.toDoubleOrNull() ?: error("No double: $value") }
+            "homingStrength" -> update { homingStrength = value.toDoubleOrNull() ?: error("No double: $value") }
         }
     }
 

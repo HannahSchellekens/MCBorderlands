@@ -553,8 +553,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
      * Apply bullet physics.
      */
     override fun run() {
-        applyBulletGravity()
         cleanExpiredBullets()
+        applyBulletGravity()
+        homingEffect()
         flushExpiredEffects()
         elementalStatusEffects.tick()
         particles.tick()
@@ -620,6 +621,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val newVelocity = bullet.velocity.clone()
         newVelocity.y -= meta.gravity
         bullet.velocity = newVelocity
+    }
+
+    private fun homingEffect() = bullets.forEach { (bullet, meta) ->
+        if (meta.homingStrength > 0.00001) {
+            bullet.tickHomingBullet(bullet, meta)
+        }
     }
 
     private fun cleanExpiredBullets() {
