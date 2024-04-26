@@ -15,6 +15,7 @@ object ManufacturerTable {
     object Weapons {
 
         val generation = lootPoolOf(
+            Manufacturer.ATLAS to 12,
             Manufacturer.MALIWAN to 12,
             Manufacturer.JAKOBS to 12,
             Manufacturer.TEDIORE to 12,

@@ -69,5 +69,8 @@ class Stat<T>(
         val freeShotChance = Stat("freeShotChance") {
             Chance(it.toDoubleOrNull() ?: error("Invalid freeShotChance double <$it>"))
         }
+        val homingStrength = Stat("homingStrength") {
+            it.toDoubleOrNull() ?: error("Invalid homingStrength double <$it>")
+        }
     }
 }

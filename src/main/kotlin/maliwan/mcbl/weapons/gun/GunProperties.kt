@@ -215,12 +215,12 @@ open class GunProperties(
     /**
      * How many ticks to look forward for potential targets to home in on.
      */
-    var homingTargetDistance: Double = 0.0,
+    var homingTargetDistance: Double = 5.0,
 
     /**
      * In how many blocks radius to look for possible targets after traversing [homingTargetDistance].
      */
-    var homingTargetRadius: Double = 0.0,
+    var homingTargetRadius: Double = 5.0,
 
     /**
      * How quickly to home in on targets.
@@ -349,6 +349,12 @@ open class GunProperties(
         if (transfusion > 0.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Heals ${"%.1f".format(transfusion * 100)}% of damage dealt"
+        }
+
+        // Transfusion.
+        if (homingStrength > 0.00001 && (fib == null || fib.showGeneratedInfo)) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Bullets home in on targets"
         }
 
         // Custom information.

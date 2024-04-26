@@ -41,6 +41,7 @@ object PistolBaseValues : BaseValueProvider {
         bulletSpeed = baseValue(manufacturer, Stat.bulletSpeed),
         bonusCritMultiplier = baseValue(manufacturer, Stat.bonusCritModifier),
         splashRadius = baseValue(manufacturer, Stat.splashRadius),
-        ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot)
+        ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot),
+        homingStrength = baseValue(manufacturer, Stat.homingStrength),
     )
 }

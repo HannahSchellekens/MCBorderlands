@@ -1,12 +1,13 @@
 package maliwan.mcbl.weapons.gun.parts
 
+import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.loot.toUniformLootPool
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.pistol.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
@@ -26,34 +27,20 @@ object PistolParts {
         override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
-        MALIWAN(
-            Manufacturer.MALIWAN,
-            Manufacturer.MALIWAN.displayName,
+        ATLAS(
+            Manufacturer.ATLAS,
+            Manufacturer.ATLAS.displayName,
             statModifierList {
+                add(0.014, Property.HOMING_STRENGTH)
+                multiply(1.05, Property.BASE_DAMAGE)
+                multiply(1.05, Property.FIRE_RATE)
                 add(0.005, Property.ACCURACY)
-                add(0.001, Property.RECOIL)
-                multiply(1.15, Property.ELEMENTAL_DAMAGE)
             },
             statModifierList {
-                add(0.003, Property.ACCURACY)
-                multiply(1.095, Property.ELEMENTAL_DAMAGE)
-                add(0.1, Property.ELEMENTAL_CHANCE)
-                multiply(1.1, Property.BASE_DAMAGE)
-            }
-        ),
-
-        VLADOF(
-            Manufacturer.VLADOF,
-            Manufacturer.VLADOF.displayName,
-            statModifierList {
-                multiply(1.3, Property.FIRE_RATE)
-                add(-0.001, Property.RECOIL)
-                multiply(1.28, Property.MAGAZINE_SIZE)
-                add(-0.025, Property.ACCURACY)
-            },
-            statModifierList {
-                multiply(1.2, Property.MAGAZINE_SIZE)
-                multiply(1.1, Property.BASE_DAMAGE)
+                add(0.007, Property.HOMING_STRENGTH)
+                multiply(1.25, Property.BASE_DAMAGE)
+                multiply(1.15, Property.FIRE_RATE)
+                add(0.015, Property.ACCURACY)
             }
         ),
 
@@ -118,6 +105,22 @@ object PistolParts {
             }
         ),
 
+        MALIWAN(
+            Manufacturer.MALIWAN,
+            Manufacturer.MALIWAN.displayName,
+            statModifierList {
+                add(0.005, Property.ACCURACY)
+                add(0.001, Property.RECOIL)
+                multiply(1.15, Property.ELEMENTAL_DAMAGE)
+            },
+            statModifierList {
+                add(0.003, Property.ACCURACY)
+                multiply(1.095, Property.ELEMENTAL_DAMAGE)
+                add(0.1, Property.ELEMENTAL_CHANCE)
+                multiply(1.1, Property.BASE_DAMAGE)
+            }
+        ),
+
         TEDIORE(
             Manufacturer.TEDIORE,
             Manufacturer.TEDIORE.displayName,
@@ -142,6 +145,21 @@ object PistolParts {
                 subtract(0.05, Property.FIRE_RATE)
                 multiply(1.2, Property.BASE_DAMAGE)
                 add(3, Property.MAGAZINE_SIZE)
+            }
+        ),
+
+        VLADOF(
+            Manufacturer.VLADOF,
+            Manufacturer.VLADOF.displayName,
+            statModifierList {
+                multiply(1.3, Property.FIRE_RATE)
+                add(-0.001, Property.RECOIL)
+                multiply(1.28, Property.MAGAZINE_SIZE)
+                add(-0.025, Property.ACCURACY)
+            },
+            statModifierList {
+                multiply(1.2, Property.MAGAZINE_SIZE)
+                multiply(1.1, Property.BASE_DAMAGE)
             }
         ),
 
@@ -170,10 +188,20 @@ object PistolParts {
         companion object {
 
             val commonBarrels = setOf(
-                MALIWAN, VLADOF, BANDIT, DAHL, HYPERION, JAKOBS, TEDIORE, TORGUE
+                MALIWAN, VLADOF, BANDIT, DAHL, HYPERION, JAKOBS, TEDIORE, TORGUE, ATLAS
             )
 
-            val commonLootPool = commonBarrels.toUniformLootPool()
+            val commonLootPool = lootPoolOf(
+                ATLAS to 8,
+                BANDIT to 10,
+                DAHL to 10,
+                HYPERION to 10,
+                JAKOBS to 10,
+                MALIWAN to 10,
+                TEDIORE to 10,
+                TORGUE to 10,
+                VLADOF to 10,
+            )
         }
     }
 
@@ -187,30 +215,24 @@ object PistolParts {
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
     ) : WeaponPart {
 
-        MALIWAN(
-            Manufacturer.MALIWAN,
-            Manufacturer.MALIWAN.displayName,
+        ATLAS(
+            Manufacturer.ATLAS,
+            Manufacturer.ATLAS.displayName,
             statModifierList {
-                multiply(1.2, Property.ELEMENTAL_CHANCE)
-                divide(1.15, Property.RELOAD_SPEED)
+                add(1, Property.MAGAZINE_SIZE)
+                divide(1.1, Property.RELOAD_SPEED)
+                add(0.0008, Property.RECOIL)
+                multiply(1.05, Property.FIRE_RATE)
+                add(0.005, Property.ACCURACY)
             },
             statModifierList {
-                add(3, Property.MAGAZINE_SIZE)
-                divide(1.217, Property.RELOAD_SPEED)
-            }
-        ),
-
-        VLADOF(
-            Manufacturer.VLADOF,
-            Manufacturer.VLADOF.displayName,
-            statModifierList {
-                multiply(1.12, Property.FIRE_RATE)
-                subtract(0.018, Property.ACCURACY)
-                divide(1.06, Property.BASE_DAMAGE)
-            },
-            statModifierList {
-                add(4, Property.MAGAZINE_SIZE)
-                divide(1.3, Property.RELOAD_SPEED)
+                add(5, Property.MAGAZINE_SIZE)
+                divide(1.35, Property.RELOAD_SPEED)
+                add(0.002, Property.RECOIL)
+                multiply(1.15, Property.FIRE_RATE)
+                add(0.025, Property.ACCURACY)
+                multiply(1.15, Property.BASE_DAMAGE)
+                add(0.007, Property.HOMING_STRENGTH)
             }
         ),
 
@@ -271,6 +293,19 @@ object PistolParts {
             }
         ),
 
+        MALIWAN(
+            Manufacturer.MALIWAN,
+            Manufacturer.MALIWAN.displayName,
+            statModifierList {
+                multiply(1.2, Property.ELEMENTAL_CHANCE)
+                divide(1.15, Property.RELOAD_SPEED)
+            },
+            statModifierList {
+                add(3, Property.MAGAZINE_SIZE)
+                divide(1.217, Property.RELOAD_SPEED)
+            }
+        ),
+
         TEDIORE(
             Manufacturer.TEDIORE,
             Manufacturer.TEDIORE.displayName,
@@ -299,6 +334,20 @@ object PistolParts {
                 add(3, Property.MAGAZINE_SIZE)
             }
         ),
+
+        VLADOF(
+            Manufacturer.VLADOF,
+            Manufacturer.VLADOF.displayName,
+            statModifierList {
+                multiply(1.12, Property.FIRE_RATE)
+                subtract(0.018, Property.ACCURACY)
+                divide(1.06, Property.BASE_DAMAGE)
+            },
+            statModifierList {
+                add(4, Property.MAGAZINE_SIZE)
+                divide(1.3, Property.RELOAD_SPEED)
+            }
+        ),
         ;
 
         override val partTypeName: String = "Grip"
@@ -306,18 +355,17 @@ object PistolParts {
 
         companion object {
 
-            val commonGrips = setOf(
-                MALIWAN,
-                VLADOF,
-                BANDIT,
-                DAHL,
-                HYPERION,
-                JAKOBS,
-                TEDIORE,
-                TORGUE
+            val commonLootPool = lootPoolOf(
+                ATLAS to 8,
+                BANDIT to 10,
+                DAHL to 10,
+                HYPERION to 10,
+                JAKOBS to 10,
+                MALIWAN to 10,
+                TEDIORE to 10,
+                TORGUE to 10,
+                VLADOF to 10,
             )
-
-            val commonLootPool = commonGrips.toUniformLootPool()
         }
     }
 

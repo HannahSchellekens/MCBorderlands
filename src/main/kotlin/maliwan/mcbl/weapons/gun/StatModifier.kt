@@ -171,6 +171,10 @@ open class StatModifier(
             { it.transfusion.asList() },
             { stats, it -> stats.transfusion = it.first() }
         ),
+        HOMING_STRENGTH(
+            { it.homingStrength.asList() },
+            { stats, it -> stats.homingStrength = it.first() }
+        ),
         ;
     }
 

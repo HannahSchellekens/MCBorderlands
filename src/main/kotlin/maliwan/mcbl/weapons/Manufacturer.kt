@@ -28,7 +28,7 @@ enum class Manufacturer(
 
     companion object {
 
-        val pistolProducers = setOf(MALIWAN, HYPERION, VLADOF, TEDIORE, BANDIT, DAHL, TORGUE, JAKOBS)
+        val pistolProducers = setOf(MALIWAN, HYPERION, VLADOF, TEDIORE, BANDIT, DAHL, TORGUE, JAKOBS, ATLAS)
         val shotgunProducers = setOf(BANDIT, HYPERION, TEDIORE, JAKOBS, TORGUE)
         val sniperProducers = setOf(DAHL, HYPERION, JAKOBS, MALIWAN, VLADOF)
         val smgProducers = setOf(BANDIT, DAHL, HYPERION, MALIWAN, TEDIORE)
