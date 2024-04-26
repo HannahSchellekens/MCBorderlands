@@ -163,11 +163,14 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         val generator = WeaponGenerator(rarityTable, weaponClassTable, manufacturerTable)
 
         try {
-            val gunProperties = if (unique && rarity == Rarity.LEGENDARY) {
-                generator.generateLegendary(weaponClassTable.roll())
+            val gunProperties = if (unique && rarity == Rarity.PEARLESCENT) {
+                generator.generatePearlescent(weaponClassTable.roll(), manufacturerTable.roll())
+            }
+            else if (unique && rarity == Rarity.LEGENDARY) {
+                generator.generateLegendary(weaponClassTable.roll(), manufacturerTable.roll())
             }
             else if (unique) {
-                generator.generateUnique(rarityTable.roll(), weaponClassTable.roll())
+                generator.generateUnique(rarityTable.roll(), weaponClassTable.roll(), manufacturerTable.roll())
             }
             else generator.generate()
 

@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.WeaponPart
 
@@ -8,6 +9,10 @@ import maliwan.mcbl.weapons.gun.WeaponPart
  * @author Hannah Schellekens
  */
 object UniqueGunParts {
+
+    val pearlescentParts: List<UniqueGunPart> = listOf(
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.AVATAR_STATE),
+    )
 
     val legendaryParts: List<UniqueGunPart> = listOf(
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
@@ -80,6 +85,37 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.CREAMER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.TWELVE_POUNDER),
     )
+
+    /**
+     * Get all unique gun parts that match the given parameters.
+     *
+     * @param rarity
+     *          The rarity of the gun part.
+     * @param weaponClass
+     *          `null` for all classes, or select just parts for a specific weapon class.
+     * @param manufacturer
+     *          `null` for all manufacturers, or select just parts for a specific manufacturer.
+     */
+    fun partsFor(
+        rarity: Rarity,
+        weaponClass: WeaponClass? = null,
+        manufacturer: Manufacturer? = null
+    ): List<UniqueGunPart> {
+        val baseParts = when (rarity) {
+            Rarity.PEARLESCENT -> pearlescentParts
+            Rarity.LEGENDARY -> legendaryParts
+            Rarity.EPIC -> epicParts
+            Rarity.RARE -> rareParts
+            else -> emptyList()
+        }
+
+        if (weaponClass == null && manufacturer == null) return baseParts
+
+        return baseParts.filter {
+            (weaponClass == null || it.weaponClass == weaponClass) &&
+                    (manufacturer == null || it.manufacturer == manufacturer)
+        }
+    }
 }
 
 /**

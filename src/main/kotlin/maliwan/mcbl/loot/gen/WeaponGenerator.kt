@@ -38,6 +38,7 @@ open class WeaponGenerator(
         val rarity = rarityTable.roll(random)
 
         when (rarity) {
+            Rarity.PEARLESCENT -> return generatePearlescent()
             Rarity.LEGENDARY -> return generateLegendary()
             Rarity.EPIC -> if (random.nextDouble() < 0.02) {
                 return generateUnique(Rarity.EPIC)
@@ -62,11 +63,29 @@ open class WeaponGenerator(
     /**
      * Generates a new legendary weapon.
      */
-    fun generateLegendary(ofType: WeaponClass? = null): GunProperties {
-        val eligibleParts = if (ofType != null) {
-            UniqueGunParts.legendaryParts.filter { it.weaponClass == ofType }
+    fun generatePearlescent(ofType: WeaponClass? = null, ofManufacturer: Manufacturer? = null): GunProperties {
+        val eligibleParts = UniqueGunParts.partsFor(Rarity.PEARLESCENT, ofType, ofManufacturer)
+
+        val pearlescentPart = eligibleParts.random()
+        val manufacturer = pearlescentPart.manufacturer
+        val weaponClass = pearlescentPart.weaponClass
+
+        val properties = newBaseValueProperties(manufacturer, weaponClass)
+        val baseAssembly = WeaponAssemblyGenerator.forType(weaponClass, setOf(manufacturer), random).generate(Rarity.PEARLESCENT)
+        val assembly = when (pearlescentPart) {
+            is UniqueGunPart.UniqueCapacitor -> baseAssembly.replaceCapacitor(pearlescentPart.capacitor)
+            is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(pearlescentPart.part)
         }
-        else UniqueGunParts.legendaryParts
+
+        val updatedAssembly = assembly.update()
+        return properties.applyAssembly(updatedAssembly, Rarity.PEARLESCENT)
+    }
+
+    /**
+     * Generates a new legendary weapon.
+     */
+    fun generateLegendary(ofType: WeaponClass? = null, ofManufacturer: Manufacturer? = null): GunProperties {
+        val eligibleParts = UniqueGunParts.partsFor(Rarity.LEGENDARY, ofType, ofManufacturer)
 
         val legendaryPart = eligibleParts.random()
         val manufacturer = legendaryPart.manufacturer
@@ -79,25 +98,24 @@ open class WeaponGenerator(
             is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(legendaryPart.part)
         }
 
-        var updatedAssembly = assembly
-        assembly.behaviours.forEachType<UpdateAssemblyBehaviour> {
-            updatedAssembly = it.updateAssembly(updatedAssembly)
-        }
-
+        val updatedAssembly = assembly.update()
         return properties.applyAssembly(updatedAssembly, Rarity.LEGENDARY)
     }
 
     /**
      * Generates a new unique weapon that is not legendary+.
      */
-    fun generateUnique(rarity: Rarity, ofType: WeaponClass? = null): GunProperties {
+    fun generateUnique(rarity: Rarity, ofType: WeaponClass? = null, ofManufacturer: Manufacturer? = null): GunProperties {
         val baseParts = when (rarity) {
             Rarity.EPIC -> UniqueGunParts.epicParts
             else -> UniqueGunParts.rareParts
         }
 
-        val eligibleParts = if (ofType != null) {
-            baseParts.filter { it.weaponClass == ofType }
+        val eligibleParts = if (ofType != null || ofManufacturer != null) {
+            baseParts.filter {
+                (ofType != null && it.weaponClass == ofType) &&
+                        (ofManufacturer != null && it.manufacturer == ofManufacturer)
+            }
         }
         else baseParts
 
@@ -112,11 +130,7 @@ open class WeaponGenerator(
             is UniqueGunPart.UniqueWeaponPart -> baseAssembly.replacePart(uniquePart.part)
         }
 
-        var updatedAssembly = assembly
-        assembly.behaviours.forEachType<UpdateAssemblyBehaviour> {
-            updatedAssembly = it.updateAssembly(updatedAssembly)
-        }
-
+        val updatedAssembly = assembly.update()
         return properties.applyAssembly(updatedAssembly, rarity)
     }
 
@@ -144,6 +158,17 @@ open class WeaponGenerator(
         }
 
         return this
+    }
+
+    /**
+     * Applies weapon specific behaviours to this assembly, returns the new and updated assembly.
+     */
+    fun WeaponAssembly.update(): WeaponAssembly {
+        var updatedAssembly = this
+        behaviours.forEachType<UpdateAssemblyBehaviour> {
+            updatedAssembly = it.updateAssembly(updatedAssembly)
+        }
+        return updatedAssembly
     }
 
     /**

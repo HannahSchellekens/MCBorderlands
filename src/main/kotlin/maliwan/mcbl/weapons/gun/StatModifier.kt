@@ -158,6 +158,15 @@ open class StatModifier(
                 }
             }
         ),
+        ELEMENTAL_DURATION(
+            { it.elementalDuration.values.map { ticks -> ticks.ticks.toDouble() } },
+            { stats, list ->
+                // Because of linked has maps, all elements should be nicely sorted and all elementals should match up...
+                stats.elements.forEachIndexed { index, elemental ->
+                    stats.elementalDuration[elemental] = Ticks(list[index].toInt())
+                }
+            }
+        ),
         TRANSFUSION(
             { it.transfusion.asList() },
             { stats, it -> stats.transfusion = it.first() }

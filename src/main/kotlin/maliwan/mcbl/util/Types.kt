@@ -27,6 +27,9 @@ value class Ticks(val ticks: Int) {
      */
     val millis: Long
         get() = long * 50L
+
+    operator fun times(other: Number) = Ticks((ticks * other.toDouble()).toInt())
+    operator fun plus(other: Number) = Ticks((ticks + other.toDouble()).toInt())
 }
 
 @JvmInline
