@@ -7,6 +7,7 @@ import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.smg.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**

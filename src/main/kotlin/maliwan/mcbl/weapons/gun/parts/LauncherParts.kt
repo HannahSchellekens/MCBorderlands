@@ -6,10 +6,10 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.Badaboom
-import maliwan.mcbl.weapons.gun.behaviour.Creamer
+import maliwan.mcbl.weapons.gun.behaviour.launcher.Badaboom
+import maliwan.mcbl.weapons.gun.behaviour.launcher.Creamer
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.TwelvePounder
+import maliwan.mcbl.weapons.gun.behaviour.launcher.TwelvePounder
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**

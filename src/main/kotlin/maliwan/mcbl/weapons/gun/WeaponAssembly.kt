@@ -4,7 +4,7 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.RocketLauncher
+import maliwan.mcbl.weapons.gun.behaviour.launcher.RocketLauncher
 import maliwan.mcbl.weapons.gun.behaviour.forEachType
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*

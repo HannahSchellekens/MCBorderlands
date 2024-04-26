@@ -7,6 +7,10 @@ import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.sniper.Buffalo
+import maliwan.mcbl.weapons.gun.behaviour.sniper.ChereAmie
+import maliwan.mcbl.weapons.gun.behaviour.sniper.Cobra
+import maliwan.mcbl.weapons.gun.behaviour.sniper.Sloth
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**

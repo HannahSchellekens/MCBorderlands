@@ -2,6 +2,10 @@ package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.launcher.Roaster
+import maliwan.mcbl.weapons.gun.behaviour.pistol.Defiler
+import maliwan.mcbl.weapons.gun.behaviour.pistol.Tinderbox
+import maliwan.mcbl.weapons.gun.behaviour.smg.HellFire
 
 /**
  * @author Hannah Schellekens
