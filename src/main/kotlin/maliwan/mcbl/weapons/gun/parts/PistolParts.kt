@@ -180,6 +180,7 @@ object PistolParts {
         REX(Manufacturer.JAKOBS, "Rex", behaviours = listOf(Rex())),
         RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
         TEAPOT(Manufacturer.TEDIORE, "Teapot", behaviours = listOf(Teapot())),
+        WANDERLUST(Manufacturer.MALIWAN, "Wandelust", behaviours = listOf(Wanderlust())),
         ;
 
         override val partTypeName: String = "Barrel"

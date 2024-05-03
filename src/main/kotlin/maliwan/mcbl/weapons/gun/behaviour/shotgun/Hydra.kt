@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.shotgun
 
-import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.VECTOR_UP
 import maliwan.mcbl.util.modifyAccuracy
 import maliwan.mcbl.weapons.WeaponEventHandler
@@ -27,7 +27,7 @@ open class Hydra : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour {
         ShotgunParts.Barrel.BANDIT.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
-        properties.accuracy = Chance(0.975)
+        properties.accuracy = Probability(0.975)
         properties.pelletCount = 20
     }
 

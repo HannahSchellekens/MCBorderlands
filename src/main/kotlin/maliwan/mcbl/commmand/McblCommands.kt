@@ -6,8 +6,8 @@ import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.WeaponClassTable
 import maliwan.mcbl.loot.gen.WeaponGenerator
 import maliwan.mcbl.loot.lootPoolOf
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.GunProperties
@@ -202,7 +202,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         when (property) {
             "name" -> update { name = value }
             "baseDamage" -> update { baseDamage = Damage(value.toDoubleOrNull() ?: error("No double: $value")) }
-            "accuracy" -> update { accuracy = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "accuracy" -> update { accuracy = Probability(value.toDoubleOrNull() ?: error("No double: $value")) }
             "recoil" -> update { recoil = value.toDoubleOrNull() ?: error("No double: $value") }
             "fireRate" -> update { fireRate = value.toDoubleOrNull() ?: error("No double: $value") }
             "reloadSpeed" -> update { reloadSpeed = Ticks(value.toIntOrNull() ?: error("No int/ticks: $value")) }
@@ -217,18 +217,18 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "extraInfoText:removeLast" -> update { extraInfoText.removeLast() }
             "element:none" -> update {
                 elements.clear()
-                elementalChance.clear()
+                elementalProbability.clear()
                 elementalDuration.clear()
                 elementalDamage.clear()
             }
 
             "element:add" -> update {
                 val element = Elemental.valueOf(values[0])
-                val chance = Chance(values[1].toDoubleOrNull() ?: error("Invalid double: ${values[1]}"))
+                val probability = Probability(values[1].toDoubleOrNull() ?: error("Invalid double: ${values[1]}"))
                 val duration = Ticks(values[2].toIntOrNull() ?: error("Invalid int: ${values[2]}"))
                 val damage = Damage(values[3].toDoubleOrNull() ?: error("Invalid double: ${values[3]}"))
                 elements.add(element)
-                elementalChance[element] = chance
+                elementalProbability[element] = probability
                 elementalDuration[element] = duration
                 elementalDamage[element] = damage
             }
@@ -255,9 +255,9 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             }
 
             "extraShotChance" -> update {
-                extraShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value"))
+                extraShotProbability = Probability(value.toDoubleOrNull() ?: error("No double: $value"))
             }
-            "freeShotChance" -> update { freeShotChance = Chance(value.toDoubleOrNull() ?: error("No double: $value")) }
+            "freeShotChance" -> update { freeShotProbability = Probability(value.toDoubleOrNull() ?: error("No double: $value")) }
             "transfusion" -> update { transfusion = value.toDoubleOrNull() ?: error("No double: $value") }
             "bounces" -> update { bounces = value.toIntOrNull() ?: error("No int: $value") }
             "isPiercing" -> update { isPiercing = value.toBoolean() }

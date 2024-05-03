@@ -39,12 +39,12 @@ open class Hellshock : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehavio
         if (Elemental.INCENDIARY !in bulletMeta.elements) return
 
         bulletMeta.apply {
-            elementalChance[Elemental.SHOCK] = elementalChance[Elemental.INCENDIARY]!!
+            elementalProbability[Elemental.SHOCK] = elementalProbability[Elemental.INCENDIARY]!!
             elementalDamage[Elemental.SHOCK] = elementalDamage[Elemental.INCENDIARY]!!
             elementalDuration[Elemental.SHOCK] = elementalDuration[Elemental.INCENDIARY]!!
             elements.add(Elemental.SHOCK)
 
-            elementalChance.remove(Elemental.INCENDIARY)
+            elementalProbability.remove(Elemental.INCENDIARY)
             elementalDamage.remove(Elemental.INCENDIARY)
             elementalDuration.remove(Elemental.INCENDIARY)
             elements.remove(Elemental.INCENDIARY)

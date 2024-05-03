@@ -2,11 +2,10 @@ package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
-import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.util.nearbyEntities
 import maliwan.mcbl.util.showElementalParticle
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 
@@ -21,7 +20,7 @@ fun splashDamage(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: Bu
 
         // Explosive does boom, contrary to the DoT effects of the other elements.
         if (element == Elemental.EXPLOSIVE) {
-            val chance = bulletMeta.elementalChance[element] ?: return@forEach
+            val chance = bulletMeta.elementalProbability[element] ?: return@forEach
             if (chance.roll()) {
                 val radius = bulletMeta.splashRadius
                 location.world?.createExplosion(location, 0f)
@@ -114,8 +113,8 @@ fun rollElementalDot(plugin: MCBorderlandsPlugin, target: LivingEntity, bulletMe
         .filter { it == Elemental.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
         .forEach {
             // Check if the effect will be procced.
-            val chance = bulletMeta.elementalChance[it] ?: Chance.ZERO
-            if (chance.roll().not()) return@forEach
+            val probability = bulletMeta.elementalProbability[it] ?: Probability.ZERO
+            if (probability.roll().not()) return@forEach
 
             // Apply effect.
             val duration = bulletMeta.elementalDuration[it] ?: return@forEach

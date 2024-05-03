@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import kotlin.math.max
@@ -35,7 +35,7 @@ class GunExecution(
     properties.cyanText,
     properties.extraInfoText,
     properties.elements,
-    properties.elementalChance,
+    properties.elementalProbability,
     properties.elementalDuration,
     properties.elementalDamage,
     properties.elementalPolicy,
@@ -53,8 +53,8 @@ class GunExecution(
     properties.gravity,
     properties.bonusCritMultiplier,
     properties.assembly,
-    properties.extraShotChance,
-    properties.freeShotChance,
+    properties.extraShotProbability,
+    properties.freeShotProbability,
     properties.transfusion,
     properties.bounces,
     properties.isPiercing,
@@ -105,7 +105,7 @@ class GunExecution(
             else -> properties.recoil
         }
 
-    override var accuracy: Chance
+    override var accuracy: Probability
         get() {
             val now = System.currentTimeMillis()
             if (now - (lastShotTimestamp ?: 0) >= recoilTime) {
@@ -113,7 +113,7 @@ class GunExecution(
                 return properties.accuracy
             }
             val newChance = properties.accuracy.chance * recoilFactor.pow(consecutiveShots)
-            return Chance(min(max(0.0, newChance), 1.0))
+            return Probability(min(max(0.0, newChance), 1.0))
         }
         set(value) { properties.accuracy = value }
 }

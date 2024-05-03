@@ -4,8 +4,8 @@ import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.loot.ManufacturerTable
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.WeaponClassTable
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
@@ -202,7 +202,7 @@ open class WeaponGenerator(
             Manufacturer.TORGUE -> {
                 if (Elemental.EXPLOSIVE !in elements) {
                     elements += Elemental.EXPLOSIVE
-                    elementalChance[Elemental.EXPLOSIVE] = Chance.ONE
+                    elementalProbability[Elemental.EXPLOSIVE] = Probability.ONE
                     elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
                     elementalDamage[Elemental.EXPLOSIVE] = baseDamage * 0.5
                     splashDamage = baseDamage * 0.5
@@ -232,13 +232,13 @@ open class WeaponGenerator(
         if (element == Elemental.PHYSICAL) return /* Physical => no elemental damage */
 
         val baseValues = BaseValues.providerOf(assembly.weaponClass)
-        val chance = baseValues.baseValue(assembly.manufacturer, Stat.elementalChance)
+        val chance = baseValues.baseValue(assembly.manufacturer, Stat.elementalProbability)
         val damage = baseValues.baseValue(assembly.manufacturer, Stat.elementalDamage)
 
         // Update properties to include element.
         elements += element
         elementalDamage[element] = damage * element.noDotMultiplier
-        elementalChance[element] = if (element == Elemental.EXPLOSIVE) Chance.ONE else chance
+        elementalProbability[element] = if (element == Elemental.EXPLOSIVE) Probability.ONE else chance
         elementalDuration[element] = element.baseDotDuration
 
         // Cut base damage for DoT elements.
@@ -310,13 +310,13 @@ open class WeaponGenerator(
         val eltDamageMultiplier = random.nextGaussian() * eltDamageStd + eltDamageMult
 
         elements.forEach { element ->
-            elementalChance[element] = Chance(min(0.995, elementalChance[element]!!.chance * eltChanceMultiplier))
+            elementalProbability[element] = Probability(min(0.995, elementalProbability[element]!!.chance * eltChanceMultiplier))
             elementalDamage[element] = Damage(elementalDamage[element]!!.damage * eltDamageMultiplier)
         }
 
         // Accuracy
         val accuracyModifier = mod.modifier(rarity, Modifier.accuracy)
-        accuracy = Chance(min(1.0, accuracy.chance + accuracyModifier))
+        accuracy = Probability(min(1.0, accuracy.chance + accuracyModifier))
 
         // Recoil
         val recoilModifier = mod.modifier(rarity, Modifier.recoil)

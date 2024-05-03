@@ -45,7 +45,7 @@ open class BoomPuppy : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider
         splashDamage(handler.plugin, bullet.location, bulletMeta)
 
         val velocity = bullet.velocity
-        bullet.velocity = Vector(velocity.x, velocity.y + 0.1, velocity.z)
+        bullet.velocity = Vector(velocity.x, velocity.y + 0.08, velocity.z)
     }
 
     companion object {

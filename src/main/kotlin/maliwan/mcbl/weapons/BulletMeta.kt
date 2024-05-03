@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import org.bukkit.entity.LivingEntity
@@ -51,7 +51,7 @@ data class BulletMeta(
     /**
      * The chance each element is applied to the target.
      */
-    val elementalChance: MutableMap<Elemental, Chance> = EnumMap(Elemental::class.java),
+    val elementalProbability: MutableMap<Elemental, Probability> = EnumMap(Elemental::class.java),
 
     /**
      * How many ticks each elemental effect lasts when applied.

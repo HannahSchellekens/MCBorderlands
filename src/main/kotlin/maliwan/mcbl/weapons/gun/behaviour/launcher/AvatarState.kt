@@ -24,7 +24,7 @@ open class AvatarState : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehav
         properties.elementalPolicy = ElementalStatusEffects.ApplyPolicy.ADD
 
         val damage = properties.elementalDamage[Elemental.SHOCK]!!
-        val chance = properties.elementalChance[Elemental.SHOCK]!!
+        val chance = properties.elementalProbability[Elemental.SHOCK]!!
 
         // Shock already added (Water).
         // Corrosion (Earth).

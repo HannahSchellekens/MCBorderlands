@@ -44,6 +44,6 @@ object LauncherBaseValues : BaseValueProvider {
         ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot),
         pelletCount = baseValue(manufacturer, Stat.projectileCount),
         recoilAngle = baseValue(manufacturer, Stat.recoilAngle),
-        freeShotChance = baseValue(manufacturer, Stat.freeShotChance),
+        freeShotProbability = baseValue(manufacturer, Stat.freeShotProbability),
     )
 }

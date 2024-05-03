@@ -128,8 +128,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 // 3) Profit.
                 val baseBurstCount = floor(fireRate / 6.0).toInt()
                 val excess = fireRate - baseBurstCount * 6.0
-                val scheduleChance = Chance(max(0.0, excess / 6.0))
-                val fireRateBursts = baseBurstCount + if (Random.nextDouble() < scheduleChance) 1 else 0
+                val scheduleProbability = Probability(max(0.0, excess / 6.0))
+                val fireRateBursts = baseBurstCount + if (Random.nextDouble() < scheduleProbability) 1 else 0
 
                 fun executeGunBurst() {
                     // Bursts
@@ -141,16 +141,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
                         // First one must not be scheduled:
                         if (burstIndex == 0) {
-                            if (execution.extraShotChance.roll()) {
+                            if (execution.extraShotProbability.roll()) {
                                 shootGun(this, execution, consumeAmmo = false)
                             }
 
-                            shootGun(this, execution, consumeAmmo = execution.freeShotChance.roll().not())
+                            shootGun(this, execution, consumeAmmo = execution.freeShotProbability.roll().not())
                         }
                         // Subsequent ones must be scheduled by burst delay:
                         else {
                             plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
-                                shootGun(this, execution, consumeAmmo = execution.freeShotChance.roll().not())
+                                shootGun(this, execution, consumeAmmo = execution.freeShotProbability.roll().not())
                             }
                         }
 
@@ -445,10 +445,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
                 event.isCancelled = true
                 bulletMeta.bouncesLeft--
+                replaceScheduledEffects(bullet, newBullet)
 
                 bullet.remove()
                 bullets.remove(bullet)
                 bullets[newBullet] = bulletMeta
+
 
                 bulletMeta.assembly?.forEachBehaviour<PostBulletBounceBehaviour> {
                     it.afterBulletBounce(this, newBullet, bulletMeta)
@@ -591,6 +593,22 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
         val scheduleTime = System.currentTimeMillis() + inMillis
         scheduledBulletEffects.add(BulletEffect(scheduleTime, bullet, action))
+    }
+
+    /**
+     * Replaces all effects of `oldBullet` to be executed for `newBullet`.
+     */
+    fun replaceScheduledEffects(oldBullet: Entity, newBullet: Entity) {
+        val toAdd = ArrayList<BulletEffect>()
+        scheduledBulletEffects.forEach {
+            if (it.bullet == oldBullet) {
+                toAdd += BulletEffect(it.scheduledMillis, newBullet, it.effect)
+            }
+        }
+        scheduledBulletEffects.removeIf { it.bullet == oldBullet }
+        toAdd.forEach {
+            scheduledBulletEffects.add(it)
+        }
     }
 
     private fun flushExpiredEffects() {

@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.stats
 
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 
 /**
@@ -33,14 +33,14 @@ class Stat<T>(
         val burstCount = Stat("burstCount") {
             it.toIntOrNull() ?: error("Invalid burstCount int <$it>")
         }
-        val elementalChance = Stat("elementalChance") {
-            Chance(it.toDoubleOrNull() ?: error("Invalid elementalChance double <$it>"))
+        val elementalProbability = Stat("elementalChance") {
+            Probability(it.toDoubleOrNull() ?: error("Invalid elementalChance double <$it>"))
         }
         val elementalDamage = Stat("elementalDamage") {
             Damage((it.toDoubleOrNull() ?: error("Invalid elementalDamage double <$it>")) / 2.0)
         }
         val accuracy = Stat("accuracy") {
-            Chance(it.toDoubleOrNull() ?: error("Invalid accuracy double <$it>"))
+            Probability(it.toDoubleOrNull() ?: error("Invalid accuracy double <$it>"))
         }
         val recoil = Stat("recoil") {
             it.toDoubleOrNull() ?: error("Invalid recoil double <$it>")
@@ -66,8 +66,8 @@ class Stat<T>(
         val recoilAngle = Stat("recoilAngle") {
             it.toDoubleOrNull() ?: error("Invalid recoilAngle double <$it>")
         }
-        val freeShotChance = Stat("freeShotChance") {
-            Chance(it.toDoubleOrNull() ?: error("Invalid freeShotChance double <$it>"))
+        val freeShotProbability = Stat("freeShotChance") {
+            Probability(it.toDoubleOrNull() ?: error("Invalid freeShotChance double <$it>"))
         }
         val homingStrength = Stat("homingStrength") {
             it.toDoubleOrNull() ?: error("Invalid homingStrength double <$it>")

@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.smg
 
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.*
@@ -32,11 +32,11 @@ open class Chulainn : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour, 
         val modifier = SmgGradeModifiers.modifier(Rarity.RARE, Modifier.elementalDamage)
         val stdDev = SmgGradeModifiers.standardDeviation(Rarity.RARE, StandardDeviation.elementalDamage)
 
-        val eltChance = SmgBaseValues.baseValue(Manufacturer.MALIWAN, Stat.elementalChance)
+        val eltChance = SmgBaseValues.baseValue(Manufacturer.MALIWAN, Stat.elementalProbability)
         val chanceModifier = SmgGradeModifiers.modifier(Rarity.RARE, Modifier.elementalChance)
 
         val elementalDamage = eltDamage * modifier + Random().nextGaussian() * stdDev
-        properties.addElement(Elemental.SHOCK, elementalDamage, Elemental.SHOCK.baseDotDuration, Chance(eltChance.chance * chanceModifier))
+        properties.addElement(Elemental.SHOCK, elementalDamage, Elemental.SHOCK.baseDotDuration, Probability(eltChance.chance * chanceModifier))
 
         properties.splashDamage = properties.baseDamage * 0.5
     }

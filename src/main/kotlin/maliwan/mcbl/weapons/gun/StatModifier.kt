@@ -74,12 +74,12 @@ open class StatModifier(
             { stats, it -> stats.accuracy = it.first().toChance() }
         ),
         EXTRA_SHOT_CHANCE(
-            { it.extraShotChance.chance.asList() },
-            { stats, it -> stats.extraShotChance = it.first().toChance() }
+            { it.extraShotProbability.chance.asList() },
+            { stats, it -> stats.extraShotProbability = it.first().toChance() }
         ),
         FREE_SHOT_CHANCE(
-            { it.freeShotChance.chance.asList() },
-            { stats, it -> stats.freeShotChance = it.first().toChance() }
+            { it.freeShotProbability.chance.asList() },
+            { stats, it -> stats.freeShotProbability = it.first().toChance() }
         ),
         RECOIL(
             { it.recoil.asList() },
@@ -150,11 +150,11 @@ open class StatModifier(
             }
         ),
         ELEMENTAL_CHANCE(
-            { it.elementalChance.values.map { prob -> prob.chance } },
+            { it.elementalProbability.values.map { prob -> prob.chance } },
             { stats, list ->
                 // Because of linked has maps, all elements should be nicely sorted and all elementals should match up...
                 stats.elements.forEachIndexed { index, elemental ->
-                    stats.elementalChance[elemental] = list[index].toChance()
+                    stats.elementalProbability[elemental] = list[index].toChance()
                 }
             }
         ),

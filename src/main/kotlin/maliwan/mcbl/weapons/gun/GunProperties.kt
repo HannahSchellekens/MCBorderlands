@@ -32,7 +32,7 @@ open class GunProperties(
      *
      * 100% is dead center. 0% is anywhere on screen.
      */
-    open var accuracy: Chance = Chance(0.985),
+    open var accuracy: Probability = Probability(0.985),
 
     /**
      * With how much to multiply the accuracy after each shot.
@@ -84,7 +84,7 @@ open class GunProperties(
     /**
      * The chance each element is applied to the target.
      */
-    open val elementalChance: LinkedHashMap<Elemental, Chance> = LinkedHashMap(),
+    open val elementalProbability: LinkedHashMap<Elemental, Probability> = LinkedHashMap(),
 
     /**
      * How many ticks each elemental effect lasts when applied.
@@ -183,12 +183,12 @@ open class GunProperties(
     /**
      * The chance for firing an extra shot.
      */
-    var extraShotChance: Chance = Chance.ZERO,
+    var extraShotProbability: Probability = Probability.ZERO,
 
     /**
      * The chance for a shot to not consume ammo.
      */
-    var freeShotChance: Chance = Chance.ZERO,
+    var freeShotProbability: Probability = Probability.ZERO,
 
     /**
      * The percentage of damage that must be converted to healing for the shooter.
@@ -239,7 +239,7 @@ open class GunProperties(
             assembly,
             baseDamage,
             elements = ArrayList(elements),
-            elementalChance = HashMap(elementalChance),
+            elementalProbability = HashMap(elementalProbability),
             elementalDuration = HashMap(elementalDuration),
             elementalDamage = HashMap(elementalDamage),
             elementalPolicy = elementalPolicy,
@@ -260,11 +260,11 @@ open class GunProperties(
     /**
      * Adds an elemental effect to this gun.
      */
-    fun addElement(elemental: Elemental, damage: Damage, duration: Ticks, chance: Chance) {
+    fun addElement(elemental: Elemental, damage: Damage, duration: Ticks, probability: Probability) {
         elements.add(elemental)
         elementalDamage[elemental] = damage
         elementalDuration[elemental] = duration
-        elementalChance[elemental] = chance
+        elementalProbability[elemental] = probability
     }
 
     /**
@@ -333,7 +333,7 @@ open class GunProperties(
         }
 
         // Reduced ammo per shot.
-        if (freeShotChance.chance > 0.01 && (fib == null || fib.showGeneratedInfo)) {
+        if (freeShotProbability.chance > 0.01 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Consumes reduced ammo per shot"
         }
@@ -437,7 +437,7 @@ open class GunProperties(
 
             // Chance
             if (element != Elemental.EXPLOSIVE) {
-                val chance = 100 * (elementalChance[element]?.chance ?: 0.0) * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
+                val chance = 100 * (elementalProbability[element]?.chance ?: 0.0) * (fib?.let { it.fibMultiplierBase.modifyRandom(it.fibMultiplierFuzz) } ?: 1.0)
                 parts += "%.1f".format(chance) + "%"
             }
 
@@ -485,7 +485,7 @@ open class GunProperties(
         if (cyanText != other.cyanText) return false
         if (extraInfoText != other.extraInfoText) return false
         if (elements != other.elements) return false
-        if (elementalChance != other.elementalChance) return false
+        if (elementalProbability != other.elementalProbability) return false
         if (elementalDuration != other.elementalDuration) return false
         if (elementalDamage != other.elementalDamage) return false
         if (elementalPolicy != other.elementalPolicy) return false
@@ -502,8 +502,8 @@ open class GunProperties(
         if (burstDelay != other.burstDelay) return false
         if (gravity != other.gravity) return false
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
-        if (extraShotChance != other.extraShotChance) return false
-        if (freeShotChance != other.freeShotChance) return false
+        if (extraShotProbability != other.extraShotProbability) return false
+        if (freeShotProbability != other.freeShotProbability) return false
         if (transfusion != other.transfusion) return false
         if (bounces != other.bounces) return false
         if (isPiercing != other.isPiercing) return false
@@ -525,7 +525,7 @@ open class GunProperties(
         result = 12289 * result + (cyanText?.hashCode() ?: 0)
         result = 12289 * result + extraInfoText.hashCode()
         result = 12289 * result + elements.hashCode()
-        result = 12289 * result + elementalChance.hashCode()
+        result = 12289 * result + elementalProbability.hashCode()
         result = 12289 * result + elementalDuration.hashCode()
         result = 12289 * result + elementalDamage.hashCode()
         result = 12289 * result + elementalPolicy.hashCode()
@@ -542,8 +542,8 @@ open class GunProperties(
         result = 12289 * result + burstDelay.hashCode()
         result = 12289 * result + gravity.hashCode()
         result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
-        result = 12289 * result + extraShotChance.hashCode()
-        result = 12289 * result + freeShotChance.hashCode()
+        result = 12289 * result + extraShotProbability.hashCode()
+        result = 12289 * result + freeShotProbability.hashCode()
         result = 12289 * result + transfusion.hashCode()
         result = 12289 * result + bounces.hashCode()
         result = 12289 * result + isPiercing.hashCode()

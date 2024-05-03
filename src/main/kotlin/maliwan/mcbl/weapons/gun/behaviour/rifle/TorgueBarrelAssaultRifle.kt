@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.rifle
 
-import maliwan.mcbl.util.Chance
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Elemental
@@ -25,7 +25,7 @@ open class TorgueBarrelAssaultRifle : PostGenerationBehaviour, PostBulletLandBeh
         // Transfer 100% weapon damage to explosive damage.
         if (properties.elements.isEmpty()) {
             properties.elements.add(Elemental.EXPLOSIVE)
-            properties.elementalChance[Elemental.EXPLOSIVE] = Chance.ONE
+            properties.elementalProbability[Elemental.EXPLOSIVE] = Probability.ONE
             properties.elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
             properties.elementalDamage[Elemental.EXPLOSIVE] = properties.baseDamage
         }

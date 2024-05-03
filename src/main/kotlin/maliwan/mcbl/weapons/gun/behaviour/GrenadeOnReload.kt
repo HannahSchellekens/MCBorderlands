@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.util.Chance
 import maliwan.mcbl.util.Damage
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.weapons.BulletMeta
@@ -42,7 +42,7 @@ open class GrenadeOnReload : ReloadBehaviour {
         // Set explosive if no element is known:
         if (gunExecution.elements.isEmpty()) {
             gunExecution.elements.add(Elemental.EXPLOSIVE)
-            gunExecution.elementalChance[Elemental.EXPLOSIVE] = Chance.ONE
+            gunExecution.elementalProbability[Elemental.EXPLOSIVE] = Probability.ONE
             gunExecution.elementalDamage[Elemental.EXPLOSIVE] = Damage(10.0)
             gunExecution.elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
         }
@@ -63,7 +63,7 @@ open class GrenadeOnReload : ReloadBehaviour {
             damage = damage,
             splashDamage = damage,
             elements = gunExecution.elements,
-            elementalChance = gunExecution.elementalChance,
+            elementalProbability = gunExecution.elementalProbability,
             elementalDuration = gunExecution.elementalDuration,
             elementalDamage = gunExecution.elementalDamage,
             elementalPolicy = gunExecution.elementalPolicy,

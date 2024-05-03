@@ -40,7 +40,7 @@ value class Seconds(val seconds: Double) {
 }
 
 @JvmInline
-value class Chance(val chance: Double) {
+value class Probability(val chance: Double) {
 
     init {
         require(chance in 0.0..1.0) { "Chance $chance must be between 0.0 and 1.0, got <$chance>" }
@@ -53,17 +53,17 @@ value class Chance(val chance: Double) {
 
     companion object {
 
-        val ONE = Chance(1.0)
-        val ZERO = Chance(0.0)
+        val ONE = Probability(1.0)
+        val ZERO = Probability(0.0)
     }
 }
 
 /**
  * Automatically fits to the range [0.0,1.0], negative values become 0.0, larger than 1 becomes 1.0.
  */
-fun Double.toChance() = Chance(min(max(0.0, this), 1.0))
+fun Double.toChance() = Probability(min(max(0.0, this), 1.0))
 
-operator fun Double.compareTo(chance: Chance): Int = this.compareTo(chance.chance)
+operator fun Double.compareTo(probability: Probability): Int = this.compareTo(probability.chance)
 
 @JvmInline
 value class Damage(val damage: Double) {
