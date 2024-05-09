@@ -180,6 +180,7 @@ object PistolParts {
         POCKET_ROCKET(Manufacturer.TORGUE, "Pocket Rocket", behaviours = listOf(PocketRocket())),
         REX(Manufacturer.JAKOBS, "Rex", behaviours = listOf(Rex())),
         RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
+        STINGER(Manufacturer.VLADOF, "Stinger", behaviours = listOf(Stinger())),
         TEAPOT(Manufacturer.TEDIORE, "Teapot", behaviours = listOf(Teapot())),
         WANDERLUST(Manufacturer.MALIWAN, "Wandelust", behaviours = listOf(Wanderlust())),
         ;

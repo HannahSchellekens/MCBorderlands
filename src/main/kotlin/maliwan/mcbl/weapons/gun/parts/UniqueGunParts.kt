@@ -25,6 +25,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.INFINITY),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.STINGER),
     )
 
     val epicParts: List<UniqueGunPart> = listOf(
