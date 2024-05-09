@@ -6,7 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.rifle.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
@@ -175,6 +175,7 @@ object AssaultRifleParts {
         DAMNED_COWBOY(Manufacturer.BANDIT, "Damned Cowboy", behaviours = listOf(DamnedCowboy())),
         HAIL(Manufacturer.DAHL, "Hail", behaviours = listOf(Hail())),
         SCORPIO(Manufacturer.JAKOBS, "Scorpio", behaviours = listOf(Scorpio())),
+        SHREDIFIER(Manufacturer.VLADOF, "Shredifier", behaviours = listOf(Shredifier(), Spinigun())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
         STOMPER(Manufacturer.JAKOBS, "Stomper", behaviours = listOf(Stomper())),
         ;
