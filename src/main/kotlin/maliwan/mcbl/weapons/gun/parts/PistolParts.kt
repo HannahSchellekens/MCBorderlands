@@ -172,6 +172,7 @@ object PistolParts {
         GUB(Manufacturer.BANDIT, "Gub", behaviours = listOf(Gub())),
         GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
         HELLSHOCK(Manufacturer.MALIWAN, "Hellshock", behaviours = listOf(Hellshock())),
+        INFINITY(Manufacturer.VLADOF, "Infinity", behaviours = listOf(Infinity())),
         JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),
         LADY_FINGER(Manufacturer.DAHL, "Lady Finger", behaviours = listOf(LadyFinger())),
         LADY_FIST(Manufacturer.DAHL, "Lady Fist", behaviours = listOf(LadyFist())),

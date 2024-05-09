@@ -15,14 +15,16 @@ object UniqueGunParts {
     )
 
     val legendaryParts: List<UniqueGunPart> = listOf(
-        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.HELLSHOCK),
-        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
-
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.PISTOL, PistolParts.Barrel.GUB),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.SLEDGES_SHOTGUN),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SMG, SmgParts.Barrel.SLAGGA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.LAUNCHER, LauncherParts.Barrel.BADABOOM),
+
+        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.HELLSHOCK),
+        UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
+
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.INFINITY),
     )
 
     val epicParts: List<UniqueGunPart> = listOf(
