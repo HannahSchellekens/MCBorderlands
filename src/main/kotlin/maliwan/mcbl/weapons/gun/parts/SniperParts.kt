@@ -6,11 +6,8 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.*
-import maliwan.mcbl.weapons.gun.behaviour.sniper.Buffalo
-import maliwan.mcbl.weapons.gun.behaviour.sniper.ChereAmie
-import maliwan.mcbl.weapons.gun.behaviour.sniper.Cobra
-import maliwan.mcbl.weapons.gun.behaviour.sniper.Sloth
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.sniper.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -111,6 +108,7 @@ object SniperParts {
         BUFFALO(Manufacturer.JAKOBS, "Buffalo", behaviours = listOf(Buffalo())),
         CHERE_AMIE(Manufacturer.HYPERION, "Chère-Amie", behaviours = listOf(ChereAmie())),
         COBRA(Manufacturer.JAKOBS, "Cobra", behaviours = listOf(Cobra())),
+        LYUDMILA(Manufacturer.VLADOF, "Lyudmila", behaviours = listOf(Lyudmila())),
         SLOTH(Manufacturer.DAHL, "Sloth", behaviours = listOf(Sloth())),
         ;
 
