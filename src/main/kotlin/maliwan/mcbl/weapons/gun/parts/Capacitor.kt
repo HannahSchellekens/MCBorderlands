@@ -1,11 +1,12 @@
 package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.weapons.Elemental
-import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.launcher.Roaster
 import maliwan.mcbl.weapons.gun.behaviour.pistol.Defiler
 import maliwan.mcbl.weapons.gun.behaviour.pistol.Tinderbox
 import maliwan.mcbl.weapons.gun.behaviour.smg.HellFire
+import maliwan.mcbl.weapons.gun.behaviour.sniper.Volcano
 
 /**
  * @author Hannah Schellekens
@@ -27,6 +28,7 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     TINDERBOX(Elemental.INCENDIARY, "Tinderbox", Tinderbox()), /* PISTOL */
     ROASTER_SHOCK(Elemental.SHOCK, "Roaster", Roaster(Elemental.SHOCK)), /* LAUNCHER */
     ROASTER_INCENDIARY(Elemental.INCENDIARY, "Roaster", Roaster(Elemental.INCENDIARY)), /* LAUNCHER */
+    VOLCANO(Elemental.INCENDIARY, "Volcano", Volcano()), /* SNIPER */
     ;
 
     val element: Elemental = elemental
