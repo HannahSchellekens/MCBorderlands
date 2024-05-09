@@ -5,6 +5,7 @@ import maliwan.mcbl.entity.armorPoints
 import maliwan.mcbl.entity.showHealthBar
 import maliwan.mcbl.entity.temporarilyDisableIframes
 import maliwan.mcbl.entity.temporarilyDisableKnockback
+import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.util.*
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
@@ -167,11 +168,12 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                 entity.temporarilyDisableIframes(plugin)
                 entity.damage(totalDamage, cause)
 
-                plugin.damageParticles.showDotDamageDisplay(
+                plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
+                    entity,
                     entity.location.add(0.0, entity.height, 0.0),
-                    totalDamage,
-                    element
-                )
+                    element,
+                    totalDamage
+                ))
             }
     }
 

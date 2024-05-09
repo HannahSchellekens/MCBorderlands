@@ -5,6 +5,7 @@ import org.bukkit.util.Vector
 /**
  * Unit up vector:
  * `(0, 1, 0)`
+ * DO NOT MODIFY.
  */
 val VECTOR_UP = Vector(0.0, 1.0, 0.0)
 
@@ -25,3 +26,28 @@ fun Vector.modifyAccuracy(maxModifier: Double) = Vector(
 fun Vector.setLength(length: Double): Vector {
     return normalize().multiply(length)
 }
+
+/**
+ * Pointwise addition of vectors.
+ */
+fun Iterable<Vector>.sum(): Vector = fold(Vector()) { a, b -> a.add(b) }
+
+/**
+ * Pointwise average of vectors.
+ */
+fun Collection<Vector>.average(): Vector = sum() / size.toDouble()
+
+/**
+ * Adds this vector to the other vector, returns a clone and does not modify the original.
+ */
+operator fun Vector.plus(other: Vector): Vector = clone().add(other)
+
+/**
+ * Multiplies the vector with a scalar, returns a clone of this vector.
+ */
+operator fun Vector.times(scalar: Double): Vector = clone().multiply(scalar)
+
+/**
+ * Divides the vector by a scalar, returns a clone of this vector.
+ */
+operator fun Vector.div(scalar: Double): Vector = this * (1.0 / scalar)

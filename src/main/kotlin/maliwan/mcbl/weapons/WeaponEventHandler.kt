@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
+import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
@@ -394,7 +395,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         // Apply damage & elemental effect
         event.damage = bulletMeta.damage.damage * elementalModifier *
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
-        plugin.damageParticles.showDamageDisplay(hitLocation?.clone() ?: particleLocation.clone(), event.damage)
+
+        plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
+            targetEntity,
+            hitLocation?.clone() ?: particleLocation.clone(),
+            Elemental.PHYSICAL,
+            event.damage
+        ))
 
         rollElementalDot(plugin, targetEntity, bulletMeta)
 

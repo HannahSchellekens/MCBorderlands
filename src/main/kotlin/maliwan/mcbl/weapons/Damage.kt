@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
+import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.util.nearbyEntities
@@ -47,11 +48,12 @@ fun splashDamage(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: Bu
                     bulletMeta.shooter.heal(healAmount)
 
                     if (totalDamage >= 0.01) {
-                        plugin.damageParticles.showDotDamageDisplay(
+                        plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
+                            target,
                             target.location.add(0.0, target.height, 0.0),
-                            totalDamage,
-                            element
-                        )
+                            element,
+                            totalDamage
+                        ))
                     }
                 }
             }
