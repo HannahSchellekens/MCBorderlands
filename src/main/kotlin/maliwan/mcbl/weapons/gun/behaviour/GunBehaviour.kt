@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
+import maliwan.mcbl.weapons.gun.pattern.BulletPatternProcessor
 import org.bukkit.entity.*
 
 /**
@@ -47,6 +48,17 @@ interface PostGunShotBehaviour : GunBehaviour {
      *          Who shot the gun.
      */
     fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player)
+}
+
+/**
+ * Use a custom bullet pattern for the gun.
+ */
+interface BulletPatternProvider : GunBehaviour {
+
+    /**
+     * The bullet pattern to use for bullets fired from this gun.
+     */
+    val bulletPatternProcessor: BulletPatternProcessor
 }
 
 /**

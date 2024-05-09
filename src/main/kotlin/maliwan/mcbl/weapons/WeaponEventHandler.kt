@@ -304,22 +304,24 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         } else false
     }
 
-    fun shootGunBullet(player: LivingEntity, gunProperties: GunProperties, directionDelta: Vector? = null): Entity? {
-        val bulletType = gunProperties.assembly?.behaviours?.first<BulletTypeProvider, EntityType> {
+    fun shootGunBullet(player: LivingEntity, gunExecution: GunExecution, directionDelta: Vector? = null): Entity? {
+        val bulletType = gunExecution.assembly?.behaviours?.first<BulletTypeProvider, EntityType> {
             it.bulletType
         } ?: EntityType.ARROW
 
-        val initialDirection = player.eyeLocation.direction.clone()
+        val playerDirection = player.eyeLocation.direction.clone()
+        val initialDirection = gunExecution.bulletPattern.nextRotation(playerDirection)
         val direction = initialDirection.add(directionDelta ?: Vector())
-        val bullet = player.shootBullet(player.eyeLocation, direction, gunProperties, bulletType) ?: return null
-        val bulletMeta = gunProperties.bulletMeta(player)
+
+        val bullet = player.shootBullet(player.eyeLocation, direction, gunExecution, bulletType) ?: return null
+        val bulletMeta = gunExecution.bulletMeta(player)
         bullets[bullet] = bulletMeta
 
-        val millisDelay = (1000.0 / gunProperties.fireRate).toLong()
+        val millisDelay = (1000.0 / gunExecution.fireRate).toLong()
         val nextShotAllowedOn = System.currentTimeMillis() + millisDelay
         shotTimestamps[player] = nextShotAllowedOn
 
-        gunProperties.assembly?.behaviours?.forEachType<BulletEffectBehaviour> {
+        gunExecution.assembly?.behaviours?.forEachType<BulletEffectBehaviour> {
             it.scheduleEffects(this, bullet, bulletMeta)
         }
 

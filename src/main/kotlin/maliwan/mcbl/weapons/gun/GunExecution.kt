@@ -3,6 +3,10 @@ package maliwan.mcbl.weapons.gun
 import maliwan.mcbl.util.Probability
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
+import maliwan.mcbl.weapons.gun.behaviour.BulletPatternProvider
+import maliwan.mcbl.weapons.gun.behaviour.first
+import maliwan.mcbl.weapons.gun.pattern.BulletPatternProcessor
+import maliwan.mcbl.weapons.gun.pattern.NoBulletPattern
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -91,6 +95,13 @@ class GunExecution(
      * The last time as shot has been fired (unix timestamp).
      */
     var lastShotTimestamp: Long? = null
+
+    /**
+     * How the bullets should spread during execution.
+     */
+    val bulletPattern = assembly?.behaviours?.first<BulletPatternProvider, BulletPatternProcessor> {
+        it.bulletPatternProcessor
+    } ?: NoBulletPattern
 
     /**
      * Accuracy multiplier for each consecutive shot.

@@ -28,6 +28,20 @@ fun Vector.setLength(length: Double): Vector {
 }
 
 /**
+ * Rotates this vector around its base.
+ * Creates a copy.
+ */
+fun Vector.rotateRelative(pitch: Double, yaw: Double, up: Vector = VECTOR_UP): Vector {
+    val pitchAxis = clone().crossProduct(up)
+    val yawAxis = clone().crossProduct(pitchAxis)
+
+    return clone().apply {
+        rotateAroundNonUnitAxis(pitchAxis, pitch)
+        rotateAroundNonUnitAxis(yawAxis, yaw)
+    }
+}
+
+/**
  * Pointwise addition of vectors.
  */
 fun Iterable<Vector>.sum(): Vector = fold(Vector()) { a, b -> a.add(b) }
