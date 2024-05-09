@@ -326,18 +326,6 @@ open class GunProperties(
             lore += "${ChatColor.WHITE}• +${meleeDamage.heartDisplay} Melee Damage"
         }
 
-        // Consumes ammo per shot.
-        if (ammoPerShot > 1 && (fib == null || fib.showGeneratedInfo)) {
-            placeSeparator()
-            lore += "${ChatColor.WHITE}• Consumes %d ammo per shot".format(ammoPerShot)
-        }
-
-        // Reduced ammo per shot.
-        if (freeShotProbability.chance > 0.01 && (fib == null || fib.showGeneratedInfo)) {
-            placeSeparator()
-            lore += "${ChatColor.WHITE}• Consumes reduced ammo per shot"
-        }
-
         // Bonus elemental damage.
         if (splashDamage.damage > 0.0001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
@@ -355,6 +343,18 @@ open class GunProperties(
         if (homingStrength > 0.00001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Bullets home in on targets"
+        }
+
+        // Consumes ammo per shot.
+        if (ammoPerShot > 1 && (fib == null || fib.showGeneratedInfo)) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Consumes %d ammo per shot".format(ammoPerShot)
+        }
+
+        // Reduced ammo per shot.
+        if (freeShotProbability.chance > 0.01 && (fib == null || fib.showGeneratedInfo)) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Consumes reduced ammo per shot"
         }
 
         // Custom information.

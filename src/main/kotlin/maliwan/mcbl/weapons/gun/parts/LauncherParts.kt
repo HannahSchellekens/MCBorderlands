@@ -7,10 +7,7 @@ import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.launcher.AvatarState
-import maliwan.mcbl.weapons.gun.behaviour.launcher.Badaboom
-import maliwan.mcbl.weapons.gun.behaviour.launcher.Creamer
-import maliwan.mcbl.weapons.gun.behaviour.launcher.TwelvePounder
+import maliwan.mcbl.weapons.gun.behaviour.launcher.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -98,11 +95,12 @@ object LauncherParts {
         AVATAR_STATE(Manufacturer.MALIWAN, "Avatar State", behaviours = listOf(AvatarState())),
         BADABOOM(Manufacturer.BANDIT, "Badaboom", behaviours = listOf(Badaboom())),
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
+        MONGOL(Manufacturer.VLADOF, "Mongol", behaviours = listOf(Mongol())),
         TWELVE_POUNDER(Manufacturer.TORGUE, "12Pwndr", behaviours = listOf(TwelvePounder())),
         ;
 
         override val partTypeName: String = "Barrel"
-        override val weaponClass: WeaponClass = WeaponClass.SNIPER
+        override val weaponClass: WeaponClass = WeaponClass.LAUNCHER
 
         companion object {
 
