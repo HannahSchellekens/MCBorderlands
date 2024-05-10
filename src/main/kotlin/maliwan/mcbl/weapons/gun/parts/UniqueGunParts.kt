@@ -27,6 +27,8 @@ object UniqueGunParts {
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SNIPER, Capacitor.VOLCANO),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.PYROPHOBIA),
 
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.PISTOL, PistolParts.Barrel.UNKEMPT_HAROLD),
+
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.INFINITY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.STINGER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SHREDIFIER),
