@@ -10,6 +10,7 @@ import maliwan.mcbl.weapons.gun.WeaponAssembly
 import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PreGunShotBehaviour
+import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
@@ -35,7 +36,7 @@ open class RocketLauncher : PostGenerationBehaviour, PreGunShotBehaviour, PostBu
         properties.splashDamage += properties.baseDamage
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
         val particle = if (meta.splashRadius > 2.75) Particle.EXPLOSION_HUGE else Particle.EXPLOSION_LARGE
         bullet.world.spawnParticle(particle, bullet.location, 1)
         bullet.world.playSound(bullet.location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 12f, 1f)

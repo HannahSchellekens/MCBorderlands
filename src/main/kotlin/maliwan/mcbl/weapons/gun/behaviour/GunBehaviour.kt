@@ -6,6 +6,7 @@ import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import maliwan.mcbl.weapons.gun.pattern.BulletPatternProcessor
+import org.bukkit.Location
 import org.bukkit.entity.*
 
 /**
@@ -73,10 +74,12 @@ interface PostBulletLandBehaviour : GunBehaviour {
      *          The bullet entity that landed.
      * @param meta
      *          The meta information about the bullet.
+     * @param hitLocation
+     *          The location where the bullet hit something.
      * @param targetEntity
      *          The target entity that was hit (directly) by the bullet.
      */
-    fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?)
+    fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?)
 }
 
 /**

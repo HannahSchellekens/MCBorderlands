@@ -13,7 +13,15 @@ fun Location.showElementalParticle(r: Int, g: Int, b: Int, amount: Int, size: Fl
     repeat(times = amount) { _ ->
         val color = Color.fromRGB(r, g, b)
         val options = Particle.DustOptions(color, size)
-        world?.spawnParticle(Particle.REDSTONE, this, 0, spread, spread, spread, spread, options)
+
+        val location = Location(
+            world,
+            x.modifyRandom(spread),
+            y.modifyRandom(spread),
+            z.modifyRandom(spread)
+        )
+
+        world?.spawnParticle(Particle.REDSTONE, location, 0, spread, spread, spread, spread, options)
     }
 }
 

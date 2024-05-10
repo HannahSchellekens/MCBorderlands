@@ -8,6 +8,7 @@ import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
 import maliwan.mcbl.weapons.gun.parts.SniperParts
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 
@@ -28,7 +29,7 @@ open class Volcano : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour
         properties.elementalPolicy = ElementalStatusEffects.ApplyPolicy.ADD
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
         bullet.location.showFlameParticle()
     }
 

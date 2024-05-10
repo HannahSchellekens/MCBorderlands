@@ -10,6 +10,7 @@ import maliwan.mcbl.weapons.gun.WeaponAssembly
 import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PreGunShotBehaviour
+import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Entity
@@ -32,7 +33,7 @@ open class TorgueBarrelAssaultRifle : PostGenerationBehaviour, PostBulletLandBeh
         properties.splashDamage = properties.baseDamage
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
         bullet.world.createExplosion(bullet.location, 0f)
     }
 

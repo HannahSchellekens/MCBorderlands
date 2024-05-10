@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.ElementalStatusEffects
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
+import maliwan.mcbl.weapons.gun.parts.PistolParts
 
 /**
  * @author Hannah Schellekens
@@ -15,6 +16,7 @@ open class Defiler : UniqueGun, PostGenerationBehaviour {
     override val redText = "Give Sick"
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
+        PistolParts.Barrel.MALIWAN.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
         properties.splashRadius *= 1.5

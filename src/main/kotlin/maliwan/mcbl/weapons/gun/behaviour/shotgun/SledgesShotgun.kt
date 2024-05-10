@@ -9,6 +9,7 @@ import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGunShotBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
 import maliwan.mcbl.weapons.gun.parts.ShotgunParts
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -39,7 +40,7 @@ open class SledgesShotgun : UniqueGun, PostGenerationBehaviour, PostGunShotBehav
         }
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
         targetEntity?.let {
             it.velocity = it.velocity.add(bullet.velocity.multiply(knockbackStrength))
         }

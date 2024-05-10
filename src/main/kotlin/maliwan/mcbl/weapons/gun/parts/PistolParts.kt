@@ -182,6 +182,7 @@ object PistolParts {
         RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
         STINGER(Manufacturer.VLADOF, "Stinger", behaviours = listOf(Stinger())),
         TEAPOT(Manufacturer.TEDIORE, "Teapot", behaviours = listOf(Teapot())),
+        THUNDERBALL_FISTS(Manufacturer.MALIWAN, "Thunderball Fists", behaviours = listOf(ThunderballFists())),
         WANDERLUST(Manufacturer.MALIWAN, "Wandelust", behaviours = listOf(Wanderlust())),
         ;
 
