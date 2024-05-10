@@ -28,6 +28,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.PYROPHOBIA),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.PISTOL, PistolParts.Barrel.UNKEMPT_HAROLD),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.NUKEM),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.INFINITY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.STINGER),
