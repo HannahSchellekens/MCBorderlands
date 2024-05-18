@@ -3,7 +3,7 @@ package maliwan.mcbl.weapons.gun.behaviour.smg
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
-import maliwan.mcbl.weapons.gun.parts.PistolParts
+import maliwan.mcbl.weapons.gun.parts.SmgParts
 
 /**
  * @author Hannah Schellekens
@@ -14,7 +14,7 @@ open class Emperor : UniqueGun, PostGenerationBehaviour {
     override var redText = "You know... for him."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
-        PistolParts.Barrel.DAHL.applyStatModifiers(properties)
+        SmgParts.Barrel.DAHL.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
         properties.isPiercing = true

@@ -109,6 +109,7 @@ object SniperParts {
         CHERE_AMIE(Manufacturer.HYPERION, "Chère-Amie", behaviours = listOf(ChereAmie())),
         COBRA(Manufacturer.JAKOBS, "Cobra", behaviours = listOf(Cobra())),
         LYUDMILA(Manufacturer.VLADOF, "Lyudmila", behaviours = listOf(Lyudmila())),
+        PITCHFORK(Manufacturer.DAHL, "Pitchfork", behaviours = listOf(Pitchfork())),
         SLOTH(Manufacturer.DAHL, "Sloth", behaviours = listOf(Sloth())),
         ;
 
