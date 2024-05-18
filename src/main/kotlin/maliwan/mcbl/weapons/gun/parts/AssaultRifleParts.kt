@@ -178,6 +178,7 @@ object AssaultRifleParts {
         SHREDIFIER(Manufacturer.VLADOF, "Shredifier", behaviours = listOf(Shredifier(), Spinigun())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
         STOMPER(Manufacturer.JAKOBS, "Stomper", behaviours = listOf(Stomper())),
+        VERUC(Manufacturer.DAHL, "Veruc", behaviours = listOf(Veruc())),
         ;
 
         override val partTypeName: String = "Barrel"

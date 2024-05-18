@@ -22,6 +22,7 @@ object UniqueGunParts {
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.HECTORS_PARADISE),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.HORNET),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.VERUC),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.SMG, SmgParts.Barrel.EMPEROR),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.SNIPER, SniperParts.Barrel.PITCHFORK),
 
