@@ -6,7 +6,7 @@ import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.StatModifier
 import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
-import maliwan.mcbl.weapons.gun.behaviour.*
+import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.smg.*
 import maliwan.mcbl.weapons.gun.statModifierList
 
@@ -121,6 +121,7 @@ object SmgParts {
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
         CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         DOUBLE_ANARCHY(Manufacturer.TEDIORE, "Double Anarchy", behaviours = listOf(DoubleAnarchy())),
+        EMPEROR(Manufacturer.DAHL, "Emperor", behaviours = listOf(Emperor())),
         GOOD_TOUCH(Manufacturer.MALIWAN, "Good Touch", behaviours = listOf(GoodTouch())),
         SLAGGA(Manufacturer.BANDIT, "Slagga", behaviours = listOf(Slagga())),
         ;
