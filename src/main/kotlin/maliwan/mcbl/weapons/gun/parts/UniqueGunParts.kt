@@ -20,6 +20,9 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SMG, SmgParts.Barrel.SLAGGA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.LAUNCHER, LauncherParts.Barrel.BADABOOM),
 
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.HECTORS_PARADISE),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.HORNET),
+
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.HELLSHOCK),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.THUNDERBALL_FISTS),
