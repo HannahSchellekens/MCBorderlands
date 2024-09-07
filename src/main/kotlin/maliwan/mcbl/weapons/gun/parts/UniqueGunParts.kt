@@ -90,6 +90,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.BOOM_PUPPY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.HAIL),
 
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.BOGANELLA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.DOG),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.ROKSALT),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SHOTGUN, ShotgunParts.Barrel.HEART_BREAKER),
