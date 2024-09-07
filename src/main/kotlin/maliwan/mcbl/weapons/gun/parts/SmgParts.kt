@@ -116,6 +116,7 @@ object SmgParts {
         ANARCHY(Manufacturer.TEDIORE, "Anarchy", behaviours = listOf(Anarchy())),
         BAD_TOUCH(Manufacturer.MALIWAN, "Bad Touch", behaviours = listOf(BadTouch())),
         BANE(Manufacturer.DAHL, "Bane", behaviours = listOf(Bane())),
+        BITCH(Manufacturer.HYPERION, "Bitch", behaviours = listOf(Bitch())),
         BONE_SHREDDER(Manufacturer.BANDIT, "Bone Shredder", behaviours = listOf(BoneShredder())),
         CHULAINN(Manufacturer.TEDIORE, "Chulainn", behaviours = listOf(Chulainn())),
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
