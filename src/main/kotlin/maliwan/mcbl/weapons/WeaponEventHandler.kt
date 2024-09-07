@@ -390,7 +390,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         else 1.0
 
         val particleLocation = targetEntity.location.add(0.0, targetEntity.height, 0.0)
-        if (isCritical) {
+        if (isCritical && critMultiplier > 1.01) {
             plugin.damageParticles.showCritDisplay(particleLocation.clone())
         }
 

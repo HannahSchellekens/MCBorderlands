@@ -179,6 +179,7 @@ object PistolParts {
         LADY_FINGER(Manufacturer.DAHL, "Lady Finger", behaviours = listOf(LadyFinger())),
         LADY_FIST(Manufacturer.DAHL, "Lady Fist", behaviours = listOf(LadyFist())),
         LAW(Manufacturer.DAHL, "Law", behaviours = listOf(Law())),
+        LOGANS_GUN(Manufacturer.HYPERION, "Logan's Gun", behaviours = listOf(LogansGun())),
         POCKET_ROCKET(Manufacturer.TORGUE, "Pocket Rocket", behaviours = listOf(PocketRocket())),
         REX(Manufacturer.JAKOBS, "Rex", behaviours = listOf(Rex())),
         RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
