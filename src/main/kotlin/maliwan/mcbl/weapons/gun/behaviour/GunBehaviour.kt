@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
+import maliwan.mcbl.util.Probability
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
@@ -257,6 +258,54 @@ interface ReloadBehaviour : GunBehaviour {
      *          The gun execution of the reloaded gun.
      */
     fun afterReload(player: Player, gunExecution: GunExecution) = Unit
+}
+
+/**
+ * Makes the gun talk when firing.
+ */
+interface TalkWhenFiring : GunBehaviour {
+
+    /**
+     * For every shot the chance to talk to the user.
+     */
+    val talkChanceFiring: Probability
+
+    /**
+     * The messages to pick from.
+     */
+    val talkMessagesFiring: List<String>
+
+    /**
+     * The message to send
+     */
+    fun messageFiring(): String? = if (talkChanceFiring.roll()) {
+        talkMessagesFiring.random()
+    }
+    else null
+}
+
+/**
+ * Makes the gun talk when reloading.
+ */
+interface TalkWhenReloading : GunBehaviour {
+
+    /**
+     * For every reload the chance to talk to the user.
+     */
+    val talkChanceReloading: Probability
+
+    /**
+     * The messages to pick from.
+     */
+    val talkMessagesReloading: List<String>
+
+    /**
+     * The message to send
+     */
+    fun messageReloading(): String? = if (talkChanceReloading.roll()) {
+        talkMessagesReloading.random()
+    }
+    else null
 }
 
 /**

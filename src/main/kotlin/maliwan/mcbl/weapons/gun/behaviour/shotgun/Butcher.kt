@@ -46,7 +46,7 @@ open class Butcher : UniqueGun, PostGunShotBehaviour, PostGenerationBehaviour {
 
         val statModifiers = statModifierList {
             multiply(2.0, StatModifier.Property.ACCURACY)
-            multiply(2.35, StatModifier.Property.FIRE_RATE)
+            multiply(2.5, StatModifier.Property.FIRE_RATE)
             add(1, StatModifier.Property.MAGAZINE_SIZE)
         }
     }

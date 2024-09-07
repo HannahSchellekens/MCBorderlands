@@ -211,6 +211,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
                 it.afterGunShot(this, gunExecution, bullets, player)
             }
+            gunExecution.assembly?.forEachBehaviour<TalkWhenFiring> {
+                player.sendGunMessage(gunExecution, it.messageFiring())
+            }
         }
 
         // Auto reload if clip is empty.
@@ -252,6 +255,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         gunExecution.assembly?.forEachBehaviour<ReloadBehaviour> {
             it.beforeReload(player, gunExecution)
+        }
+        gunExecution.assembly?.forEachBehaviour<TalkWhenReloading> {
+            player.sendGunMessage(gunExecution, it.messageReloading())
         }
 
         // Set clip to 0 to prevent shooting during reload.

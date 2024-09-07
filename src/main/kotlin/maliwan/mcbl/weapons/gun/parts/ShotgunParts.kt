@@ -113,6 +113,7 @@ object ShotgunParts {
         HEART_BREAKER(Manufacturer.HYPERION, "Heart Breaker", behaviours = listOf(HeartBreaker())),
         HYDRA(Manufacturer.JAKOBS, "Hydra", behaviours = listOf(Hydra())),
         ORPHAN_MAKER(Manufacturer.JAKOBS, "Orphan Maker", behaviours = listOf(OrphanMaker())),
+        OVERCOMPENSATOR(Manufacturer.HYPERION, "Overcompensator", behaviours = listOf(Overcompensator())),
         ROKSALT(Manufacturer.JAKOBS, "RokSalt", behaviours = listOf(RokSalt())),
         SLEDGES_SHOTGUN(Manufacturer.JAKOBS, "Sledge's", behaviours = listOf(SledgesShotgun())),
         ;

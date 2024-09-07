@@ -29,6 +29,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.SNIPER, SniperParts.Barrel.PITCHFORK),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.PISTOL, PistolParts.Barrel.LOGANS_GUN),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SHOTGUN, ShotgunParts.Barrel.OVERCOMPENSATOR),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SMG, SmgParts.Barrel.BITCH),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SNIPER, SniperParts.Barrel.LONGBOW),
 
