@@ -12,6 +12,8 @@ object UniqueGunParts {
 
     val pearlescentParts: List<UniqueGunPart> = listOf(
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.AVATAR_STATE),
+
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SHOTGUN, ShotgunParts.Barrel.BUTCHER),
     )
 
     val legendaryParts: List<UniqueGunPart> = listOf(

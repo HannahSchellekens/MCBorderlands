@@ -107,6 +107,7 @@ object ShotgunParts {
         // Unique barrels.
 
         BLOCKHEAD(Manufacturer.TEDIORE, "Blockhead", behaviours = listOf(Blockhead())),
+        BUTCHER(Manufacturer.HYPERION, "Butcher", behaviours = listOf(Butcher())),
         DOG(Manufacturer.BANDIT, "Dog", behaviours = listOf(Dog())),
         FLAKKER(Manufacturer.TORGUE, "Flakker", behaviours = listOf(Flakker())),
         HEART_BREAKER(Manufacturer.HYPERION, "Heart Breaker", behaviours = listOf(HeartBreaker())),

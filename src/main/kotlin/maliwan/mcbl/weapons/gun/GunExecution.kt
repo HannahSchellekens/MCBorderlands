@@ -5,6 +5,7 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.behaviour.BulletPatternProvider
 import maliwan.mcbl.weapons.gun.behaviour.first
+import maliwan.mcbl.weapons.gun.parts.ShotgunParts
 import maliwan.mcbl.weapons.gun.pattern.BulletPatternProcessor
 import maliwan.mcbl.weapons.gun.pattern.NoBulletPattern
 import kotlin.math.max
@@ -107,13 +108,26 @@ class GunExecution(
      * Accuracy multiplier for each consecutive shot.
      */
     private val recoilFactor: Double
-        get() = when (assembly?.manufacturer) {
-            Manufacturer.HYPERION -> when (assembly!!.weaponClass) {
-                WeaponClass.SHOTGUN -> 1.075
-                WeaponClass.SMG -> 1.009
-                else -> 1.018
+        get() {
+            val base = when (assembly?.manufacturer) {
+                Manufacturer.HYPERION -> when (assembly!!.weaponClass) {
+                    WeaponClass.SHOTGUN -> 1.075
+                    WeaponClass.SMG -> 1.009
+                    else -> 1.018
+                }
+                else -> properties.recoil
             }
-            else -> properties.recoil
+
+            val extra = if (assembly?.weaponClass == WeaponClass.SHOTGUN) {
+                val shotgun = assembly as ShotgunAssembly
+                if (shotgun.barrel == ShotgunParts.Barrel.BUTCHER) {
+                    -0.052
+                }
+                else 0.0
+            }
+            else 0.0
+
+            return base + extra
         }
 
     override var accuracy: Probability
