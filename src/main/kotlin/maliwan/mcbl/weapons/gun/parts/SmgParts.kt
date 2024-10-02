@@ -152,6 +152,7 @@ object SmgParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         BANDIT(
@@ -221,6 +222,10 @@ object SmgParts {
                 subtract(3, Property.RELOAD_SPEED)
             }
         ),
+
+        // Unique barrels.
+
+        EMPTINESS(Manufacturer.MALIWAN, "Emptiness", behaviours = listOf(Emptiness())),
         ;
 
         override val partTypeName: String = "Grip"

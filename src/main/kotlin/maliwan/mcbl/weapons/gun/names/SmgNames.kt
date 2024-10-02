@@ -42,14 +42,15 @@ object SmgNames {
         manufacturer: Manufacturer,
         barrel: SmgParts.Barrel,
         accessory: SmgParts.Accessory? = null,
-        capacitor: Capacitor? = null
+        capacitor: Capacitor? = null,
+        grip: SmgParts.Grip? = null,
     ): String {
         val candidateBaseNames = nameTable[barrel.manufacturer, manufacturer]?.split("|")
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 
         // Maliwan Barrel has 5 different names, based on the elemental type.
         val index = capacitor?.element.maliwanBaseNameIndex
-        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val customName = barrel.customBaseName() ?: grip?.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
         val baseName = if (customName != null) {
             customName
         }

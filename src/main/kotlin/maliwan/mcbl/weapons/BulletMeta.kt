@@ -25,7 +25,7 @@ data class BulletMeta(
     /**
      * How much damage to deal by this bullet.
      */
-    val damage: Damage,
+    var damage: Damage,
 
     /**
      * Downward acceleration (+ value is downward, - is upward) of the bullet.
@@ -139,4 +139,19 @@ data class BulletMeta(
      * Checks whether the bullet has exceeded its lifespan.
      */
     fun isDead(): Boolean = System.currentTimeMillis() >= deathTimestamp
+
+    /**
+     * Adds an element to this bullet.
+     */
+    fun addElement(
+        elemental: Elemental,
+        duration: Ticks,
+        damage: Damage,
+        effectchance: Probability,
+    ) {
+        elements.add(elemental)
+        elementalDuration[elemental] = duration
+        elementalDamage[elemental] = damage
+        elementalProbability[elemental] = effectchance
+    }
 }

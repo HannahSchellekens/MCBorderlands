@@ -364,7 +364,12 @@ open class GunProperties(
             Elemental.entries.forEach {
                 text = text.replace(it.name.lowercase(), it.chatColor + it.name.lowercase() + ChatColor.WHITE)
             }
-            lore += "${ChatColor.WHITE}• $text"
+
+            val lines = text.split("\n")
+            lore += "${ChatColor.WHITE}• ${lines.first()}"
+            lines.drop(1).forEach {
+                lore += "${ChatColor.WHITE}$it"
+            }
         }
 
         // Elemental data info.

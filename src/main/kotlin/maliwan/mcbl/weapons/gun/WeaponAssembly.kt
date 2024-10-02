@@ -4,8 +4,8 @@ import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
-import maliwan.mcbl.weapons.gun.behaviour.launcher.RocketLauncher
 import maliwan.mcbl.weapons.gun.behaviour.forEachType
+import maliwan.mcbl.weapons.gun.behaviour.launcher.RocketLauncher
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*
 import kotlin.reflect.KClass
@@ -174,7 +174,7 @@ class SmgAssembly(
         get() = listOfNotNull(barrel, grip, stock, accessory)
 
     override val gunName: String
-        get() = SmgNames.nameOf(manufacturer, barrel, accessory, capacitor)
+        get() = SmgNames.nameOf(manufacturer, barrel, accessory, capacitor, grip)
 
     override fun toString(): String {
         return "SmgAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
