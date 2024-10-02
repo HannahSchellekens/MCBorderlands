@@ -30,7 +30,7 @@ open class Bane : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour {
     }
 
     override fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player) {
-        player.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 80, 3, true, false, false))
+        player.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 80, 3, true, false, false))
 
         player.playSound(player.location, Sound.ENTITY_HORSE_DEATH, 1f, Random.nextFloat() * 0.85f)
 

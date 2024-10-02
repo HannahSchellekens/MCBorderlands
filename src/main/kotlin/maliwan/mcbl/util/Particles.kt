@@ -21,7 +21,7 @@ fun Location.showElementalParticle(r: Int, g: Int, b: Int, amount: Int, size: Fl
             z.modifyRandom(spread)
         )
 
-        world?.spawnParticle(Particle.REDSTONE, location, 0, spread, spread, spread, spread, options)
+        world?.spawnParticle(Particle.DUST, location, 0, spread, spread, spread, spread, options)
     }
 }
 

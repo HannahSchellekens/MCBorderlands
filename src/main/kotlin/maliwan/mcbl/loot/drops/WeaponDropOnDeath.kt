@@ -33,7 +33,7 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
         }
 
         val location = event.location
-        val firework = location.world?.spawnEntity(location, EntityType.FIREWORK) as? Firework ?: return
+        val firework = location.world?.spawnEntity(location, EntityType.FIREWORK_ROCKET) as? Firework ?: return
         firework.apply {
             fireworkMeta = fireworkMeta.apply {
                 power = 0
@@ -78,7 +78,7 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
         val shittyWeaponDrops = setOf(
             EntityType.SILVERFISH,
             EntityType.CHICKEN,
-            EntityType.SNOWMAN,
+            EntityType.SNOW_GOLEM,
             EntityType.RABBIT,
             EntityType.FROG,
             EntityType.SQUID,
@@ -99,7 +99,7 @@ open class WeaponDropOnDeath(val plugin: MCBorderlandsPlugin) : Listener {
             EntityType.SHEEP,
             EntityType.COW,
             EntityType.WOLF,
-            EntityType.MUSHROOM_COW,
+            EntityType.MOOSHROOM,
             EntityType.OCELOT,
             EntityType.HORSE,
             EntityType.LLAMA,

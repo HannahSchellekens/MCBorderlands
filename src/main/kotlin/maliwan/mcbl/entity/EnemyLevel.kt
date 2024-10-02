@@ -5,7 +5,6 @@ import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.lootPoolOf
 import maliwan.mcbl.weapons.Rarity
-import maliwan.mcbl.weapons.gun.GunProperties
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
 
@@ -16,15 +15,16 @@ enum class EnemyLevel(
     val title: String?,
     val healthMultiplier: Double,
     val dropChance: Double,
-    val weaponTable: LootPool<Rarity>
+    val weaponTable: LootPool<Rarity>,
+    val mobSizeScale: Double
 ) : Comparable<EnemyLevel> {
 
-    NOOB(null, 1.0, 0.01, RarityTable.WorldDrops.shitty),
-    REGULAR(null, 1.0, 0.1, RarityTable.WorldDrops.regular),
-    BADASS("Badass", 2.0, 0.4, RarityTable.WorldDrops.badass),
-    SUPER_BADASS("Super Badass", 4.0, 0.8, RarityTable.WorldDrops.superBadass),
-    ULTIMATE_BADASS("Ultimate Badass", 7.0, 1.0, RarityTable.WorldDrops.ultimateBadass),
-    CHUBBY("Chubby", 11.0, 1.0, RarityTable.WorldDrops.chubby),
+    NOOB(null, 1.0, 0.01, RarityTable.WorldDrops.shitty, 0.8),
+    REGULAR(null, 1.0, 0.1, RarityTable.WorldDrops.regular, 1.0),
+    BADASS("Badass", 2.0, 0.4, RarityTable.WorldDrops.badass, 1.1),
+    SUPER_BADASS("Super Badass", 4.0, 0.8, RarityTable.WorldDrops.superBadass, 1.2),
+    ULTIMATE_BADASS("Ultimate Badass", 7.0, 1.0, RarityTable.WorldDrops.ultimateBadass, 1.3),
+    CHUBBY("Chubby", 11.0, 1.0, RarityTable.WorldDrops.chubby, 0.9),
     ;
 
     val nextLevel: EnemyLevel

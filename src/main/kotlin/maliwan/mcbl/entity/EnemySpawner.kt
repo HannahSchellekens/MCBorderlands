@@ -3,6 +3,7 @@ package maliwan.mcbl.entity
 import maliwan.mcbl.Keys
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.util.isInDungeon
+import maliwan.mcbl.util.setScale
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
@@ -37,6 +38,7 @@ open class EnemySpawner(val plugin: MCBorderlandsPlugin) : Listener {
             set(Keys.enemyLevel, PersistentDataType.STRING, enemyLevel.name)
         }
 
+        living.setScale(enemyLevel.mobSizeScale)
         living.showHealthBar(plugin)
     }
 }

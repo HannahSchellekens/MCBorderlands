@@ -73,8 +73,8 @@ enum class EffectivenessType(
             EntityType.COW,
             EntityType.CHICKEN,
             EntityType.WOLF,
-            EntityType.MUSHROOM_COW,
-            EntityType.SNOWMAN, /* Not flesh, but melts anyway */
+            EntityType.MOOSHROOM,
+            EntityType.SNOW_GOLEM, /* Not flesh, but melts anyway */
             EntityType.OCELOT,
             EntityType.HORSE,
             EntityType.RABBIT,

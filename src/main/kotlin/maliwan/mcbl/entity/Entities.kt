@@ -4,8 +4,6 @@ import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.util.scheduleTask
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
-import org.bukkit.entity.Cow
-import org.bukkit.entity.Donkey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
@@ -108,8 +106,8 @@ val LivingEntity.headLocation: Location
             EntityType.SHEEP -> headOrigin.add(direction.multiply(0.72))
             EntityType.CHICKEN -> headOrigin.add(direction.multiply(0.29))
             EntityType.WOLF -> headOrigin.add(direction.multiply(0.5))
-            EntityType.MUSHROOM_COW -> headOrigin.add(direction.multiply(0.72))
-            EntityType.SNOWMAN -> headOrigin
+            EntityType.MOOSHROOM -> headOrigin.add(direction.multiply(0.72))
+            EntityType.SNOW_GOLEM -> headOrigin
             EntityType.OCELOT -> headOrigin.add(direction.multiply(0.57))
             EntityType.HORSE -> headOrigin.add(direction.multiply(0.9).add(Vector(0.0, 0.3, 0.0)))
             EntityType.RABBIT -> headOrigin.add(direction.multiply(0.15))
@@ -198,8 +196,8 @@ val LivingEntity.headshotRange: Double
         EntityType.SHEEP -> 0.41
         EntityType.CHICKEN -> 0.18
         EntityType.WOLF -> 0.26
-        EntityType.MUSHROOM_COW -> 0.34
-        EntityType.SNOWMAN -> 0.45
+        EntityType.MOOSHROOM -> 0.34
+        EntityType.SNOW_GOLEM -> 0.45
         EntityType.OCELOT -> 0.32
         EntityType.HORSE -> 0.5
         EntityType.RABBIT -> 0.15

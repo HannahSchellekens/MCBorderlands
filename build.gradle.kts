@@ -1,5 +1,4 @@
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 plugins {
@@ -26,8 +25,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
-    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
-    testCompileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
+    testCompileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
 }
 
