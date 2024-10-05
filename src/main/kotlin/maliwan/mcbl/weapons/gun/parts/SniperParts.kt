@@ -113,6 +113,7 @@ object SniperParts {
         LYUDMILA(Manufacturer.VLADOF, "Lyudmila", behaviours = listOf(Lyudmila())),
         PITCHFORK(Manufacturer.DAHL, "Pitchfork", behaviours = listOf(Pitchfork())),
         SLOTH(Manufacturer.DAHL, "Sloth", behaviours = listOf(Sloth())),
+        SKULLMASHER(Manufacturer.JAKOBS, "Skullmasher", behaviours = listOf(Skullmasher())),
         ;
 
         override val partTypeName: String = "Barrel"
