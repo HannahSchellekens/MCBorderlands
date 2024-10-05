@@ -33,6 +33,8 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SMG, SmgParts.Barrel.BITCH),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SNIPER, SniperParts.Barrel.LONGBOW),
 
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.AMIGO_SINCERO),
+
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.PISTOL, Capacitor.DEFILER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.HELLSHOCK),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.PISTOL, PistolParts.Barrel.THUNDERBALL_FISTS),

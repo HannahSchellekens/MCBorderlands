@@ -24,6 +24,20 @@ val Entity.armorPoints: Double
     get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: 0.0
 
 /**
+ * How many toughness points the given entity's armour has: 0 if not applicable.
+ */
+val Entity.armorToughness: Double
+    get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)?.value ?: 0.0
+
+/**
+ * Set the scale of the living entity where 1.0 is the regular size.
+ */
+fun LivingEntity.setScale(scale: Double) {
+    val attribute = getAttribute(Attribute.GENERIC_SCALE)
+    attribute?.baseValue = scale
+}
+
+/**
  * Heals the target with the given amount of health.
  * Will never apply a negative amount of health or set the health above the health limit.
  */
@@ -178,7 +192,7 @@ val LivingEntity.headLocation: Location
  * How many blocks a hit may be from the [headLocation] in order for the hit to count as a critical hit.
  */
 val LivingEntity.headshotRange: Double
-    get() = when(type) {
+    get() = when (type) {
         EntityType.COW -> 0.34
         EntityType.CREEPER -> 0.37
         EntityType.GUARDIAN -> 0.25

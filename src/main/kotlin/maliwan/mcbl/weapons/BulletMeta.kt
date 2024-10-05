@@ -128,6 +128,14 @@ data class BulletMeta(
      * The target to home in to.
      */
     var homingTarget: LivingEntity? = null,
+
+    /**
+     * How bullets affect armour damage reduction.
+     * 1.0 means that no armour reduction is applied.
+     * 0.0-1.0 means that only part of the armour reduction is applied.
+     * 0.0 means that the regular armour reduction is applied.
+     */
+    var armourPenetration: Double = 0.0,
 ) {
 
     /**

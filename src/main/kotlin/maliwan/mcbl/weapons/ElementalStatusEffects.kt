@@ -154,7 +154,8 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                 val weaknessType = EffectivenessType.typeOf(entity.type)
                 val multiplier = weaknessType.damageMultiplier(element, entity.armorPoints.toInt())
                 val slag = if (effect.elemental == Elemental.SLAG) 1.0 else slagMultiplier(entity)
-                val totalDamage = damage.damage * multiplier * slag
+                val shock = if (effect.elemental == Elemental.SHOCK && entity.armorPoints > 0.001) 2.0 else 1.0
+                val totalDamage = damage.damage * multiplier * slag * shock
 
                 // Prevent elemental damage to increase damage output.
                 val cause = when (effect.elemental) {

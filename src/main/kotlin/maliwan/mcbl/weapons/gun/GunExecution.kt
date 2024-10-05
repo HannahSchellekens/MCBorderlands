@@ -67,6 +67,7 @@ class GunExecution(
     properties.homingTargetDistance,
     properties.homingTargetRadius,
     properties.homingStrength,
+    properties.armourPenetration
 ) {
 
     val originalFireRate: Double = properties.fireRate

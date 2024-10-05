@@ -80,7 +80,8 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "isPiercing",
                 "homingTargetDistance",
                 "homingTargetRadius",
-                "homingStrength"
+                "homingStrength",
+                "armourPenetration"
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
         } else if (args.size < 2) {
             return mutableListOf("update")
@@ -264,6 +265,7 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "homingTargetDistance" -> update { homingTargetDistance = value.toDoubleOrNull() ?: error("No double: $value") }
             "homingTargetRadius" -> update { homingTargetRadius = value.toDoubleOrNull() ?: error("No double: $value") }
             "homingStrength" -> update { homingStrength = value.toDoubleOrNull() ?: error("No double: $value") }
+            "armourPenetration" -> update { armourPenetration = value.toDoubleOrNull() ?: error("No double: $value") }
         }
     }
 

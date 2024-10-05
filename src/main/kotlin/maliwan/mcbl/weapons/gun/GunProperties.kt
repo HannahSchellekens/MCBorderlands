@@ -228,6 +228,14 @@ open class GunProperties(
      * 1.0 means instant homing.
      */
     var homingStrength: Double = 0.0,
+
+    /**
+     * How bullets affect armour damage reduction.
+     * 1.0 means that no armour reduction is applied.
+     * 0.0-1.0 means that only part of the armour reduction is applied.
+     * 0.0 means that the regular armour reduction is applied.
+     */
+    var armourPenetration: Double = 0.0,
 ) {
 
     /**
@@ -254,6 +262,7 @@ open class GunProperties(
             homingTargetDistance = homingTargetDistance,
             homingTargetRadius = homingTargetRadius,
             homingStrength = homingStrength,
+            armourPenetration = armourPenetration,
         )
     }
 
@@ -343,6 +352,20 @@ open class GunProperties(
         if (homingStrength > 0.00001 && (fib == null || fib.showGeneratedInfo)) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Bullets home in on targets"
+        }
+
+        // Armour penetration.
+        if (armourPenetration in -0.0001..0.0001) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Damage penetrates armour"
+        }
+        else if (armourPenetration > 0.00001 && armourPenetration < 0.99999) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Damage partially penetrates armour"
+        }
+        else if (armourPenetration > 1.0) {
+            placeSeparator()
+            lore += "${ChatColor.WHITE}• Does less damage to armour"
         }
 
         // Consumes ammo per shot.
