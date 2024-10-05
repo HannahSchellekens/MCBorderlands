@@ -17,6 +17,19 @@ import org.bukkit.entity.*
 interface GunBehaviour
 
 /**
+ * When a gun adds a specific kind of execution implementation.
+ */
+interface CustomGunExecutionBehaviour<T : GunExecution> {
+
+    /**
+     * Creates a new gun execution based on the given properties.
+     *
+     * @param gunProperties The properties to base this execution on.
+     */
+    fun createGunExecution(gunProperties: GunProperties): T
+}
+
+/**
  * Adds behaviour for just before a gun is shot.
  */
 interface PreGunShotBehaviour : GunBehaviour {

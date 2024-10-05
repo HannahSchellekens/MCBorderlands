@@ -83,7 +83,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         // Use var/value of null to know if a new execution is created.
         // This way the init event can be applied.
         if (newExecution == null) {
-            newExecution = GunExecution(gunProperties)
+
+            var customExecution: GunExecution? = null
+            gunProperties.assembly?.forEachBehaviour<CustomGunExecutionBehaviour<*>> {
+                customExecution = it.createGunExecution(gunProperties)
+                return@forEachBehaviour
+            }
+            newExecution = customExecution ?: GunExecution(gunProperties)
 
             gunProperties.assembly?.forEachBehaviour<GunExecutionInitializationBehaviour> {
                 it.onInitializedGunExecution(newExecution, player)

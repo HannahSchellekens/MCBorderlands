@@ -11,11 +11,12 @@ import maliwan.mcbl.weapons.gun.pattern.NoBulletPattern
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.reflect.KClass
 
 /**
  * @author Hannah Schellekens
  */
-class GunExecution(
+open class GunExecution(
 
     /**
      * The initial properties of the gun used.
@@ -142,4 +143,18 @@ class GunExecution(
             return Probability(min(max(0.0, newChance), 1.0))
         }
         set(value) { properties.accuracy = value }
+
+    /**
+     * Contains extra execution data about the gun.
+     * Can be used for custom gun properties that are too niche to actually make generic.
+     */
+    val executionData: MutableMap<KClass<*>, Any> = HashMap()
+
+    inline fun <reified T> executionData(): T? {
+        return executionData[T::class] as? T
+    }
+
+    inline fun <reified T> setExecutionData(data: T) {
+        executionData[T::class] = data as Any
+    }
 }
