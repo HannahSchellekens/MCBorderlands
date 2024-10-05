@@ -47,6 +47,8 @@ object UniqueGunParts {
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SNIPER, Capacitor.VOLCANO),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.PYROPHOBIA),
 
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.TEDIORE, WeaponClass.PISTOL, PistolParts.Barrel.GUN_GUN),
+
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.PISTOL, PistolParts.Barrel.UNKEMPT_HAROLD),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.SHOTGUN, ShotgunParts.Barrel.FLAKKER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.NUKEM),
