@@ -17,7 +17,7 @@ open class AmigoSincero : UniqueGun, PostGenerationBehaviour {
         SniperParts.Barrel.JAKOBS.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
-        properties.armourPenetration = 1.0
+        properties.armourPenetration = GunProperties.FULL_ARMOUR_PENETRATION
         properties.extraInfoText += "+150% damage"
     }
 

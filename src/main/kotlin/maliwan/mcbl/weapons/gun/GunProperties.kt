@@ -492,7 +492,6 @@ open class GunProperties(
      * GunProperties object -> json string.
      */
     fun serialize(): String = GSON.toJson(this)
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is GunProperties) return false
@@ -526,56 +525,76 @@ open class GunProperties(
         if (burstDelay != other.burstDelay) return false
         if (gravity != other.gravity) return false
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
+        if (assembly != other.assembly) return false
         if (extraShotProbability != other.extraShotProbability) return false
         if (freeShotProbability != other.freeShotProbability) return false
         if (transfusion != other.transfusion) return false
         if (bounces != other.bounces) return false
         if (isPiercing != other.isPiercing) return false
         if (directDamage != other.directDamage) return false
+        if (homingTargetDistance != other.homingTargetDistance) return false
+        if (homingTargetRadius != other.homingTargetRadius) return false
+        if (homingStrength != other.homingStrength) return false
+        if (armourPenetration != other.armourPenetration) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 12289 * result + baseDamage.hashCode()
-        result = 12289 * result + accuracy.hashCode()
-        result = 12289 * result + recoil.hashCode()
-        result = 12289 * result + fireRate.hashCode()
-        result = 12289 * result + reloadSpeed.hashCode()
-        result = 12289 * result + magazineSize
-        result = 12289 * result + ammoPerShot
-        result = 12289 * result + (redText?.hashCode() ?: 0)
-        result = 12289 * result + (cyanText?.hashCode() ?: 0)
-        result = 12289 * result + extraInfoText.hashCode()
-        result = 12289 * result + elements.hashCode()
-        result = 12289 * result + elementalProbability.hashCode()
-        result = 12289 * result + elementalDuration.hashCode()
-        result = 12289 * result + elementalDamage.hashCode()
-        result = 12289 * result + elementalPolicy.hashCode()
-        result = 12289 * result + splashRadius.hashCode()
-        result = 12289 * result + splashDamage.hashCode()
-        result = 12289 * result + (recoilAngle?.hashCode() ?: 0)
-        result = 12289 * result + manufacturer.hashCode()
-        result = 12289 * result + rarity.hashCode()
-        result = 12289 * result + weaponClass.hashCode()
-        result = 12289 * result + pelletCount
-        result = 12289 * result + bulletSpeed.hashCode()
-        result = 12289 * result + meleeDamage.hashCode()
-        result = 12289 * result + burstCount
-        result = 12289 * result + burstDelay.hashCode()
-        result = 12289 * result + gravity.hashCode()
-        result = 12289 * result + (bonusCritMultiplier?.hashCode() ?: 0)
-        result = 12289 * result + extraShotProbability.hashCode()
-        result = 12289 * result + freeShotProbability.hashCode()
-        result = 12289 * result + transfusion.hashCode()
-        result = 12289 * result + bounces.hashCode()
-        result = 12289 * result + isPiercing.hashCode()
-        result = 12289 * result + directDamage.hashCode()
+        result = 31 * result + baseDamage.hashCode()
+        result = 31 * result + accuracy.hashCode()
+        result = 31 * result + recoil.hashCode()
+        result = 31 * result + fireRate.hashCode()
+        result = 31 * result + reloadSpeed.hashCode()
+        result = 31 * result + magazineSize
+        result = 31 * result + ammoPerShot
+        result = 31 * result + (redText?.hashCode() ?: 0)
+        result = 31 * result + (cyanText?.hashCode() ?: 0)
+        result = 31 * result + extraInfoText.hashCode()
+        result = 31 * result + elements.hashCode()
+        result = 31 * result + elementalProbability.hashCode()
+        result = 31 * result + elementalDuration.hashCode()
+        result = 31 * result + elementalDamage.hashCode()
+        result = 31 * result + elementalPolicy.hashCode()
+        result = 31 * result + splashRadius.hashCode()
+        result = 31 * result + splashDamage.hashCode()
+        result = 31 * result + (recoilAngle?.hashCode() ?: 0)
+        result = 31 * result + manufacturer.hashCode()
+        result = 31 * result + rarity.hashCode()
+        result = 31 * result + weaponClass.hashCode()
+        result = 31 * result + pelletCount
+        result = 31 * result + bulletSpeed.hashCode()
+        result = 31 * result + meleeDamage.hashCode()
+        result = 31 * result + burstCount
+        result = 31 * result + burstDelay.hashCode()
+        result = 31 * result + gravity.hashCode()
+        result = 31 * result + (bonusCritMultiplier?.hashCode() ?: 0)
+        result = 31 * result + (assembly?.hashCode() ?: 0)
+        result = 31 * result + extraShotProbability.hashCode()
+        result = 31 * result + freeShotProbability.hashCode()
+        result = 31 * result + transfusion.hashCode()
+        result = 31 * result + bounces
+        result = 31 * result + isPiercing.hashCode()
+        result = 31 * result + directDamage.hashCode()
+        result = 31 * result + homingTargetDistance.hashCode()
+        result = 31 * result + homingTargetRadius.hashCode()
+        result = 31 * result + homingStrength.hashCode()
+        result = 31 * result + armourPenetration.hashCode()
         return result
     }
 
     companion object {
+
+        /**
+         * Armour reduction is applied as usual. See [armourPenetration].
+         */
+        const val NO_ARMOUR_PENETRATION = 0.0
+
+        /**
+         * Armour reduction is not applied. See [armourPenetration].
+         */
+        const val FULL_ARMOUR_PENETRATION = 1.0
 
         /**
          * Gun string -> GunProperties object.
