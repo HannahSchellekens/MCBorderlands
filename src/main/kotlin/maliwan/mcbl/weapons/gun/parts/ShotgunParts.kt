@@ -117,6 +117,7 @@ object ShotgunParts {
         OVERCOMPENSATOR(Manufacturer.HYPERION, "Overcompensator", behaviours = listOf(Overcompensator())),
         ROKSALT(Manufacturer.JAKOBS, "RokSalt", behaviours = listOf(RokSalt())),
         SLEDGES_SHOTGUN(Manufacturer.JAKOBS, "Sledge's", behaviours = listOf(SledgesShotgun())),
+        STRIKER(Manufacturer.JAKOBS, "Striker", behaviours = listOf(Striker())),
         ;
 
         override val partTypeName: String = "Barrel"
