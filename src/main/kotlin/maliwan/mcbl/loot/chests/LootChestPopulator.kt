@@ -1,6 +1,7 @@
 package maliwan.mcbl.loot.chests
 
 import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.inventory.SDU
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.ammo.AmmoPack
 import maliwan.mcbl.loot.gen.WeaponGenerator
@@ -24,9 +25,11 @@ open class LootChestPopulator(val plugin: MCBorderlandsPlugin) : Listener {
         val loc = event.lootContext.location
 
         val dungeon = loc.isInDungeon()
+        val structure = loc.findStructure()
+
         val (lootPool, amount) = when {
             dungeon -> Pair(RarityTable.Treasure.regular, 0..2)
-            else -> when (loc.findStructure()) {
+            else -> when (structure) {
                 null -> null to null
                 in shittyChest -> Pair(RarityTable.Treasure.shitty, 0..2)
                 in whiteChest -> RarityTable.Treasure.regular to 1..3
@@ -52,6 +55,14 @@ open class LootChestPopulator(val plugin: MCBorderlandsPlugin) : Listener {
             val type = RarityTable.Ammo.regular.roll()
             val pack = AmmoPack(type)
             event.loot.add(pack.toItemStack())
+        }
+
+        // SDU drops
+        if (structure in whiteChest && Random.nextDouble() < 0.01) {
+            event.loot.add(SDU.uncommon.item)
+        }
+        else if (structure in redChest && Random.nextDouble() < 0.1) {
+            event.loot.add(SDU.uncommon.item)
         }
     }
 

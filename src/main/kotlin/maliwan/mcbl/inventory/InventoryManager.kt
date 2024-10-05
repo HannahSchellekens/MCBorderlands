@@ -17,7 +17,7 @@ open class InventoryManager {
      * Automatically creates a new instance if the owner has no inventory.
      */
     operator fun get(owner: Entity): AmmoInventory {
-        val inventory = inventories.getOrDefault(owner, AmmoInventory())
+        val inventory = inventories.getOrDefault(owner, AmmoInventory(owner))
         inventories[owner] = inventory
         return inventory
     }

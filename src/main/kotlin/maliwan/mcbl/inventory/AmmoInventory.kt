@@ -2,38 +2,52 @@ package maliwan.mcbl.inventory
 
 import maliwan.mcbl.loot.ammo.AmmoPack
 import maliwan.mcbl.weapons.WeaponClass
+import org.bukkit.entity.Entity
+import org.bukkit.inventory.InventoryHolder
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
 /**
  * @author Hannah Schellekens
  */
-open class AmmoInventory {
-
-    /**
-     * The maximum amount of ammo allowed for each weapon class.
-     */
-    val maxAmmo: MutableMap<WeaponClass, Int>  = mutableMapOf(
-        // Defaults based on green lvl BL2 SDU amounts
-        WeaponClass.ASSAULT_RIFLE to 560,
-        WeaponClass.PISTOL to 400,
-        WeaponClass.LAUNCHER to 18,
-        WeaponClass.SHOTGUN to 120,
-        WeaponClass.SMG to 720,
-        WeaponClass.SNIPER to 72
-    )
+open class AmmoInventory(val owner: Entity) {
 
     /**
      * The amount of ammo available for each class.
      */
-    val ammo: MutableMap<WeaponClass, Int> = maxAmmo.toMutableMap()
+    val ammo: MutableMap<WeaponClass, Int> = EnumMap(WeaponClass::class.java)
+
+    /**
+     * Scans the inventory of the entity for an SDU.
+     */
+    fun findSdu(): SDU = (owner as InventoryHolder).inventory
+        .asSequence()
+        .map { SDU.sduByItem(it) }
+        .maxOrNull()
+        ?: SDU.common
+
+    /**
+     * Get the maximum available ammo for the given weapon class.
+     */
+    fun maxAmmo(weaponClass: WeaponClass): Int {
+        val sdu = findSdu()
+        return when (weaponClass) {
+            WeaponClass.PISTOL -> sdu.pistol
+            WeaponClass.SMG -> sdu.smg
+            WeaponClass.ASSAULT_RIFLE -> sdu.assaultRifle
+            WeaponClass.SHOTGUN -> sdu.shotgun
+            WeaponClass.LAUNCHER -> sdu.launcher
+            WeaponClass.SNIPER -> sdu.sniper
+        }
+    }
 
     /**
      * Resets back to maximum values.
      */
     fun resetAmmo() {
-        maxAmmo.forEach { (weaponClass, amount) ->
-            ammo[weaponClass] = amount
+        WeaponClass.entries.forEach {
+            ammo[it] = maxAmmo(it)
         }
     }
 
@@ -52,7 +66,7 @@ open class AmmoInventory {
      */
     fun add(ammoPack: AmmoPack) {
         val current = ammo[ammoPack.weaponType] ?: error("No weapon type <${ammoPack.weaponType}> in inventory.")
-        val limit = maxAmmo[ammoPack.weaponType] ?: error("No weapon type <${ammoPack.weaponType}> in inventory.")
+        val limit = maxAmmo(ammoPack.weaponType)
         ammo[ammoPack.weaponType] = min(current + ammoPack.amount, limit)
     }
 
@@ -62,9 +76,13 @@ open class AmmoInventory {
      * @param maxValue `true` for the max ammo value of this weapon class, `false` for the current state.
      */
     operator fun get(weaponClass: WeaponClass, maxValue: Boolean = false): Int {
-        return if (maxValue) {
-            maxAmmo[weaponClass] ?: error("No weapon class $weaponClass in inventory.")
+        if (maxValue) {
+             return maxAmmo(weaponClass)
         }
-        else ammo[weaponClass] ?: error("No weapon class $weaponClass in inventory.")
+
+        if (weaponClass !in ammo) {
+            ammo[weaponClass] = maxAmmo(weaponClass)
+        }
+        return ammo.getOrDefault(weaponClass, 0)
     }
 }

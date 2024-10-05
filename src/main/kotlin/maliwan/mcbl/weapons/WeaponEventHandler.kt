@@ -6,7 +6,10 @@ import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
-import org.bukkit.*
+import org.bukkit.ChatColor
+import org.bukkit.Material
+import org.bukkit.Sound
+import org.bukkit.SoundCategory
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
@@ -410,8 +413,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // (partially) revert modifier when the bullets penetrate armour.
         val armourModifierAfterPenetration = armourModifier + (1.0 - armourModifier) * bulletMeta.armourPenetration
-
-        Bukkit.broadcastMessage("Armour modifier (pen=${bulletMeta.armourPenetration}): $armourModifier > $armourModifierAfterPenetration")
 
         // And apply shock damage multiplier when there is armour present.
         val shockModifier = if (armorPoints > 0.00001 && Elemental.SHOCK in bulletMeta.elements) {

@@ -355,17 +355,13 @@ open class GunProperties(
         }
 
         // Armour penetration.
-        if (armourPenetration in -0.0001..0.0001) {
+        if (armourPenetration in 0.99999..1.0001) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Damage penetrates armour"
         }
         else if (armourPenetration > 0.00001 && armourPenetration < 0.99999) {
             placeSeparator()
             lore += "${ChatColor.WHITE}• Damage partially penetrates armour"
-        }
-        else if (armourPenetration > 1.0) {
-            placeSeparator()
-            lore += "${ChatColor.WHITE}• Does less damage to armour"
         }
 
         // Consumes ammo per shot.

@@ -6,6 +6,8 @@ import maliwan.mcbl.entity.ItemParticles
 import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.gui.Hud
 import maliwan.mcbl.inventory.InventoryManager
+import maliwan.mcbl.inventory.SduRecipeDiscovery
+import maliwan.mcbl.inventory.registerRecipes
 import maliwan.mcbl.loot.ammo.AmmoObtain
 import maliwan.mcbl.loot.chests.LootChestPopulator
 import maliwan.mcbl.loot.drops.AmmoDropOnDeath
@@ -71,6 +73,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
             registerEvents(LootChestPopulator(plugin), plugin)
             registerEvents(damageParticles, plugin)
             registerEvents(enemySpawner, plugin)
+            registerEvents(SduRecipeDiscovery(plugin), plugin)
         }
     }
 
@@ -86,6 +89,7 @@ class MCBorderlandsPlugin : JavaPlugin() {
         Keys.initialize(this)
         registerAllEvents()
         registerCommands()
+        registerRecipes()
 
         // Handle weapon physics.
         server.scheduler.scheduleSyncRepeatingTask(this, weaponEventHandler, 1L, 1L)

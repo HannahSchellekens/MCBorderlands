@@ -1,6 +1,7 @@
 package maliwan.mcbl.commmand
 
 import maliwan.mcbl.MCBorderlandsPlugin
+import maliwan.mcbl.inventory.SDU
 import maliwan.mcbl.loot.ManufacturerTable
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.WeaponClassTable
@@ -35,11 +36,21 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
         if (args.size == 1) {
             return mutableListOf(
                 "update",
-                "gen"
+                "gen",
+                "sdu"
             )
-        } else if (args.size >= 2 && "gen".equals(args.first(), ignoreCase = true)) {
+        }
+        else if (args.size >= 2 && "gen".equals(args.first(), ignoreCase = true)) {
             return genArguments.toMutableList()
-        } else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
+        }
+        else if (args.size >= 2 && "sdu".equals(args.first(), ignoreCase = true)) {
+            return SDU.sdus.asSequence()
+                .map { it.rarity.displayName.lowercase() }
+                .filter { it != "common" }
+                .filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
+                .toMutableList()
+        }
+        else if (args.size == 2 && "update".equals(args.first(), ignoreCase = true)) {
             return listOf(
                 "name",
                 "baseDamage",
@@ -83,23 +94,30 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
                 "homingStrength",
                 "armourPenetration"
             ).filter { args[1].isBlank() || it.startsWith(args[1]) }.toMutableList()
-        } else if (args.size < 2) {
+        }
+        else if (args.size < 2) {
             return mutableListOf("update")
-        } else if ("manufacturer".equals(args[1], ignoreCase = true)) {
+        }
+        else if ("manufacturer".equals(args[1], ignoreCase = true)) {
             return Manufacturer.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
                 .toMutableList()
-        } else if ("rarity".equals(args[1], ignoreCase = true)) {
+        }
+        else if ("rarity".equals(args[1], ignoreCase = true)) {
             return Rarity.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        } else if ("weaponClass".equals(args[1], ignoreCase = true)) {
+        }
+        else if ("weaponClass".equals(args[1], ignoreCase = true)) {
             return WeaponClass.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
                 .toMutableList()
-        } else if ("element:add".equals(args[1], ignoreCase = true)) {
+        }
+        else if ("element:add".equals(args[1], ignoreCase = true)) {
             return Elemental.entries.map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }
                 .toMutableList()
-        } else if ("element:policy".equals(args[1], ignoreCase = true)) {
+        }
+        else if ("element:policy".equals(args[1], ignoreCase = true)) {
             return ElementalStatusEffects.ApplyPolicy.entries
                 .map { it.name }.filter { args[2].isBlank() || it.startsWith(args[2]) }.toMutableList()
-        } else {
+        }
+        else {
             return null
         }
     }
@@ -130,10 +148,17 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             }
 
             "gen" -> generateWeaponFromArguments(player, args.asList().subList(1, args.size))
+            "sdu" -> giveSdu(player, args.getOrNull(1))
             else -> Unit
         }
 
         return true
+    }
+
+    fun giveSdu(player: Player, rarity: String?) {
+        val actualRarity = Rarity.entries.firstOrNull { it.name.equals(rarity, ignoreCase = true) } ?: return
+        val item = SDU.sduByRarity(actualRarity)?.item ?: return
+        player.inventory.addItem(item)
     }
 
     fun generateWeaponFromArguments(player: Player, args: List<String>) {
@@ -258,11 +283,18 @@ open class McblCommands(val plugin: MCBorderlandsPlugin) : CommandExecutor, TabC
             "extraShotChance" -> update {
                 extraShotProbability = Probability(value.toDoubleOrNull() ?: error("No double: $value"))
             }
-            "freeShotChance" -> update { freeShotProbability = Probability(value.toDoubleOrNull() ?: error("No double: $value")) }
+
+            "freeShotChance" -> update {
+                freeShotProbability = Probability(value.toDoubleOrNull() ?: error("No double: $value"))
+            }
+
             "transfusion" -> update { transfusion = value.toDoubleOrNull() ?: error("No double: $value") }
             "bounces" -> update { bounces = value.toIntOrNull() ?: error("No int: $value") }
             "isPiercing" -> update { isPiercing = value.toBoolean() }
-            "homingTargetDistance" -> update { homingTargetDistance = value.toDoubleOrNull() ?: error("No double: $value") }
+            "homingTargetDistance" -> update {
+                homingTargetDistance = value.toDoubleOrNull() ?: error("No double: $value")
+            }
+
             "homingTargetRadius" -> update { homingTargetRadius = value.toDoubleOrNull() ?: error("No double: $value") }
             "homingStrength" -> update { homingStrength = value.toDoubleOrNull() ?: error("No double: $value") }
             "armourPenetration" -> update { armourPenetration = value.toDoubleOrNull() ?: error("No double: $value") }
