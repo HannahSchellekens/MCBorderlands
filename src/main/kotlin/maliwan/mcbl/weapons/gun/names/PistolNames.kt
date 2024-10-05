@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun.names
 
 import maliwan.mcbl.util.TabTable
 import maliwan.mcbl.weapons.Manufacturer
+import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.PistolParts
 
@@ -35,7 +36,7 @@ object PistolNames {
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 
         val default = barrel.defaultPrefix() ?: capacitor?.defaultPrefix() ?: accessory?.defaultPrefix()
-        val prefix = if (accessory != null) {
+        val prefix = if (accessory != null && accessory.behaviours.none { it is UniqueGun }) {
             accessoryTable[accessory, manufacturer]
                 ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and accessory $accessory")
         }

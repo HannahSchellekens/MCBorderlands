@@ -385,7 +385,8 @@ object PistolParts {
         override val manufacturer: Manufacturer,
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
-        override val manufacturerStatModifiers: List<StatModifier> = emptyList()
+        override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         ACCURACY(
@@ -468,6 +469,10 @@ object PistolParts {
                 divide(1.1, Property.FIRE_RATE)
             }
         ),
+
+        // Unique accessories.
+
+        MAGGIE(Manufacturer.JAKOBS, "Maggie", behaviours = listOf(Maggie())),
         ;
 
         override val partTypeName: String = "Acc."
