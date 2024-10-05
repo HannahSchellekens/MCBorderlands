@@ -31,7 +31,7 @@ open class Hud(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val inventory = plugin.inventoryManager[player]
 
         val gunType = gunExecution.weaponClass.displayName
-        val totalAmmo = inventory[gunExecution.weaponClass, true]
+        val totalAmmo = inventory[gunExecution.weaponClass]
         val leftInClip = min(gunExecution.clip, totalAmmo)
         val ammoLeft = max(0, totalAmmo - leftInClip)
 

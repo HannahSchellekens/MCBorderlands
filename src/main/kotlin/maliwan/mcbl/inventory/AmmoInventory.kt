@@ -55,7 +55,9 @@ open class AmmoInventory(val owner: Entity) {
      * Removes ammo from the inventory.
      */
     fun removeAmmo(weaponClass: WeaponClass, amount: Int) {
-        ammo[weaponClass] = max(0, (ammo[weaponClass] ?: error("No weapon class $weaponClass in inventory")) - amount)
+        val oldAmount = ammo[weaponClass] ?: error("No weapon class $weaponClass in inventory")
+        val newAmount = max(0, oldAmount - amount)
+        ammo[weaponClass] = newAmount
     }
 
     /**
@@ -65,7 +67,7 @@ open class AmmoInventory(val owner: Entity) {
      *          Ammo to add to the inventory.
      */
     fun add(ammoPack: AmmoPack) {
-        val current = ammo[ammoPack.weaponType] ?: error("No weapon type <${ammoPack.weaponType}> in inventory.")
+        val current = ammo[ammoPack.weaponType] ?: 0
         val limit = maxAmmo(ammoPack.weaponType)
         ammo[ammoPack.weaponType] = min(current + ammoPack.amount, limit)
     }

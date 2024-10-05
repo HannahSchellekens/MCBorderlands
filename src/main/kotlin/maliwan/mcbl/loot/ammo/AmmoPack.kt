@@ -4,7 +4,6 @@ import maliwan.mcbl.Keys
 import maliwan.mcbl.util.GSON
 import maliwan.mcbl.util.updateItemMeta
 import maliwan.mcbl.weapons.WeaponClass
-import maliwan.mcbl.weapons.gun.GunProperties
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -29,7 +28,7 @@ data class AmmoPack(
     val itemName = "${weaponType.displayName} Ammo"
 
     fun toItemStack(): ItemStack = ItemStack(itemType, amount).updateItemMeta {
-        setDisplayName(itemName)
+        setDisplayName(this@AmmoPack.itemName)
         persistentDataContainer.set(Keys.ammoDrop, PersistentDataType.STRING, this@AmmoPack.serialize())
     }
 

@@ -492,7 +492,10 @@ open class GunProperties(
      * GunProperties object -> json string.
      */
     fun serialize(): String = GSON.toJson(this)
+
     override fun equals(other: Any?): Boolean {
+        // Do not include assembly in equality check, otherwise equal gun executions won't be
+        // recognised as equal.
         if (this === other) return true
         if (other !is GunProperties) return false
 
@@ -525,7 +528,6 @@ open class GunProperties(
         if (burstDelay != other.burstDelay) return false
         if (gravity != other.gravity) return false
         if (bonusCritMultiplier != other.bonusCritMultiplier) return false
-        if (assembly != other.assembly) return false
         if (extraShotProbability != other.extraShotProbability) return false
         if (freeShotProbability != other.freeShotProbability) return false
         if (transfusion != other.transfusion) return false
@@ -541,6 +543,8 @@ open class GunProperties(
     }
 
     override fun hashCode(): Int {
+        // Do not include assembly in equality check, otherwise equal gun executions won't be
+        // recognised as equal.
         var result = name.hashCode()
         result = 31 * result + baseDamage.hashCode()
         result = 31 * result + accuracy.hashCode()
@@ -570,7 +574,6 @@ open class GunProperties(
         result = 31 * result + burstDelay.hashCode()
         result = 31 * result + gravity.hashCode()
         result = 31 * result + (bonusCritMultiplier?.hashCode() ?: 0)
-        result = 31 * result + (assembly?.hashCode() ?: 0)
         result = 31 * result + extraShotProbability.hashCode()
         result = 31 * result + freeShotProbability.hashCode()
         result = 31 * result + transfusion.hashCode()
