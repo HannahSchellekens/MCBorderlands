@@ -174,6 +174,7 @@ object AssaultRifleParts {
         BOOM_PUPPY(Manufacturer.TORGUE, "Boom Puppy", behaviours = listOf(BoomPuppy())),
         DAMNED_COWBOY(Manufacturer.BANDIT, "Damned Cowboy", behaviours = listOf(DamnedCowboy())),
         HAIL(Manufacturer.DAHL, "Hail", behaviours = listOf(Hail())),
+        HAMMER_BUSTER(Manufacturer.JAKOBS, "Hammer Buster", behaviours = listOf(HammerBuster())),
         SCORPIO(Manufacturer.JAKOBS, "Scorpio", behaviours = listOf(Scorpio())),
         SHREDIFIER(Manufacturer.VLADOF, "Shredifier", behaviours = listOf(Shredifier(), Spinigun())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
