@@ -677,6 +677,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     private fun applyBulletGravity() = bullets.forEach { (bullet, meta) ->
         val newVelocity = bullet.velocity.clone()
         newVelocity.y -= meta.gravity
+        // Prevent slow arrows from completely halting.
+        if (newVelocity.length() < 4.0) {
+            newVelocity.multiply(1.01)
+        }
         bullet.velocity = newVelocity
     }
 

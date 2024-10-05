@@ -135,13 +135,13 @@ data class BulletMeta(
      * 0.0-1.0 means that only part of the armour reduction is applied.
      * 0.0 means that the regular armour reduction is applied.
      */
-    var armourPenetration: Double = 0.0,
+    var armourPenetration: Double = 0.0
 ) {
 
     /**
      * The unix timestamp where the bullet should die.
      */
-    val deathTimestamp: Long = createdAt + (lifespanSeconds * 1000).toLong()
+    var deathTimestamp: Long = createdAt + (lifespanSeconds * 1000).toLong()
 
     /**
      * Checks whether the bullet has exceeded its lifespan.
