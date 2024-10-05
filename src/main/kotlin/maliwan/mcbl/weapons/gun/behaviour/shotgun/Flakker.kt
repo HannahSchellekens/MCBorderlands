@@ -92,7 +92,7 @@ open class Flakker : UniqueGun, PostGenerationBehaviour, BulletEffectBehaviour, 
     companion object {
 
         val statModifiers = statModifierList {
-            multiply(2.3, StatModifier.Property.BASE_DAMAGE)
+            multiply(2.7, StatModifier.Property.BASE_DAMAGE)
             multiply(3, StatModifier.Property.SPLASH_RADIUS)
             divide(2, StatModifier.Property.FIRE_RATE)
             multiply(0.3, StatModifier.Property.PROJECTILE_SPEED)
