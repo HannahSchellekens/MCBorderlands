@@ -164,8 +164,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                         // Make sure the recoil angle is not applied when there are no shots
                         // left.
                         if (enoughAmmo) {
-                            // Delay recoil to last burst shot to make burst recoil weapons not insufferable.
-                            plugin.scheduleTask(execution.burstCount * execution.burstDelay.long) {
+                            plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
                                 applyRecoil(execution)
                             }
                         }

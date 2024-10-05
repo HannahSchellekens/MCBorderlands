@@ -14,4 +14,4 @@ bonusCritModifier	3	3	4.2	3	3
 splashRadius	0.3	0.3	0.3	0.5	0.3
 ammoPerShot	1	1	1	1	1
 projectileCount	1	1	1	1	1
-recoilAngle	-4	-4	-5	-3	-3
+recoilAngle	-1.75	-3	-4	-3	-3
