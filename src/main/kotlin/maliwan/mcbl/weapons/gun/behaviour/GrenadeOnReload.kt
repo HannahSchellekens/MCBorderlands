@@ -39,12 +39,17 @@ open class GrenadeOnReload : ReloadBehaviour {
             }
         )
 
+        val elements = ArrayList<Elemental>(gunExecution.elements)
+        val elementalProbability = HashMap<Elemental, Probability>(gunExecution.elementalProbability)
+        val elementalDuration = HashMap<Elemental, Ticks>(gunExecution.elementalDuration)
+        val elementalDamage = HashMap<Elemental, Damage>(gunExecution.elementalDamage)
+
         // Set explosive if no element is known:
-        if (gunExecution.elements.isEmpty()) {
-            gunExecution.elements.add(Elemental.EXPLOSIVE)
-            gunExecution.elementalProbability[Elemental.EXPLOSIVE] = Probability.ONE
-            gunExecution.elementalDamage[Elemental.EXPLOSIVE] = Damage(10.0)
-            gunExecution.elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
+        if (elements.isEmpty()) {
+            elements.add(Elemental.EXPLOSIVE)
+            elementalProbability[Elemental.EXPLOSIVE] = Probability.ONE
+            elementalDamage[Elemental.EXPLOSIVE] = Damage(10.0)
+            elementalDuration[Elemental.EXPLOSIVE] = Ticks(0)
         }
 
         val damage = when (gunExecution.weaponClass) {
@@ -62,10 +67,10 @@ open class GrenadeOnReload : ReloadBehaviour {
             assembly = null,
             damage = damage,
             splashDamage = damage,
-            elements = gunExecution.elements,
-            elementalProbability = gunExecution.elementalProbability,
-            elementalDuration = gunExecution.elementalDuration,
-            elementalDamage = gunExecution.elementalDamage,
+            elements = elements,
+            elementalProbability = elementalProbability,
+            elementalDuration = elementalDuration,
+            elementalDamage = elementalDamage,
             elementalPolicy = gunExecution.elementalPolicy,
             splashRadius = when (gunExecution.weaponClass) {
                 WeaponClass.LAUNCHER -> gunExecution.splashRadius * 1.1
