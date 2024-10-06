@@ -37,7 +37,7 @@ open class Butcher : UniqueGun, PostGunShotBehaviour, PostGenerationBehaviour {
         player: Player
     ) {
         if (Random.nextDouble() < 0.5) {
-            val addAmmo = Random.nextInt(0, 3)
+            val addAmmo = Random.nextInt(1, 4)
             execution.clip = min(execution.clip + addAmmo, execution.magazineSize)
         }
     }
@@ -47,7 +47,7 @@ open class Butcher : UniqueGun, PostGunShotBehaviour, PostGenerationBehaviour {
         val statModifiers = statModifierList {
             multiply(2.0, StatModifier.Property.ACCURACY)
             multiply(2.5, StatModifier.Property.FIRE_RATE)
-            add(1, StatModifier.Property.MAGAZINE_SIZE)
+            add(2, StatModifier.Property.MAGAZINE_SIZE)
         }
     }
 }
