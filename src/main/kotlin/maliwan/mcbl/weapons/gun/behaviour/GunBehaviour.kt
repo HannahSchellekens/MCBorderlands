@@ -8,6 +8,7 @@ import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import maliwan.mcbl.weapons.gun.pattern.BulletPatternProcessor
 import org.bukkit.Location
+import org.bukkit.Sound
 import org.bukkit.entity.*
 
 /**
@@ -183,13 +184,24 @@ interface PostGenerationBehaviour : GunBehaviour {
 /**
  * Determines which type of projectile the gun shoots.
  */
-interface BulletTypeProvider: GunBehaviour {
+interface BulletTypeProvider : GunBehaviour {
 
     /**
      * The type of bullet that gets shot.
      * Must be a [Projectile].
      */
     val bulletType: EntityType
+}
+
+/**
+ * Determines which sound to play when the gun fires.
+ */
+interface BulletSoundProvider : GunBehaviour {
+
+    /**
+     * The sound to play when the gun gets fired.
+     */
+    val shootSound: Sound
 }
 
 /**
@@ -341,6 +353,20 @@ interface FibWeaponCard : GunBehaviour {
      * For example: manufacturer gimmicks, transfusion percentages, bonus elemental damage...
      */
     val showGeneratedInfo: Boolean
+}
+
+/**
+ * Modifies the name of the manufacturer shown on the weapon card.
+ */
+interface OverrideManufacturerOnWeaponCard : GunBehaviour {
+
+    /**
+     * Get the manufacturer name that must be shown on the weapon card.
+     *
+     * @param oldName The original manufacturer name.
+     * @return The new manufacturer name on the weapon card.
+     */
+    fun newManufacturerName(oldName: String): String
 }
 
 inline fun <reified T> List<GunBehaviour>.forEachType(action: (T) -> Unit) {

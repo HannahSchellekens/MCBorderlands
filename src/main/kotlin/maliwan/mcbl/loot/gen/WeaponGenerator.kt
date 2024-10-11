@@ -150,6 +150,7 @@ open class WeaponGenerator(
 
         applyGradeScaling()
         addManufacturerGimmick(assembly)
+        updateElementalChances()
 
         assembly.applyCustomLore(this)
 
@@ -158,6 +159,22 @@ open class WeaponGenerator(
         }
 
         return this
+    }
+
+    /**
+     * Post processes the elemental chance.
+     */
+    private fun GunProperties.updateElementalChances() {
+        val baseChance = elementalProbability[Elemental.CRYO] ?: return
+        val multiplier = when (weaponClass) {
+            WeaponClass.PISTOL -> 1.3
+            WeaponClass.SHOTGUN -> 1.0
+            WeaponClass.ASSAULT_RIFLE -> 1.0
+            WeaponClass.SNIPER -> 1.5
+            WeaponClass.SMG -> 0.5
+            WeaponClass.LAUNCHER -> 1.0
+        }
+        elementalProbability[Elemental.CRYO] = Probability(baseChance.chance * multiplier)
     }
 
     /**
@@ -247,6 +264,7 @@ open class WeaponGenerator(
             Elemental.CORROSIVE,
             Elemental.SHOCK,
             Elemental.SLAG -> 0.833
+            Elemental.CRYO -> 0.95
             else -> 1.0
         }
         baseDamage *= damageMultiplier

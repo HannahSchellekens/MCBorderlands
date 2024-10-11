@@ -4,6 +4,7 @@ import maliwan.mcbl.Keys
 import maliwan.mcbl.util.*
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.behaviour.FibWeaponCard
+import maliwan.mcbl.weapons.gun.behaviour.OverrideManufacturerOnWeaponCard
 import org.bukkit.ChatColor
 import org.bukkit.entity.Item
 import org.bukkit.entity.LivingEntity
@@ -411,6 +412,10 @@ open class GunProperties(
                     lore += "${ChatColor.WHITE}•${element.chatColor} Slagged entities take additional"
                     lore += "${element.chatColor}non-slag damage"
                 }
+                Elemental.CRYO -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Slows and freezes entities"
+                }
                 else -> {}
             }
         }
@@ -437,7 +442,12 @@ open class GunProperties(
     }
 
     private fun MutableList<String>.addGunTypeToCard() {
-        this += "${ChatColor.GRAY}${rarity.displayName} • ${weaponClass.displayName} • ${manufacturer.displayName}"
+        val manufacturerNameUpdater = assembly?.behaviours?.firstOrNull {
+            it is OverrideManufacturerOnWeaponCard
+        } as? OverrideManufacturerOnWeaponCard
+
+        val manufacturerName = manufacturerNameUpdater?.newManufacturerName(manufacturer.displayName) ?: manufacturer.displayName
+        this += "${ChatColor.GRAY}${rarity.displayName} • ${weaponClass.displayName} • $manufacturerName"
     }
 
     private fun MutableList<String>.addBaseStatsToCard(fib: FibWeaponCard?) {

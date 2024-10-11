@@ -1,15 +1,14 @@
 package maliwan.mcbl.weapons
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.entity.armorPoints
-import maliwan.mcbl.entity.showHealthBar
-import maliwan.mcbl.entity.temporarilyDisableIframes
-import maliwan.mcbl.entity.temporarilyDisableKnockback
+import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
 import maliwan.mcbl.util.*
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import kotlin.random.Random
 
 /**
@@ -70,7 +69,7 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
      *
      * @return Map that maps `Effect -> Expiry Time Millis`. Empty map if there are no current effects.
      */
-    fun activeEffets(entity: LivingEntity): List<Pair<ElementalStatusEffect, Long>> {
+    fun activeEffects(entity: LivingEntity): List<Pair<ElementalStatusEffect, Long>> {
         return activeEffects.getOrDefault(entity, emptyList())
     }
 
@@ -90,15 +89,20 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
     else 1.0
 
     /**
+     * Counts how many stacks of a certain elemental effect is applied to the entity.
+     */
+    fun stacksOf(entity: LivingEntity, elemental: Elemental): Int {
+        val effects = activeEffects[entity]
+        return effects?.count { (effect, _) -> effect.elemental == elemental } ?: 0
+    }
+
+    /**
      * Adds an elemental status effect to the given entity.
      * See [ApplyPolicy] for different ways of dealing with duplicate elemental types.
      *
-     * @param entity
-     *          The entity to apply the status effect to.
-     * @param effect
-     *          The effect to apply.
-     * @param policy
-     *          See PpplyPolicy for options how to deal with duplicate elemental types.
+     * @param entity The entity to apply the status effect to.
+     * @param effect The effect to apply.
+     * @param policy See [ApplyPolicy] for options how to deal with duplicate elemental types.
      */
     fun applyEffect(entity: LivingEntity, effect: ElementalStatusEffect, policy: ApplyPolicy = ApplyPolicy.DO_NOTHING) {
         var active = activeEffects.getOrDefault(entity, null)
@@ -114,10 +118,37 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
         }
 
         // Remove element effects of the same type if they need to be replaced.
-        if (policy == ApplyPolicy.REPLACE) {
+        // Ignore CRYO: Cryo's effect is based on the amount of CRYO stacks.
+        if (policy == ApplyPolicy.REPLACE && effect.elemental != Elemental.CRYO) {
             active.removeIf { (it, _) -> it.elemental == effect.elemental }
         }
 
+        when (effect.elemental) {
+            Elemental.CRYO -> addCryoEffect(entity, effect, active)
+            else -> addRegularEffect(entity, effect, active)
+        }
+    }
+
+    /**
+     * Add a cryo element to the entity.
+     */
+    private fun addCryoEffect(
+        entity: LivingEntity,
+        effect: ElementalStatusEffect,
+        active: MutableList<Pair<ElementalStatusEffect, Long>>
+    ) {
+        check(effect.elemental == Elemental.CRYO) { "Trying to add a non-cryo cryo effect" }
+        addRegularEffect(entity, effect, active)
+    }
+
+    /**
+     * Add a normal element to the entity: i.e. all effects operate sparately from each other.
+     */
+    private fun addRegularEffect(
+        entity: LivingEntity,
+        effect: ElementalStatusEffect,
+        active: MutableList<Pair<ElementalStatusEffect, Long>>
+    ) {
         val now = System.currentTimeMillis()
         val timestampExpired = now + effect.duration.millis
         active += (effect to timestampExpired)
@@ -131,6 +162,7 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
     fun tick() {
         applyDamage()
         applyShockEffect()
+        applyCryoEffect()
         removeExpiredEffects()
 
         // Lower particle count.
@@ -162,6 +194,7 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                     Elemental.INCENDIARY -> DamageSource.builder(DamageType.ON_FIRE).build()
                     Elemental.CORROSIVE -> DamageSource.builder(DamageType.WITHER).build()
                     Elemental.SHOCK -> DamageSource.builder(DamageType.LIGHTNING_BOLT).build()
+                    Elemental.CRYO -> DamageSource.builder(DamageType.FREEZE).build()
                     else -> DamageSource.builder(DamageType.MAGIC).build()
                 }
 
@@ -169,12 +202,44 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                 entity.temporarilyDisableIframes(plugin)
                 entity.damage(totalDamage, cause)
 
-                plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
-                    entity,
-                    entity.location.add(0.0, entity.height, 0.0),
-                    element,
-                    totalDamage
-                ))
+                plugin.damageParticles.scheduleDisplay(
+                    DamageParticles.DamageParticleEntry(
+                        entity,
+                        entity.location.add(0.0, entity.height, 0.0),
+                        element,
+                        totalDamage
+                    )
+                )
+            }
+    }
+
+    /**
+     * Executes all special effects when the player has been frozen by Cryo.
+     * This method checks for cryo status.
+     */
+    fun applyCryoEffect() = activeEffects.forEach { (entity, effects) ->
+        effects.asSequence()
+            .filter { (effect, _) -> effect.elemental == Elemental.CRYO }
+            .forEach { (_, _) ->
+                val stacks = stacksOf(entity, Elemental.CRYO)
+                when (stacks) {
+                    in 1..2 -> {
+                        entity.freezeTicks = 40
+                        entity.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 20, 0, true, false, false))
+                        entity.centre.showElementalParticle(Elemental.CRYO.color, Random.nextInt(0, 2), spread = entity.height / 2.6)
+                    }
+                    in 3..4 -> {
+                        entity.freezeTicks = 90
+                        entity.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 20, 1, true, false, false))
+                        entity.centre.showElementalParticle(Elemental.CRYO.color, Random.nextInt(0, 3), spread = entity.height / 2.4)
+                    }
+                    else -> {
+                        entity.freezeTicks = 140
+                        entity.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 20, 20, true, false, false))
+                        entity.addPotionEffect(PotionEffect(PotionEffectType.JUMP_BOOST, 20, 255, true, false, false))
+                        entity.centre.showElementalParticle(Elemental.CRYO.color, Random.nextInt(1, 4), spread = entity.height / 2.2)
+                    }
+                }
             }
     }
 
@@ -211,17 +276,35 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
             Elemental.INCENDIARY -> {
                 entity.location.showFlameParticle()
             }
+
             Elemental.CORROSIVE,
             Elemental.SHOCK,
             Elemental.SLAG -> {
                 repeat(8) {
                     val spread = entity.width / 2.0
-                    val loc = entity.location.clone().add(0.5.modifyRandom(spread), 1.0.modifyRandom(spread), 0.5.modifyRandom(spread))
+                    val loc = entity.location.clone()
+                        .add(0.5.modifyRandom(spread), 1.0.modifyRandom(spread), 0.5.modifyRandom(spread))
                     loc.showElementalParticle(elemental.color, 1, size = 1.4f)
                 }
             }
+
             else -> Unit
         }
+    }
+
+    /**
+     * Get the damage multiplier for explosive/melee damage for the given entity when it has a cryo effect.
+     */
+    fun cryoDamageMultiplier(entity: LivingEntity): Double {
+        val cryoStacks = stacksOf(entity, Elemental.CRYO)
+        return if (cryoStacks > 0) {
+            when (cryoStacks) {
+                in 1..2 -> 1.5
+                in 3..4 -> 2.5
+                else -> 3.5
+            }
+        }
+        else 1.0
     }
 
     /**
@@ -231,15 +314,20 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
         val now = System.currentTimeMillis()
         activeEffects.forEach { (entity, effectList) ->
             effectList.removeIf { (toRemove, endTimestamp) ->
+                val effects = activeEffects(entity)
+
                 if (now > endTimestamp) {
-                    val effects = activeEffets(entity)
+                    val newEffects = effects
                         .filter { (effect, _) -> effect != toRemove }
                         .map { (effect, _) -> effect.elemental }
 
-                    entity.showHealthBar(statusEffects = effects)
+                    entity.showHealthBar(statusEffects = newEffects)
                     true
                 }
-                else false
+                else {
+                    entity.showHealthBar(statusEffects = effects.map { (effect, _) -> effect.elemental })
+                    false
+                }
             }
         }
         activeEffects.entries.removeIf { (_, effects) -> effects.isEmpty() }

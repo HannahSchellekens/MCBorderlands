@@ -85,5 +85,5 @@ fun defaultPrefix(behaviours: List<GunBehaviour>): String? {
     return if (names.isEmpty()) {
         null
     }
-    else names.joinToString(" ")
+    else names.joinToString(" ").trim().ifBlank { null }
 }

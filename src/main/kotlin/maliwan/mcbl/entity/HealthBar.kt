@@ -22,6 +22,7 @@ fun LivingEntity.showHealthBar(
         Elemental.CORROSIVE -> "${chatColor}C"
         Elemental.SHOCK -> "${chatColor}E"
         Elemental.SLAG -> "${chatColor}S"
+        Elemental.CRYO -> "${chatColor}I"
         else -> ""
     }
 
@@ -55,7 +56,7 @@ fun LivingEntity.showHealthBar(
     smallThreshold: Double = 19.5,
     color: ChatColor = ChatColor.RED
 ) {
-    val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffets(this)
+    val effects = plugin.weaponEventHandler.elementalStatusEffects.activeEffects(this)
         .map { (effect, _) -> effect.elemental }
     showHealthBar(smallLength, largeLength, smallThreshold, color, effects)
 }

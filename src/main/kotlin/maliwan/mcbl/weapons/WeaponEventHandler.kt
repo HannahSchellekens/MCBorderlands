@@ -206,7 +206,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         repeat(gunExecution.pelletCount) { _ ->
             shootGunBullet(player, gunExecution)?.let { bullets.add(it) }
         }
-        player.playSound(player.location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.PLAYERS, 5.0f, 1.0f)
+
+        // Play gun sound.
+        val soundProvider = gunExecution.assembly?.behaviours
+            ?.firstOrNull { it is BulletSoundProvider } as? BulletSoundProvider
+        val sound = soundProvider?.shootSound ?: Sound.ENTITY_FIREWORK_ROCKET_BLAST
+        player.playSound(player.location, sound, SoundCategory.PLAYERS, 5.0f, 1.0f)
 
         if (consumeAmmo) {
             removeAmmo(player, gunExecution)
@@ -315,7 +320,23 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         } else false
     }
 
-    fun shootGunBullet(player: LivingEntity, gunExecution: GunExecution, directionDelta: Vector? = null): Entity? {
+    /**
+     * Shoots a bullet.
+     *
+     * @param player Who shoots the bullet.
+     * @param gunExecution The gun execution of the gun that shoots the bullet.
+     * @param directionDelta Translation of the initial shooting direction.
+     * @param bulletMetaTransform Transformation function that modifies the bullet meta before shooting.
+     * @param accuracyModifier With how much to fuzz the initial direction, 0.0 for perfect accuracy, `null` for the
+     * default accuracy modifier.
+     */
+    fun shootGunBullet(
+        player: LivingEntity,
+        gunExecution: GunExecution,
+        directionDelta: Vector? = null,
+        bulletMetaTransform: ((BulletMeta) -> Unit)? = null,
+        accuracyModifier: Double? = null
+    ): Entity? {
         val bulletType = gunExecution.assembly?.behaviours?.first<BulletTypeProvider, EntityType> {
             it.bulletType
         } ?: EntityType.ARROW
@@ -324,8 +345,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val initialDirection = gunExecution.bulletPattern.nextRotation(playerDirection)
         val direction = initialDirection.add(directionDelta ?: Vector())
 
-        val bullet = player.shootBullet(player.eyeLocation, direction, gunExecution, bulletType) ?: return null
+        val bullet = player.shootBullet(player.eyeLocation, direction, gunExecution, bulletType, accuracyModifier) ?: return null
         val bulletMeta = gunExecution.bulletMeta(player)
+        bulletMetaTransform?.let { it(bulletMeta) }
         bullets[bullet] = bulletMeta
 
         val millisDelay = (1000.0 / gunExecution.fireRate).toLong()
@@ -389,13 +411,19 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             acc * elementDamageModifier
         }
 
+        // Cryo damage bonus.
+        val cryoMultiplier = if (Elemental.EXPLOSIVE in bulletMeta.elements) {
+            elementalStatusEffects.cryoDamageMultiplier(targetEntity)
+        }
+        else 1.0
+
         // Calculate critical hit bonus.
         val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
         val head = targetEntity.headLocation
         val distance = hitLocation?.distance(head) ?: Double.MAX_VALUE
         val isCritical = distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
 
-        val critMultiplier = if (isCritical) {
+        val critMultiplier = if (isCritical && bulletMeta.canCrit) {
             2.0 + (bulletMeta.bonusCritMultiplier ?: 0.0)
         }
         else 1.0
@@ -406,7 +434,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         // Apply damage
-        event.damage = bulletMeta.damage.damage * elementalModifier *
+        event.damage = bulletMeta.damage.damage * elementalModifier * cryoMultiplier *
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
 
         // Apply armor.
@@ -463,11 +491,21 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     @EventHandler
     fun meleeDamageBonus(event: EntityDamageByEntityEvent) {
         val damager = event.damager as? Player
-        val gun = damager?.gunProperties() ?: return
+        val gun = damager?.gunProperties()
         // Prevent elemental damage to increase damage output.
         if (event.entity.lastDamageCause?.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
 
-        event.damage = max(event.damage, event.damage + gun.meleeDamage.damage)
+        // Cryo damage bonus.
+        val target = event.entity as? LivingEntity
+        val cryoMultiplier = target?.let {
+            elementalStatusEffects.cryoDamageMultiplier(it)
+        } ?: 1.0
+
+        val newDamage = max(event.damage, (event.damage + (gun?.meleeDamage?.damage ?: 0.0)) * cryoMultiplier)
+        event.damage = newDamage
+
+        // Don't show particles for melee, because otherwise they are registered twice - showing twice as much
+        // damage than is actually inflicted.
     }
 
     @EventHandler

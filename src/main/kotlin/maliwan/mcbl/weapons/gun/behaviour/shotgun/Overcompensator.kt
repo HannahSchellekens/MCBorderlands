@@ -17,7 +17,7 @@ open class Overcompensator : UniqueGun, PostGunShotBehaviour, PostGenerationBeha
     TalkWhenFiring, TalkWhenReloading {
 
     override val baseName = "Overcompensator"
-    override val redText = "Fresh meat!"
+    override val redText = "You can either surf, or you can fight!"
 
     override val talkChanceFiring = Probability(0.1)
     override val talkMessagesFiring = listOf(
@@ -66,7 +66,7 @@ open class Overcompensator : UniqueGun, PostGunShotBehaviour, PostGenerationBeha
         val statModifiers = statModifierList {
             multiply(2.25, StatModifier.Property.ACCURACY)
             multiply(2, StatModifier.Property.FIRE_RATE)
-            add(2, StatModifier.Property.MAGAZINE_SIZE)
+            add(1, StatModifier.Property.MAGAZINE_SIZE)
         }
     }
 }

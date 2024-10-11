@@ -155,14 +155,16 @@ fun elementalLootPool(
     shock: Int,
     corrosive: Int,
     slag: Int,
-    explosive: Int
+    explosive: Int,
+    cryo: Int,
 ): LootPool<Elemental> = lootPoolOf(
     Elemental.PHYSICAL to nonElemental,
     Elemental.INCENDIARY to incendiary,
     Elemental.SHOCK to shock,
     Elemental.CORROSIVE to corrosive,
     Elemental.SLAG to slag,
-    Elemental.EXPLOSIVE to explosive
+    Elemental.EXPLOSIVE to explosive,
+    Elemental.CRYO to cryo
 )
 
 /**
