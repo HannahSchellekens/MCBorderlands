@@ -30,7 +30,7 @@ data class BulletMeta(
     /**
      * Downward acceleration (+ value is downward, - is upward) of the bullet.
      */
-    val gravity: Double = 0.016,
+    var gravity: Double = 0.016,
 
     /**
      * How long the bullet stays alive.
@@ -135,7 +135,17 @@ data class BulletMeta(
      * 0.0-1.0 means that only part of the armour reduction is applied.
      * 0.0 means that the regular armour reduction is applied.
      */
-    var armourPenetration: Double = 0.0
+    var armourPenetration: Double = 0.0,
+
+    /**
+     * Whether this bullet can score critical hits (`true`) or not (`false`).
+     */
+    var canCrit: Boolean = true,
+
+    /**
+     * How many particles to show per tick during flight.
+     */
+    var particleCount: () -> Int =  { 1 },
 ) {
 
     /**

@@ -14,15 +14,16 @@ fun LivingEntity.shootBullet(
     from: Location,
     direction: Vector,
     properties: GunProperties,
-    bulletType: EntityType = EntityType.ARROW
+    bulletType: EntityType = EntityType.ARROW,
+    accuracyModifier: Double? = null
 ): Projectile? {
     val world = from.world ?: return null
 
-    val accuracyModifier = (1.0 - properties.accuracy.chance) * 0.375
+    val accuracyModifierValue = accuracyModifier ?: ((1.0 - properties.accuracy.chance) * 0.375)
     val newDirection = direction
-        .setX(direction.x.modifyRandom(accuracyModifier))
-        .setY(direction.y.modifyRandom(accuracyModifier))
-        .setZ(direction.z.modifyRandom(accuracyModifier))
+        .setX(direction.x.modifyRandom(accuracyModifierValue))
+        .setY(direction.y.modifyRandom(accuracyModifierValue))
+        .setZ(direction.z.modifyRandom(accuracyModifierValue))
 
     val bullet = world.spawnEntity(from, bulletType) as? Projectile
         ?: error("Entity type $bulletType is not a projectile.")

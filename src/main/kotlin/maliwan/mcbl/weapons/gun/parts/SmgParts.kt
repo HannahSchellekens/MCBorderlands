@@ -123,6 +123,7 @@ object SmgParts {
         CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         DOUBLE_ANARCHY(Manufacturer.TEDIORE, "Double Anarchy", behaviours = listOf(DoubleAnarchy())),
         EMPEROR(Manufacturer.DAHL, "Emperor", behaviours = listOf(Emperor())),
+        ENDOTHERMIC_BLASTER(Manufacturer.MALIWAN, "EndoBlaster", behaviours = listOf(EndothermicBlaster())),
         GOOD_TOUCH(Manufacturer.MALIWAN, "Good Touch", behaviours = listOf(GoodTouch())),
         SLAGGA(Manufacturer.BANDIT, "Slagga", behaviours = listOf(Slagga())),
         ;
