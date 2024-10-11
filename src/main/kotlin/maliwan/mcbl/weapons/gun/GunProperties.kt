@@ -411,6 +411,10 @@ open class GunProperties(
                     lore += "${ChatColor.WHITE}•${element.chatColor} Slagged entities take additional"
                     lore += "${element.chatColor}non-slag damage"
                 }
+                Elemental.CRYO -> {
+                    placeSeparator()
+                    lore += "${ChatColor.WHITE}•${element.chatColor} Slows and freezes entities"
+                }
                 else -> {}
             }
         }

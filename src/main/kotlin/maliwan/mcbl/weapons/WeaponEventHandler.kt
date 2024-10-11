@@ -389,6 +389,12 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             acc * elementDamageModifier
         }
 
+        // Cryo damage bonus.
+        val cryoMultiplier = if (Elemental.EXPLOSIVE in bulletMeta.elements) {
+            elementalStatusEffects.cryoDamageMultiplier(targetEntity)
+        }
+        else 1.0
+
         // Calculate critical hit bonus.
         val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
         val head = targetEntity.headLocation
@@ -406,7 +412,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
 
         // Apply damage
-        event.damage = bulletMeta.damage.damage * elementalModifier *
+        event.damage = bulletMeta.damage.damage * elementalModifier * cryoMultiplier *
                 elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
 
         // Apply armor.
@@ -463,11 +469,21 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     @EventHandler
     fun meleeDamageBonus(event: EntityDamageByEntityEvent) {
         val damager = event.damager as? Player
-        val gun = damager?.gunProperties() ?: return
+        val gun = damager?.gunProperties()
         // Prevent elemental damage to increase damage output.
         if (event.entity.lastDamageCause?.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
 
-        event.damage = max(event.damage, event.damage + gun.meleeDamage.damage)
+        // Cryo damage bonus.
+        val target = event.entity as? LivingEntity
+        val cryoMultiplier = target?.let {
+            elementalStatusEffects.cryoDamageMultiplier(it)
+        } ?: 1.0
+
+        val newDamage = max(event.damage, (event.damage + (gun?.meleeDamage?.damage ?: 0.0)) * cryoMultiplier)
+        event.damage = newDamage
+
+        // Don't show particles for melee, because otherwise they are registered twice - showing twice as much
+        // damage than is actually inflicted.
     }
 
     @EventHandler

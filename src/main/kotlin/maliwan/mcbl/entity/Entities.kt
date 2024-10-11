@@ -87,6 +87,12 @@ fun LivingEntity.temporarilyDisableIframes(plugin: MCBorderlandsPlugin) {
 }
 
 /**
+ * Get the location of the entity around the centered y-position.
+ */
+val Entity.centre: Location
+    get() = location.add(0.0, height / 2.0, 0.0)
+
+/**
  * Calculates for each type of living entity what the head position of the entity is.
  *
  * This is not the same as eye location: that is (I guess) the origin of the head from which the head rotation

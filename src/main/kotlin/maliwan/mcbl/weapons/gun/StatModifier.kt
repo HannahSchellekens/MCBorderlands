@@ -194,13 +194,15 @@ open class StatModifier(
  */
 fun List<StatModifier>.ofType(type: StatModifier.Type) = filter { it.type == type }
 
+fun GunProperties.apply(operation: StatModifier) {
+    operation.applyStatModifier(this)
+}
+
 /**
  * Applies these stat modifiers in order, and with a certain operator precedence defined in `order`.
  *
- * @param properties
- *          The gun properties to apply the stat modifiers to.
- * @param order
- *          In which operator precedence, see [StatModifier.Type].
+ * @param properties The gun properties to apply the stat modifiers to.
+ * @param order In which operator precedence, see [StatModifier.Type].
  */
 fun List<StatModifier>.applyAll(
     properties: GunProperties,

@@ -7,6 +7,7 @@ import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.util.nearbyEntities
 import maliwan.mcbl.util.showElementalParticle
+import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 
@@ -21,84 +22,105 @@ fun splashDamage(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: Bu
 
         // Explosive does boom, contrary to the DoT effects of the other elements.
         if (element == Elemental.EXPLOSIVE) {
-            val chance = bulletMeta.elementalProbability[element] ?: return@forEach
-            if (chance.roll()) {
-                val radius = bulletMeta.splashRadius
-                location.world?.createExplosion(location, 0f)
-                location.nearbyEntities(radius).forEach entities@{ target ->
-                    if (target !is LivingEntity) return@entities
-                    val slag = elementalStatusEffects.slagMultiplier(target)
-                    target.temporarilyDisableKnockback(plugin)
+            splashDamageExplosive(plugin, location, bulletMeta)
+            return
+        }
 
-                    // Effectiveness type.
-                    val effectivenessType = EffectivenessType.typeOf(target.type)
-                    val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
-                        val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
-                        acc * elementDamageModifier
-                    }
+        // Other elements do not do boom, but they do hurt. Proc roll is incorporated in [rollElementalDot].
+        val radius = bulletMeta.splashRadius
+        location.showSplashParticles(radius, element.color)
 
-                    val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
-                    target.temporarilyDisableIframes(plugin)
-                    target.damage(totalDamage, bulletMeta.shooter)
-                    target.showHealthBar(plugin)
+        // Use slightly larger radius because locations are counted from the ground position of the entity
+        // this compensates for larger entities.
+        location.nearbyEntities(radius + 0.25).forEach entities@{ target ->
+            if (target !is LivingEntity) return@entities
+            /* Slag cannot enhance its own damage */
+            val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
+            target.temporarilyDisableKnockback(plugin)
 
-                    // Heal when transfusion effect is active. Does not account for armour.
-                    // Might not even be that big of a deal.
-                    val healAmount = totalDamage * bulletMeta.transfusion
-                    bulletMeta.shooter.heal(healAmount)
+            // Effectiveness type.
+            val effectivenessType = EffectivenessType.typeOf(target.type)
+            val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
+                val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
+                acc * elementDamageModifier
+            }
 
-                    if (totalDamage >= 0.01) {
-                        plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
-                            target,
-                            target.location.add(0.0, target.height, 0.0),
-                            element,
-                            totalDamage
-                        ))
-                    }
-                }
+            val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
+            target.damage(totalDamage, bulletMeta.shooter)
+            rollElementalDot(plugin, target, bulletMeta)
+            target.showHealthBar(plugin)
+
+            if (totalDamage > 0.01) {
+                plugin.damageParticles.showDotDamageDisplay(
+                    target.location.add(0.0, target.height, 0.0),
+                    totalDamage,
+                    element
+                )
             }
         }
-        // Other elements do not do boom, but they do hurt. Proc roll is incorporated in [rollElementalDot].
-        else {
-            val radius = bulletMeta.splashRadius
+    }
+}
 
-            // Show small splash animation at location.
-            repeat((8 * radius).toInt()) {
-                val splashLocation = location.clone().add(
-                    0.0.modifyRandom(radius),
-                    0.0.modifyRandom(radius),
-                    0.0.modifyRandom(radius)
-                )
-                splashLocation.showElementalParticle(element.color, 1, size = 1.3f)
+/**
+ * Shows particles for splash damage at this location.
+ */
+fun Location.showSplashParticles(radius: Double, color: Color) {
+    repeat((8 * radius).toInt()) {
+        val splashLocation = clone().add(
+            0.0.modifyRandom(radius),
+            0.0.modifyRandom(radius),
+            0.0.modifyRandom(radius)
+        )
+        splashLocation.showElementalParticle(color, 1, size = 1.3f)
+    }
+}
+
+/**
+ * Applies explosive splash damage to the given location.
+ */
+fun splashDamageExplosive(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: BulletMeta) {
+    val element = Elemental.EXPLOSIVE
+    val elementalStatusEffects = plugin.weaponEventHandler.elementalStatusEffects
+
+    val chance = bulletMeta.elementalProbability[element] ?: return
+    if (chance.roll()) {
+        val radius = bulletMeta.splashRadius
+        location.world?.createExplosion(location, 0f)
+        location.nearbyEntities(radius).forEach entities@{ target ->
+            if (target !is LivingEntity) return@entities
+            val slag = elementalStatusEffects.slagMultiplier(target)
+            target.temporarilyDisableKnockback(plugin)
+
+            // Effectiveness type.
+            val effectivenessType = EffectivenessType.typeOf(target.type)
+            val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
+                val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
+                acc * elementDamageModifier
             }
 
-            // Use slightly larger radius because locations are counted from the ground position of the entity
-            // this compensates for larger entities.
-            location.nearbyEntities(radius + 0.25).forEach entities@{ target ->
-                if (target !is LivingEntity) return@entities
-                /* Slag cannot enhance its own damage */
-                val slag = if (element == Elemental.SLAG) 1.0 else elementalStatusEffects.slagMultiplier(target)
-                target.temporarilyDisableKnockback(plugin)
+            // Cryo
+            val cryoMultiplier = if (Elemental.EXPLOSIVE in bulletMeta.elements) {
+                elementalStatusEffects.cryoDamageMultiplier(target)
+            }
+            else 1.0
 
-                // Effectiveness type.
-                val effectivenessType = EffectivenessType.typeOf(target.type)
-                val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
-                    val elementDamageModifier = effectivenessType.damageMultiplier(elemental, target.armorPoints.toInt())
-                    acc * elementDamageModifier
-                }
+            val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier * cryoMultiplier
+            target.temporarilyDisableIframes(plugin)
+            target.damage(totalDamage, bulletMeta.shooter)
+            target.showHealthBar(plugin)
 
-                val totalDamage = bulletMeta.splashDamage.damage * slag * elementalModifier
-                target.damage(totalDamage, bulletMeta.shooter)
-                rollElementalDot(plugin, target, bulletMeta)
-                target.showHealthBar(plugin)
+            // Heal when transfusion effect is active. Does not account for armour.
+            // Might not even be that big of a deal.
+            val healAmount = totalDamage * bulletMeta.transfusion
+            bulletMeta.shooter.heal(healAmount)
 
-                if (totalDamage > 0.01) {
-                    plugin.damageParticles.showDotDamageDisplay(
-                        target.location.add(0.0, target.height, 0.0),
-                        totalDamage,
-                        element
-                    )
-                }
+            if (totalDamage >= 0.01) {
+                plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
+                    target,
+                    target.location.add(0.0, target.height, 0.0),
+                    element,
+                    totalDamage
+                ))
             }
         }
     }
@@ -112,7 +134,7 @@ fun rollElementalDot(plugin: MCBorderlandsPlugin, target: LivingEntity, bulletMe
     val elementalStatusEffects = plugin.weaponEventHandler.elementalStatusEffects
 
     bulletMeta.elements.asSequence()
-        .filter { it == Elemental.SLAG || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
+        .filter { it == Elemental.SLAG || it == Elemental.CRYO || (bulletMeta.elementalDamage[it]?.damage ?: 0.0) > 0.01 }
         .forEach {
             // Check if the effect will be procced.
             val probability = bulletMeta.elementalProbability[it] ?: Probability.ZERO

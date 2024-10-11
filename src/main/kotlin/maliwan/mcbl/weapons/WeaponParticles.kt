@@ -37,6 +37,9 @@ open class WeaponParticles(val weaponHandler: WeaponEventHandler, val everyNtick
                 if (Elemental.SLAG in meta.elements) {
                     bullet.location.showElementalParticle(Elemental.SLAG.color, 1, 0.6f)
                 }
+                if (Elemental.CRYO in meta.elements) {
+                    bullet.location.showElementalParticle(Elemental.CRYO.color, 1, 0.6f)
+                }
             }
     }
 }

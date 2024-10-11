@@ -21,6 +21,7 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     CORROSIVE(Elemental.CORROSIVE, "Corrisove"),
     SLAG(Elemental.SLAG, "Slag"),
     EXPLOSIVE(Elemental.EXPLOSIVE, "Explosive"),
+    CRYO(Elemental.CRYO, "Cryo"),
 
     // Unique capacitors.
     HELLFIRE(Elemental.INCENDIARY, "HellFire", HellFire()), /* SMG */
@@ -45,12 +46,14 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
             SHOCK,
             CORROSIVE,
             SLAG,
-            EXPLOSIVE
+            EXPLOSIVE,
+            CRYO
         )
 
         val legendaryCapacitors = setOf(
             HELLFIRE,
-            DEFILER
+            DEFILER,
+            VOLCANO
         )
     }
 }

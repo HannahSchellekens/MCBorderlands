@@ -16,12 +16,43 @@ enum class Elemental(
     val baseDotDuration: Ticks
 ) {
 
+    /**
+     * Regular damage.
+     */
     PHYSICAL("", ChatColor.WHITE.toString(), "⚔", Color.WHITE, Ticks(0)),
+
+    /**
+     * Weaker against fish and armored targets. Neutral to the rest.
+     */
     EXPLOSIVE("Explosive", ChatColor.YELLOW.toString(), "\uD83D\uDCA3", Color.YELLOW, Ticks(0)),
+
+    /**
+     * Strong against flesh and birds, weaker against the rest.
+     */
     INCENDIARY("Incendiary", ChatColor.GOLD.toString(), "\uD83D\uDD25", Color.ORANGE, Ticks(100)),
+
+    /**
+     * Strong against armour, weak against flesh.
+     */
     SHOCK("Shock", ChatColor.BLUE.toString(), "⚡", Color.fromRGB(37, 150, 190), Ticks(40)),
+
+    /**
+     * Strong against undead and armour, weak against flesh and bird.
+     */
     CORROSIVE("Corrosive", ChatColor.GREEN.toString(), "☣", Color.LIME, Ticks(160)),
-    SLAG("Slag", ChatColor.DARK_PURPLE.toString(), "⬇", Color.PURPLE, Ticks(160))
+
+    /**
+     * Slagged enemies take x2 damage from other damage sources.
+     */
+    SLAG("Slag", ChatColor.DARK_PURPLE.toString(), "⬇", Color.PURPLE, Ticks(160)),
+
+    /**
+     * Effect depends on amount of Cryo stacks:
+     * - 1-2 stacks: +50% explosive/melee damage, Slowness I
+     * - 3-4 stacks: +150% explosive/melee damage, Slowness II
+     * - 5 stacks: +250% explosive/melee damage, Frozen Solid/no movement.
+     */
+    CRYO("Cryo", ChatColor.AQUA.toString(), "❄", Color.AQUA, Ticks(160))
     ;
 
     val nullIfPhysical: Elemental?
@@ -32,7 +63,7 @@ enum class Elemental(
      */
     val noDotMultiplier: Double
         get() = when (this) {
-            PHYSICAL, SLAG, EXPLOSIVE -> 0.0
+            PHYSICAL, SLAG, EXPLOSIVE, CRYO -> 0.0
             else -> 1.0
         }
 }
@@ -102,6 +133,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 0.6,
             Elemental.CORROSIVE to 0.8,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.0
         )
     ),
 
@@ -130,6 +162,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 1.5,
             Elemental.CORROSIVE to 1.0,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.5
         )
     ),
 
@@ -151,6 +184,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 1.5,
             Elemental.CORROSIVE to 0.8,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.0
         )
     ),
 
@@ -175,6 +209,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 1.0,
             Elemental.CORROSIVE to 1.0,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 0.8
         )
     ),
 
@@ -199,6 +234,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 1.2,
             Elemental.CORROSIVE to 1.0,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.5
         )
     ),
 
@@ -227,6 +263,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 1.0,
             Elemental.CORROSIVE to 1.5,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.0
         )
     ),
 
@@ -243,6 +280,7 @@ enum class EffectivenessType(
             Elemental.SHOCK to 2.0,
             Elemental.CORROSIVE to 1.2,
             Elemental.SLAG to 1.0,
+            Elemental.CRYO to 1.0
         )
     )
     ;
