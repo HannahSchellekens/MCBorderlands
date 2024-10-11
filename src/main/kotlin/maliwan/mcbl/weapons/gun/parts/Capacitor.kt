@@ -18,7 +18,7 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     NONE(Elemental.PHYSICAL, "None"),
     INCENDIARY(Elemental.INCENDIARY, "Incendiary"),
     SHOCK(Elemental.SHOCK, "Shock"),
-    CORROSIVE(Elemental.CORROSIVE, "Corrisove"),
+    CORROSIVE(Elemental.CORROSIVE, "Corrosive"),
     SLAG(Elemental.SLAG, "Slag"),
     EXPLOSIVE(Elemental.EXPLOSIVE, "Explosive"),
     CRYO(Elemental.CRYO, "Cryo"),

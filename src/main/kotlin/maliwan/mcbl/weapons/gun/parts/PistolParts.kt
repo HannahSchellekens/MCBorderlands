@@ -190,6 +190,7 @@ object PistolParts {
         THUNDERBALL_FISTS(Manufacturer.MALIWAN, "Thunderball Fists", behaviours = listOf(ThunderballFists())),
         UNKEMPT_HAROLD(Manufacturer.TORGUE, "Unkempt Harold", behaviours = listOf(UnkemptHarold())),
         WANDERLUST(Manufacturer.MALIWAN, "Wandelust", behaviours = listOf(Wanderlust())),
+        ZIM(Manufacturer.BANDIT, "Zim", behaviours = listOf(Zim())),
         ;
 
         override val partTypeName: String = "Barrel"

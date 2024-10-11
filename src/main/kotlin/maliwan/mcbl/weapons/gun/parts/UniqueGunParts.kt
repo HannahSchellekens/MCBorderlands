@@ -18,6 +18,7 @@ object UniqueGunParts {
 
     val legendaryParts: List<UniqueGunPart> = listOf(
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.PISTOL, PistolParts.Barrel.GUB),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.PISTOL, PistolParts.Barrel.ZIM),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.SLEDGES_SHOTGUN),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SMG, SmgParts.Barrel.SLAGGA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.LAUNCHER, LauncherParts.Barrel.BADABOOM),
