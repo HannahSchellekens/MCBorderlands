@@ -3,11 +3,14 @@ package maliwan.mcbl.weapons.gun.behaviour.pistol
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.util.scheduleTask
 import maliwan.mcbl.util.showElementalParticle
-import maliwan.mcbl.weapons.*
+import maliwan.mcbl.weapons.BulletMeta
+import maliwan.mcbl.weapons.ElementalStatusEffects
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.PistolParts
+import maliwan.mcbl.weapons.splashDamage
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -57,7 +60,7 @@ open class ThunderballFists : UniqueGun, PostGenerationBehaviour, UpdateAssembly
             plugin.scheduleTask(delay + (it + 1) * 2L) {
                 val percentage = it / 9.0
                 val location = baseLocation.clone().add(0.0, 0.5 + 1.6 * percentage, 0.0)
-                location.showElementalParticle(Elemental.SHOCK.color, 3 + it * 2, 1f, 0.7 * percentage)
+                location.showElementalParticle(meta.elements.first().color, 3 + it * 2, 1f, 0.7 * percentage)
             }
         }
 

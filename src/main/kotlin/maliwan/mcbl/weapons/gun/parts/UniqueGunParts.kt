@@ -181,11 +181,21 @@ sealed class UniqueGunPart(
         manufacturer: Manufacturer,
         weaponClass: WeaponClass,
         val part: WeaponPart
-    ) : UniqueGunPart(manufacturer, weaponClass)
+    ) : UniqueGunPart(manufacturer, weaponClass) {
+
+        override fun toString(): String {
+            return "UniqueWeaponPart($part, $weaponClass, $manufacturer)"
+        }
+    }
 
     class UniqueCapacitor(
         manufacturer: Manufacturer,
         weaponClass: WeaponClass,
         val capacitor: Capacitor
-    ) : UniqueGunPart(manufacturer, weaponClass)
+    ) : UniqueGunPart(manufacturer, weaponClass) {
+
+        override fun toString(): String {
+            return "UniqueCapacitor($capacitor, $weaponClass, $manufacturer)"
+        }
+    }
 }

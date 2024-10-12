@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
+import maliwan.mcbl.weapons.gun.behaviour.CustomBaseNameProvider
 import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.forEachType
@@ -54,6 +55,18 @@ sealed class WeaponAssembly(
 
     constructor(weaponClass: WeaponClass, manufacturer: Manufacturer, capacitor: Capacitor?, vararg parts: WeaponPart?)
             : this(weaponClass, manufacturer, parts.filterNotNull(), capacitor)
+
+    /**
+     * Calculates the name of this weapon assembly based on the weapon parts it possesses.
+     */
+    fun calculateGunName(): String {
+        val defaultNameBehaviours = behaviours.filterIsInstance<CustomBaseNameProvider>()
+        if (defaultNameBehaviours.size <= 1) {
+            return gunName
+        }
+
+        return defaultNameBehaviours.joinToString(" ") { it.baseName }
+    }
 
     /**
      * Get all behaviours from the manufacturer's gimmkicks.

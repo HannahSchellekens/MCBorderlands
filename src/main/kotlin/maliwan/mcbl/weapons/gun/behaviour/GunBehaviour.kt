@@ -240,10 +240,6 @@ interface CustomBaseNameProvider : GunBehaviour {
      * The custom base name of this gun.
      */
     val baseName: String
-
-    fun applyToGun(properties: GunProperties) {
-        properties.name = baseName
-    }
 }
 
 /**

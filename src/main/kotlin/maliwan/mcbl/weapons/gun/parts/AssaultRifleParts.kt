@@ -285,6 +285,7 @@ object AssaultRifleParts {
         ),
 
         // Unique Grips.
+
         CHOPPER(Manufacturer.VLADOF, "CHOPPER", behaviours = listOf(Chopper())),
         ;
 

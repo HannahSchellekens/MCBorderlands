@@ -17,6 +17,7 @@ import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.UniqueGunPart
 import maliwan.mcbl.weapons.gun.parts.UniqueGunParts
 import maliwan.mcbl.weapons.gun.stats.*
+import org.bukkit.ChatColor
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.min
@@ -78,6 +79,17 @@ open class WeaponGenerator(
         }
 
         val updatedAssembly = assembly.update()
+
+        // Small chance for it to generate as a hybrid weapon.
+        val hybridAssembly = if (kotlin.random.Random.nextDouble() < 0.05) {
+            val allEligibleParts = eligibleParts +
+                    UniqueGunParts.partsFor(Rarity.LEGENDARY, ofType, ofManufacturer) +
+                    UniqueGunParts.partsFor(Rarity.EPIC, ofType, ofManufacturer) +
+                    UniqueGunParts.partsFor(Rarity.RARE, ofType, ofManufacturer)
+            forgeHybrid(updatedAssembly, pearlescentPart, allEligibleParts)
+        }
+        else updatedAssembly
+
         return properties.applyAssembly(updatedAssembly, Rarity.PEARLESCENT)
     }
 
@@ -99,7 +111,17 @@ open class WeaponGenerator(
         }
 
         val updatedAssembly = assembly.update()
-        return properties.applyAssembly(updatedAssembly, Rarity.LEGENDARY)
+
+        // Small chance for it to generate as a hybrid weapon.
+        val hybridAssembly = if (kotlin.random.Random.nextDouble() < 0.05) {
+            val allEligibleParts = eligibleParts +
+                    UniqueGunParts.partsFor(Rarity.EPIC, ofType, ofManufacturer) +
+                    UniqueGunParts.partsFor(Rarity.RARE, ofType, ofManufacturer)
+            forgeHybrid(updatedAssembly, legendaryPart, allEligibleParts)
+        }
+        else updatedAssembly
+
+        return properties.applyAssembly(hybridAssembly, Rarity.LEGENDARY)
     }
 
     /**
@@ -135,6 +157,48 @@ open class WeaponGenerator(
     }
 
     /**
+     * Turns a regular legendary weapon into a hybrid weapon: where there are 2 unique parts in one weapon.
+     *
+     * @param base The base assembly to modify.
+     * @param basePart The first unique part added to the gun.
+     * @param eligibleParts All possible parts.
+     */
+    fun forgeHybrid(
+        base: WeaponAssembly,
+        basePart: UniqueGunPart,
+        eligibleParts: List<UniqueGunPart>
+    ): WeaponAssembly {
+        // Regular part to add: EZ as there is only 1 kind of capacitor.
+        if (basePart is UniqueGunPart.UniqueCapacitor) {
+            val part = eligibleParts
+                .filterIsInstance<UniqueGunPart.UniqueWeaponPart>()
+                .randomOrNull()
+                ?: return base
+            return base.replacePart(part.part)
+        }
+
+        // Not capacitor, harder as we need to figure out which gun part it is exactly.
+        val baseWeaponPart = basePart as UniqueGunPart.UniqueWeaponPart
+        val candidateHybridParts = eligibleParts.filter {
+            when (it) {
+                is UniqueGunPart.UniqueCapacitor -> true
+                is UniqueGunPart.UniqueWeaponPart -> {
+                    val partType = it.part::class
+                    partType != baseWeaponPart.part::class
+                }
+            }
+        }
+        val hybridPart = candidateHybridParts.randomOrNull() ?: kotlin.run {
+            return base
+        }
+
+        return when (hybridPart) {
+            is UniqueGunPart.UniqueWeaponPart -> base.replacePart(hybridPart.part)
+            is UniqueGunPart.UniqueCapacitor -> base.replaceCapacitor(hybridPart.capacitor)
+        }
+    }
+
+    /**
      * Applies all effects/stats of the gun assembly to the properties.
      */
     private fun GunProperties.applyAssembly(assembly: WeaponAssembly, rarity: Rarity): GunProperties {
@@ -145,7 +209,7 @@ open class WeaponGenerator(
         this.rarity = rarity
         weaponClass = assembly.weaponClass
         manufacturer = assembly.manufacturer
-        name = assembly.gunName
+        name = assembly.calculateGunName()
         this.assembly = assembly
 
         applyGradeScaling()
@@ -192,14 +256,32 @@ open class WeaponGenerator(
      * Applies custom names and red/cyan text to gun.
      */
     private fun WeaponAssembly.applyCustomLore(properties: GunProperties) {
+        val redTextLines = ArrayList<String>()
+        val cyanTextLines = ArrayList<String>()
+
         behaviours.forEach {
             if (it is RedTextProvider) {
-                properties.redText = it.redText
+                redTextLines += it.redText
             }
             if (it is CyanTextProvider) {
-                properties.cyanText = it.cyanText
+                cyanTextLines += it.cyanText
             }
         }
+
+        redTextLines.forEachIndexed { i, redText ->
+            // Val evens: regular red.
+            if (i % 2 == 0) {
+                properties.redText = (properties.redText ?: "") + redText + "\n"
+            }
+            // Odds: darker red, to differentiate hybrid red text.
+            else {
+                properties.redText +=
+                    "${ChatColor.DARK_RED}" + redText.replace("\n", "\n${ChatColor.DARK_RED}")
+            }
+        }
+        properties.redText = properties.redText?.trim()
+
+        properties.cyanText = cyanTextLines.joinToString("\n")
     }
 
     /**
