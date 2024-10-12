@@ -78,6 +78,29 @@ interface BulletPatternProvider : GunBehaviour {
 }
 
 /**
+ * Adds a preprocessor for bullets after they have just landed, but before damage calculations and effects.
+ */
+interface PreBulletLandBehaviour : GunBehaviour {
+
+    /**
+     * Gets called just after a bullet has landed, but before the damage calculations start..
+     *
+     * @param bullet The bullet entity that landed.
+     * @param meta The meta information about the bullet.
+     * @param hitLocation The location where the bullet hit something.
+     * @param targetEntity The target entity that was hit (directly) by the bullet.
+     * @param wouldBeCritical Whether the shot would be a critical hit via default processing.
+     */
+    fun beforeBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        wouldBeCritical: Boolean
+    )
+}
+
+/**
  * Adds behaviour to bullets landing, after the regular processing.
  */
 interface PostBulletLandBehaviour : GunBehaviour {
@@ -85,14 +108,11 @@ interface PostBulletLandBehaviour : GunBehaviour {
     /**
      * Gets called whenever a bullet lands.
      *
-     * @param bullet
-     *          The bullet entity that landed.
-     * @param meta
-     *          The meta information about the bullet.
-     * @param hitLocation
-     *          The location where the bullet hit something.
-     * @param targetEntity
-     *          The target entity that was hit (directly) by the bullet.
+     * @param bullet The bullet entity that landed.
+     * @param meta The meta information about the bullet.
+     * @param hitLocation The location where the bullet hit something.
+     * @param targetEntity The target entity that was hit (directly) by the bullet.
+     * @param isCriticalHit Whether the shot is a critical hit or not.
      */
     fun afterBulletLands(
         bullet: Entity,

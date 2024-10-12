@@ -4,6 +4,7 @@ import maliwan.mcbl.util.Damage
 import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.gun.WeaponAssembly
+import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 import java.util.*
 
@@ -146,6 +147,12 @@ data class BulletMeta(
      * How many particles to show per tick during flight.
      */
     var particleCount: () -> Int =  { 1 },
+
+    /**
+     * The original location of the bullet (where it was spawned).
+     * `null` if irrelevant or not specified.
+     */
+    var originLocation: Location? = null
 ) {
 
     /**

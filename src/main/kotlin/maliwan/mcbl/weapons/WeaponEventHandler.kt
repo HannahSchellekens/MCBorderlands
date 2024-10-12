@@ -345,8 +345,10 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val initialDirection = gunExecution.bulletPattern.nextRotation(playerDirection)
         val direction = initialDirection.add(directionDelta ?: Vector())
 
-        val bullet = player.shootBullet(player.eyeLocation, direction, gunExecution, bulletType, accuracyModifier) ?: return null
+        val originLocation = player.eyeLocation
+        val bullet = player.shootBullet(originLocation, direction, gunExecution, bulletType, accuracyModifier) ?: return null
         val bulletMeta = gunExecution.bulletMeta(player)
+        bulletMeta.originLocation = originLocation
         bulletMetaTransform?.let { it(bulletMeta) }
         bullets[bullet] = bulletMeta
 
@@ -387,6 +389,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             return
         }
 
+        // Determine critical hit
+        val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
+        val head = targetEntity.headLocation
+        val distance = hitLocation?.distance(head) ?: Double.MAX_VALUE
+        val isCritical = distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
+
+        bulletMeta.assembly?.forEachBehaviour<PreBulletLandBehaviour> {
+            it.beforeBulletLands(bullet, bulletMeta, hitLocation, targetEntity, isCritical)
+        }
+
         if (bulletMeta.directDamage.not()) {
             // Just splash damage: is handled by ProjectileHitEvent.
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
@@ -418,11 +430,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         else 1.0
 
         // Calculate critical hit bonus.
-        val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
-        val head = targetEntity.headLocation
-        val distance = hitLocation?.distance(head) ?: Double.MAX_VALUE
-        val isCritical = distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
-
         val critMultiplier = if (isCritical && bulletMeta.canCrit) {
             2.0 + (bulletMeta.bonusCritMultiplier ?: 0.0)
         }
@@ -517,6 +524,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         val bulletMeta = bullets[bullet]
         if (bulletMeta != null) {
+            val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
+            val hitLocation = bullet.determineHitLocation(boundingBox) ?: location
+
+            bulletMeta.assembly?.forEachBehaviour<PreBulletLandBehaviour> {
+                it.beforeBulletLands(bullet, bulletMeta, hitLocation, null, false)
+            }
+
             // Bounce if bounces are left:
             if (event.hitEntity == null && event.hitBlock != null && event.hitBlockFace != null && bulletMeta.bouncesLeft > 0) {
                 val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
@@ -528,7 +542,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 bullets.remove(bullet)
                 bullets[newBullet] = bulletMeta
 
-
                 bulletMeta.assembly?.forEachBehaviour<PostBulletBounceBehaviour> {
                     it.afterBulletBounce(this, newBullet, bulletMeta)
                 }
@@ -538,8 +551,6 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
             bullet.remove()
 
-            val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
-            val hitLocation = bullet.determineHitLocation(boundingBox) ?: location
             splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
