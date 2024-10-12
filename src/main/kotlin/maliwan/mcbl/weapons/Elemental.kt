@@ -66,6 +66,11 @@ enum class Elemental(
             PHYSICAL, SLAG, EXPLOSIVE, CRYO -> 0.0
             else -> 1.0
         }
+
+    companion object {
+
+        val elementals = setOf(INCENDIARY, SHOCK, CORROSIVE, SLAG, CRYO)
+    }
 }
 
 /**
