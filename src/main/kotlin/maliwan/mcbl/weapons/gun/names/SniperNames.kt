@@ -28,13 +28,14 @@ object SniperNames {
         manufacturer: Manufacturer,
         barrel: SniperParts.Barrel,
         accessory: SniperParts.Accessory? = null,
-        capacitor: Capacitor? = null
+        capacitor: Capacitor? = null,
+        grip: SniperParts.Grip? = null
     ): String {
-        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val customName = barrel.customBaseName() ?: grip?.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
         val baseName = customName ?: nameTable[barrel.manufacturer, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 
-        val default = barrel.defaultPrefix() ?: capacitor?.defaultPrefix() ?: accessory?.defaultPrefix()
+        val default = barrel.defaultPrefix() ?: grip?.defaultPrefix() ?: capacitor?.defaultPrefix() ?: accessory?.defaultPrefix()
         val prefix = if (accessory != null) {
             accessoryTable[accessory, manufacturer]
                 ?: throw IllegalArgumentException("No prefix found for manufacturer $manufacturer and accessory $accessory")

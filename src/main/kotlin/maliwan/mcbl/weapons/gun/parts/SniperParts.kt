@@ -143,6 +143,7 @@ object SniperParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         DAHL(
@@ -214,6 +215,10 @@ object SniperParts {
                 divide(1.3, Property.RELOAD_SPEED)
             }
         ),
+
+        // Unique grips.
+
+        PLUNKETT(Manufacturer.JAKOBS, "Plunkett", behaviours = listOf(Plunkett())),
         ;
 
         override val partTypeName: String = "Grip"

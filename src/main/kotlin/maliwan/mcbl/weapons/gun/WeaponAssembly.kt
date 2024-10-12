@@ -151,7 +151,7 @@ class SniperAssembly(
         get() = listOfNotNull(barrel, grip, stock, accessory)
 
     override val gunName: String
-        get() = SniperNames.nameOf(manufacturer, barrel, accessory, capacitor)
+        get() = SniperNames.nameOf(manufacturer, barrel, accessory, capacitor, grip)
 
     override fun toString(): String {
         return "SniperAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"
