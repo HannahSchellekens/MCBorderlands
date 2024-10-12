@@ -50,6 +50,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.SMG, SmgParts.Barrel.ENDOTHERMIC_BLASTER),
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SMG, Capacitor.HELLFIRE),
         UniqueGunPart.UniqueCapacitor(Manufacturer.MALIWAN, WeaponClass.SNIPER, Capacitor.VOLCANO),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.CRYOPHOBIA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.PYROPHOBIA),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TEDIORE, WeaponClass.PISTOL, PistolParts.Barrel.GUN_GUN),
