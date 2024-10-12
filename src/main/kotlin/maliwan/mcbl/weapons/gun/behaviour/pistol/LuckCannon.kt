@@ -69,6 +69,7 @@ open class LuckCannon(
 
         val statModifiers = statModifierList {
             multiply(1.6, StatModifier.Property.BASE_DAMAGE)
+            multiply(0.9, StatModifier.Property.RELOAD_SPEED)
             add(0.015, StatModifier.Property.ACCURACY)
         }
     }
