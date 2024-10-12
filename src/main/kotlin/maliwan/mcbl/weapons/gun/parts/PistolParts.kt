@@ -168,6 +168,7 @@ object PistolParts {
         FIBBER_CRIT(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberCrit())),
         FIBBER_SHOTGUN(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberShotgun())),
         FIBBER_RICOCHET(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberRicochet())),
+        GLOBBER(Manufacturer.HYPERION, "Globber", behaviours = listOf(Globber())),
         GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
         GUB(Manufacturer.BANDIT, "Gub", behaviours = listOf(Gub())),
         GUN_GUN(Manufacturer.TEDIORE, "Gun Gun", behaviours = listOf(GunGun())),
