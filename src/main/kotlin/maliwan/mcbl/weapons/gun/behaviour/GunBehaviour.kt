@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.util.Probability
 import maliwan.mcbl.weapons.BulletMeta
+import maliwan.mcbl.weapons.CustomGrenadeManager
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
@@ -309,6 +310,18 @@ interface ReloadBehaviour : GunBehaviour {
      *          The gun execution of the reloaded gun.
      */
     fun afterReload(player: Player, gunExecution: GunExecution) = Unit
+}
+
+/**
+ * Updates the custom grenade that is being thrown on a Tediore-reload.
+ */
+interface UpdateReloadGrenadeBehaviour : GunBehaviour {
+
+    /**
+     * Updates the custom grenade that is being thrown on a Tediore-reload.
+     * Called just before the grenade is thrown.
+     */
+    fun updateReloadGrenade(grenade: CustomGrenadeManager.CustomGrenade)
 }
 
 /**

@@ -10,6 +10,7 @@ import maliwan.mcbl.weapons.CustomGrenadeManager.CustomGrenade
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.GunExecution
+import maliwan.mcbl.weapons.gun.forEachBehaviour
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Display
@@ -64,7 +65,7 @@ open class GrenadeOnReload : ReloadBehaviour {
 
         val bulletMeta = BulletMeta(
             shooter = player,
-            assembly = null,
+            assembly = gunExecution.assembly,
             damage = damage,
             splashDamage = damage,
             elements = elements,
@@ -79,6 +80,10 @@ open class GrenadeOnReload : ReloadBehaviour {
         )
 
         val customGrenade = CustomGrenade(display, direction, bulletMeta = bulletMeta, source = player, gravity = gravity)
+
+        bulletMeta.assembly?.forEachBehaviour<UpdateReloadGrenadeBehaviour> {
+            it.updateReloadGrenade(customGrenade)
+        }
 
         // Have a short delay before throwing a tediore grenade.
         // Having it be thrown immediately makes it less obvious the player threw it and less satisfying.
