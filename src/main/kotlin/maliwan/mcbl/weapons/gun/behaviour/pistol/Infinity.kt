@@ -67,7 +67,8 @@ open class Infinity : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour, 
     companion object {
 
         val statModifiers = statModifierList {
-            divide(1.25, StatModifier.Property.FIRE_RATE)
+            divide(1.1, StatModifier.Property.FIRE_RATE)
+            multiply(1.1, StatModifier.Property.BASE_DAMAGE)
         }
     }
 }

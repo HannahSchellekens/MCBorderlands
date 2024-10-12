@@ -173,6 +173,7 @@ object PistolParts {
         GUB(Manufacturer.BANDIT, "Gub", behaviours = listOf(Gub())),
         GUN_GUN(Manufacturer.TEDIORE, "Gun Gun", behaviours = listOf(GunGun())),
         GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
+        HARD_REBOOT(Manufacturer.MALIWAN, "Hard Reboot", behaviours = listOf(HardReboot())),
         HECTORS_PARADISE(Manufacturer.DAHL, "Hector's Paradise", behaviours = listOf(HectorsParadise())),
         HELLSHOCK(Manufacturer.MALIWAN, "Hellshock", behaviours = listOf(Hellshock())),
         HORNET(Manufacturer.DAHL, "Hornet", behaviours = listOf(Hornet())),

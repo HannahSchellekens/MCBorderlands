@@ -264,7 +264,7 @@ open class WeaponGenerator(
             Elemental.CORROSIVE,
             Elemental.SHOCK,
             Elemental.SLAG -> 0.833
-            Elemental.CRYO -> 1.08
+            Elemental.CRYO -> 0.95
             else -> 1.0
         }
         baseDamage *= damageMultiplier
