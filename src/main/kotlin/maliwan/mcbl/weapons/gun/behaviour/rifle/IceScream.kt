@@ -51,6 +51,8 @@ open class IceScream : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehavio
     companion object {
 
         val statModifiers = statModifierList {
+            multiply(1.2, StatModifier.Property.ELEMENTAL_CHANCE)
+            add(3, StatModifier.Property.MAGAZINE_SIZE)
         }
     }
 }
