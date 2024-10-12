@@ -42,7 +42,13 @@ open class ThunderballFists : UniqueGun, PostGenerationBehaviour, UpdateAssembly
         this.plugin = handler.plugin
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    ) {
         val baseLocation = hitLocation?.clone() ?: bullet.location
         val delay = Random.nextInt(0, 5)
 
@@ -58,7 +64,11 @@ open class ThunderballFists : UniqueGun, PostGenerationBehaviour, UpdateAssembly
         plugin.scheduleTask(delay + 19L) {
             val location = baseLocation.clone().add(0.0, 2.0, 0.0)
             location.world?.createExplosion(location, 0f)
-            splashDamage(plugin, location, meta.copy(splashDamage = meta.splashDamage * 1.5, splashRadius = meta.splashRadius * 1.75))
+            splashDamage(
+                plugin,
+                location,
+                meta.copy(splashDamage = meta.splashDamage * 1.5, splashRadius = meta.splashRadius * 1.75)
+            )
         }
     }
 

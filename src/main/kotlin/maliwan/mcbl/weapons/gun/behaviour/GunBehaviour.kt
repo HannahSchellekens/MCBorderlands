@@ -94,7 +94,13 @@ interface PostBulletLandBehaviour : GunBehaviour {
      * @param targetEntity
      *          The target entity that was hit (directly) by the bullet.
      */
-    fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?)
+    fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    )
 }
 
 /**

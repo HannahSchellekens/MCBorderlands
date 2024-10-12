@@ -29,7 +29,13 @@ open class Volcano : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour
         properties.elementalPolicy = ElementalStatusEffects.ApplyPolicy.ADD
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    ) {
         bullet.location.showFlameParticle()
     }
 

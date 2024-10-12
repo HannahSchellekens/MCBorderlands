@@ -40,7 +40,13 @@ open class SledgesShotgun : UniqueGun, PostGenerationBehaviour, PostGunShotBehav
         }
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    ) {
         targetEntity?.let {
             it.velocity = it.velocity.add(bullet.velocity.multiply(knockbackStrength))
         }

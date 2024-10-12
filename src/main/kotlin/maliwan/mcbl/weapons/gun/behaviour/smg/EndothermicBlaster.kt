@@ -3,15 +3,18 @@ package maliwan.mcbl.weapons.gun.behaviour.smg
 import maliwan.mcbl.loot.ammo.AmmoPack
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
 import maliwan.mcbl.weapons.gun.parts.Capacitor
 import maliwan.mcbl.weapons.gun.parts.SmgParts
+import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import kotlin.math.max
 import kotlin.random.Random
@@ -26,7 +29,7 @@ open class EndothermicBlaster(
      */
     val windupMillis: Long = 800L
 
-) : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour,
+) : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, PostBulletLandBehaviour,
     OverrideManufacturerOnWeaponCard, DefaultPrefixProvider, PostGunShotBehaviour, BulletSoundProvider {
 
     override val baseName = "Endothermic Blaster"
@@ -118,6 +121,19 @@ open class EndothermicBlaster(
             meta?.bonusCritMultiplier = 0.5
             meta?.canCrit = false
             meta?.particleCount = { Random.nextInt(1, 5) }
+        }
+    }
+
+    override fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    ) {
+        val shooter = meta.shooter as? Player ?: return
+        if (isCriticalHit) {
+            shooter.playSound(shooter, Sound.ENTITY_ARROW_HIT_PLAYER, SoundCategory.PLAYERS, 1.0f, 1.0f)
         }
     }
 

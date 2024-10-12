@@ -33,7 +33,13 @@ open class TorgueBarrelAssaultRifle : PostGenerationBehaviour, PostBulletLandBeh
         properties.splashDamage = properties.baseDamage
     }
 
-    override fun afterBulletLands(bullet: Entity, meta: BulletMeta, hitLocation: Location?, targetEntity: LivingEntity?) {
+    override fun afterBulletLands(
+        bullet: Entity,
+        meta: BulletMeta,
+        hitLocation: Location?,
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
+    ) {
         bullet.world.createExplosion(bullet.location, 0f)
     }
 

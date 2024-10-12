@@ -31,7 +31,8 @@ open class Nukem : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour {
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,
-        targetEntity: LivingEntity?
+        targetEntity: LivingEntity?,
+        isCriticalHit: Boolean
     ) {
         val location = hitLocation ?: bullet.location
 
