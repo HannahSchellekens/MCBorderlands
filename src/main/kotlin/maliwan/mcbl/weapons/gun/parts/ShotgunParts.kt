@@ -108,6 +108,7 @@ object ShotgunParts {
 
         BLOCKHEAD(Manufacturer.TEDIORE, "Blockhead", behaviours = listOf(Blockhead())),
         BOGANELLA(Manufacturer.BANDIT, "Boganella", behaviours = listOf(Boganella())),
+        BULLPUP(Manufacturer.HYPERION, "Bullpup", behaviours = listOf(Bullpup())),
         BUTCHER(Manufacturer.HYPERION, "Butcher", behaviours = listOf(Butcher())),
         DOG(Manufacturer.BANDIT, "Dog", behaviours = listOf(Dog())),
         FLAKKER(Manufacturer.TORGUE, "Flakker", behaviours = listOf(Flakker())),
