@@ -43,5 +43,6 @@ object AssaultRifleBaseValues : BaseValueProvider {
         splashRadius = baseValue(manufacturer, Stat.splashRadius),
         ammoPerShot = baseValue(manufacturer, Stat.ammoPerShot),
         pelletCount = baseValue(manufacturer, Stat.projectileCount),
+        homingStrength = PistolBaseValues.baseValue(manufacturer, Stat.homingStrength)
     )
 }

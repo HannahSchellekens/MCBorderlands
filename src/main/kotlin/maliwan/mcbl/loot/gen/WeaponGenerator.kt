@@ -90,7 +90,7 @@ open class WeaponGenerator(
         }
         else updatedAssembly
 
-        return properties.applyAssembly(updatedAssembly, Rarity.PEARLESCENT)
+        return properties.applyAssembly(hybridAssembly, Rarity.PEARLESCENT)
     }
 
     /**

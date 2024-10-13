@@ -27,6 +27,22 @@ object AssaultRifleParts {
         override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
+        ATLAS(
+            Manufacturer.ATLAS,
+            Manufacturer.ATLAS.displayName,
+            statModifierList {
+                add(0.005, Property.ACCURACY)
+                multiply(1.06, Property.BASE_DAMAGE)
+                add(0.014, Property.HOMING_STRENGTH)
+            },
+            statModifierList {
+                add(0.015, Property.ACCURACY)
+                multiply(1.06, Property.BASE_DAMAGE)
+                multiply(1.2, Property.FIRE_RATE)
+                add(0.014, Property.HOMING_STRENGTH)
+            }
+        ),
+
         BANDIT(
             Manufacturer.BANDIT,
             Manufacturer.BANDIT.displayName,
@@ -189,6 +205,7 @@ object AssaultRifleParts {
         companion object {
 
             val commonBarrels = setOf(
+                ATLAS,
                 BANDIT,
                 DAHL,
                 JAKOBS,
@@ -211,6 +228,27 @@ object AssaultRifleParts {
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
         override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
+
+        ATLAS(
+            Manufacturer.ATLAS,
+            Manufacturer.ATLAS.displayName,
+            statModifierList {
+                add(1, Property.MAGAZINE_SIZE)
+                divide(1.1, Property.RELOAD_SPEED)
+                multiply(1.03, Property.BASE_DAMAGE)
+                add(0.0008, Property.RECOIL)
+                multiply(1.03, Property.FIRE_RATE)
+                add(0.004, Property.HOMING_STRENGTH)
+            },
+            statModifierList {
+                add(3, Property.MAGAZINE_SIZE)
+                divide(1.35, Property.RELOAD_SPEED)
+                multiply(1.1, Property.BASE_DAMAGE)
+                add(0.002, Property.RECOIL)
+                multiply(1.1, Property.FIRE_RATE)
+                add(0.01, Property.HOMING_STRENGTH)
+            }
+        ),
 
         BANDIT(
             Manufacturer.BANDIT,
@@ -295,6 +333,7 @@ object AssaultRifleParts {
         companion object {
 
             val commonGrips = setOf(
+                ATLAS,
                 BANDIT,
                 DAHL,
                 JAKOBS,
@@ -315,6 +354,18 @@ object AssaultRifleParts {
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
     ) : WeaponPart {
+
+        ATLAS(
+            Manufacturer.ATLAS,
+            Manufacturer.ATLAS.displayName,
+            statModifierList {
+                add(0.01, Property.ACCURACY)
+                add(0.0015, Property.RECOIL)
+            },
+            statModifierList {
+                add(0.002, Property.HOMING_STRENGTH)
+            }
+        ),
 
         BANDIT(
             Manufacturer.BANDIT,
@@ -373,6 +424,7 @@ object AssaultRifleParts {
         companion object {
 
             val commonStocks = setOf(
+                ATLAS,
                 BANDIT,
                 DAHL,
                 JAKOBS,

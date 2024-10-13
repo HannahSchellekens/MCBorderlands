@@ -152,7 +152,12 @@ data class BulletMeta(
      * The original location of the bullet (where it was spawned).
      * `null` if irrelevant or not specified.
      */
-    var originLocation: Location? = null
+    var originLocation: Location? = null,
+
+    /**
+     * Whether hits with this bullet should mark targets as tracked.
+     */
+    var isTrackerBullet: Boolean = false
 ) {
 
     /**

@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
+import maliwan.mcbl.Keys
 import maliwan.mcbl.entity.headLocation
 import maliwan.mcbl.util.setLength
 import maliwan.mcbl.util.simulateBulletArc
@@ -7,6 +8,7 @@ import maliwan.mcbl.weapons.BulletMeta
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.persistence.PersistentDataType
 
 /**
  * Updates the velocity of this bullet to home in on a certain target.
@@ -59,10 +61,19 @@ fun findHomingTarget(bullet: Entity, meta: BulletMeta) {
         if (i < meta.homingTargetDistance) return@simulateBulletArc
 
         val loc = Location(bullet.world, it.x, it.y, it.z)
-        val closest = loc.world?.getNearbyEntities(loc, searchRadius, searchRadius, searchRadius)?.asSequence()
+        val candidateTargets = loc.world?.getNearbyEntities(loc, searchRadius, searchRadius, searchRadius)?.asSequence()
             ?.filterIsInstance(LivingEntity::class.java)
             ?.filter { it != meta.shooter }
-            ?.minByOrNull { it.headLocation.distance(loc) }
+            ?.toList()
+            ?: emptyList()
+
+        val trackedTargets = candidateTargets.filter {
+            val pdc = it.persistentDataContainer
+            pdc.getOrDefault(Keys.homingTarget, PersistentDataType.BOOLEAN, false)
+        }
+
+        val closest = trackedTargets.ifEmpty { candidateTargets }
+            .minByOrNull { it.headLocation.distance(loc) }
 
         if (closest != null) {
             val dist = closest.location.distance(loc)

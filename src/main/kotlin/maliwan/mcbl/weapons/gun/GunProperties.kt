@@ -295,16 +295,20 @@ open class GunProperties(
         fun placeSeparator() = run { separator(); separator = {} }
 
         redText?.let { text ->
-            placeSeparator()
-            text.split("\n").forEach { line ->
-                lore += "${ChatColor.RED}$line"
+            if (text.isNotBlank()) {
+                placeSeparator()
+                text.split("\n").forEach { line ->
+                    lore += "${ChatColor.RED}$line"
+                }
             }
         }
 
         cyanText?.let { text ->
-            placeSeparator()
-            text.split("\n").forEach { line ->
-                lore += "${ChatColor.DARK_AQUA}$line"
+            if (text.isNotBlank()) {
+                placeSeparator()
+                text.split("\n").forEach { line ->
+                    lore += "${ChatColor.DARK_AQUA}$line"
+                }
             }
         }
 

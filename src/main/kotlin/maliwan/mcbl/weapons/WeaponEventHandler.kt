@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons
 
+import maliwan.mcbl.Keys
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
@@ -23,6 +24,7 @@ import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.util.Vector
 import java.util.*
 import kotlin.math.floor
@@ -407,6 +409,18 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
             bullets.remove(bullet)
             return
+        }
+
+        // Track target if applicable.
+        if (bulletMeta.isTrackerBullet) {
+            val pdc = targetEntity.persistentDataContainer
+            pdc.set(Keys.homingTarget, PersistentDataType.BOOLEAN, true)
+
+            // Tracked status lasts for 8 seconds: after that return to normal.
+            // Maybe not hardcode this later. Whatever, works for now.
+            plugin.scheduleTask(160L) {
+                pdc.remove(Keys.homingTarget)
+            }
         }
 
         // Disable iframes for bullets, save old values to restore them later.

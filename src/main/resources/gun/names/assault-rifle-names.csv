@@ -1,6 +1,7 @@
-	BANDIT	DAHL	JAKOBS	TORGUE	VLADOF	VLADOF_MINIGUN
-BANDIT	Mashine Gun	Carbene	Ass Beeter!	Rokets!	Mashine Gun	Spinigun
-DAHL	Rifle	Carbine	Defender	Grenadier	Rifle	Minigun
-JAKOBS	Rifle	Scarab	Rifle	Cannon	Rifle	Gatling Gun
-TORGUE	Rifle	Root	Lance	Torpedo	Rifle	Spitter
-VLADOF	Rifle	Renegade	Guerilla	Rocketeer	Rifle	Spinigun
+	ATLAS	BANDIT	DAHL	JAKOBS	TORGUE	VLADOF	VLADOF_MINIGUN
+ATLAS	V-System	B-System	V-System	Q-System	Q-System	N-System	B.R.R.-System
+BANDIT	Carbene	Mashine Gun	Carbene	Ass Beeter!	Rokets!	Mashine Gun	Spinigun
+DAHL	Carbine	Rifle	Carbine	Defender	Grenadier	Rifle	Minigun
+JAKOBS	Scarab	Rifle	Scarab	Rifle	Cannon	Rifle	Gatling Gun
+TORGUE	Root	Rifle	Root	Lance	Torpedo	Rifle	Spitter
+VLADOF	Renegade	Rifle	Renegade	Guerilla	Rocketeer	Rifle	Spinigun

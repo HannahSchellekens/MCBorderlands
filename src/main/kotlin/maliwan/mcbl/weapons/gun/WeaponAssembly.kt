@@ -7,6 +7,7 @@ import maliwan.mcbl.weapons.gun.behaviour.GrenadeOnReload
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.forEachType
 import maliwan.mcbl.weapons.gun.behaviour.launcher.RocketLauncher
+import maliwan.mcbl.weapons.gun.behaviour.rifle.TrackerBullet
 import maliwan.mcbl.weapons.gun.names.*
 import maliwan.mcbl.weapons.gun.parts.*
 import kotlin.reflect.KClass
@@ -73,6 +74,12 @@ sealed class WeaponAssembly(
      */
     fun manufacturerGimmickBehaviours() = when (manufacturer) {
         Manufacturer.TEDIORE -> listOf(GrenadeOnReload())
+        Manufacturer.ATLAS -> {
+            if (weaponClass == WeaponClass.ASSAULT_RIFLE) {
+                listOf(TrackerBullet())
+            }
+            else emptyList()
+        }
         else -> emptyList()
     }
 

@@ -175,6 +175,10 @@ open class StatModifier(
             { it.homingStrength.asList() },
             { stats, it -> stats.homingStrength = it.first() }
         ),
+        HOMING_TARGET_DISTANCE(
+            { it.homingTargetDistance.asList() },
+            { stats, it -> stats.homingTargetDistance = it.first() }
+        ),
         ;
     }
 
