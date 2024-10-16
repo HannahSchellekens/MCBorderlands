@@ -28,6 +28,7 @@ open class AngryBird : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviour 
         LauncherParts.Barrel.TORGUE.applyStatModifiers(properties)
         statModifiers.applyAll(properties)
 
+        properties.splashDamage *= 0.6
     }
 
     override fun afterGunShot(
