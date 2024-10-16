@@ -133,6 +133,7 @@ object UniqueGunParts {
 
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.LAUNCHER, Capacitor.ROASTER_SHOCK),
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.LAUNCHER, Capacitor.ROASTER_INCENDIARY),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.MALIWAN, WeaponClass.LAUNCHER, LauncherParts.Barrel.HIVE),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.ANGRY_BIRD),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.CREAMER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.LAUNCHER, LauncherParts.Barrel.TWELVE_POUNDER),

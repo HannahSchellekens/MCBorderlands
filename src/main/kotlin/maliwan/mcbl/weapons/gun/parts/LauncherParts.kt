@@ -97,6 +97,7 @@ object LauncherParts {
         BADABOOM(Manufacturer.BANDIT, "Badaboom", behaviours = listOf(Badaboom())),
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
         CRYOPHOBIA(Manufacturer.MALIWAN, "Cryophobia", behaviours = listOf(Cryophobia())),
+        HIVE(Manufacturer.MALIWAN, "Hive", behaviours = listOf(Hive())),
         MONGOL(Manufacturer.VLADOF, "Mongol", behaviours = listOf(Mongol())),
         NUKEM(Manufacturer.TORGUE, "Nukem", behaviours = listOf(Nukem())),
         PYROPHOBIA(Manufacturer.MALIWAN, "Pyrophobia", behaviours = listOf(Pyrophobia())),

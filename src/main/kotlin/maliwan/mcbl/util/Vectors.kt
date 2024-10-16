@@ -10,6 +10,13 @@ import org.bukkit.util.Vector
 val VECTOR_UP = Vector(0.0, 1.0, 0.0)
 
 /**
+ * Null vector:
+ * `(0, 0, 0)`
+ * DO NOT MODIFY.
+ */
+val VECTOR_ZERO = Vector(0.0, 0.0, 0.0)
+
+/**
  * Randomly changes the x, y and z values of this vector.
  * Max delta is in `[-maxModifier, maxModifier]` per dimension.
  * Creates a new vector and does not modify the original.

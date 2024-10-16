@@ -412,6 +412,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 it.afterBulletLands(bullet, bulletMeta, null, null, false)
             }
 
+            println("Remove bullet.")
             bullets.remove(bullet)
             return
         }
@@ -568,13 +569,13 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
                 return
             }
 
-            bullet.remove()
-
             splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
                 it.afterBulletLands(bullet, bulletMeta, hitLocation, null, false)
             }
+
+            bullet.remove()
 
             // Only remove the bullet when not hitting a living entity because
             // the damage event requires this bullet data to apply correct damage calculations.
@@ -688,12 +689,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     /**
      * Schedules an effect to be executed by the bullet if it still exists.
      *
-     * @param bullet
-     *          The bullet entity that must execute the effect.
-     * @param inMillis
-     *          In how many milliseconds the effect must be executed.
-     * @param action
-     *          The action to execute when the effect should be executed.
+     * @param bullet The bullet entity that must execute the effect.
+     * @param inMillis In how many milliseconds the effect must be executed.
+     * @param action The action to execute when the effect should be executed.
      */
     fun scheduleEffect(bullet: Entity, inMillis: Long, action: ScheduledBulletEffect) {
         if (bullet !in bullets) {
