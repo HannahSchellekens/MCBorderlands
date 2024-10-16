@@ -184,4 +184,11 @@ data class BulletMeta(
         elementalDamage[elemental] = damage
         elementalProbability[elemental] = effectchance
     }
+
+    /**
+     * How long the bullet is allowed to be alive before it despawns.
+     */
+    fun setLifespan(millis: Long) {
+        deathTimestamp = System.currentTimeMillis() + millis
+    }
 }

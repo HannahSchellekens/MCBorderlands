@@ -30,6 +30,13 @@ val Entity.armorToughness: Double
     get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)?.value ?: 0.0
 
 /**
+ * Checks if the entity is on the ground or not.
+ *
+ * @return `true` if on the ground, `false` otherwise.
+ */
+fun Entity.checkOnGround() = location.subtract(0.0, 0.2, 0.0).block.type.isSolid
+
+/**
  * Set the scale of the living entity where 1.0 is the regular size.
  */
 fun LivingEntity.setScale(scale: Double) {

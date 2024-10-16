@@ -45,6 +45,11 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
     val particles: WeaponParticles = WeaponParticles(this)
 
     /**
+     * Special bullet effects
+     */
+    val bulletEffects: BulletEffects = BulletEffects(this)
+
+    /**
      * Stores for each entity the Unix timestamp where the next shot can be fired.
      */
     private val shotTimestamps = HashMap<Entity, Long>()
@@ -660,6 +665,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         cleanExpiredBullets()
         applyBulletGravity()
         homingEffect()
+        bulletEffects.run()
         flushExpiredEffects()
         elementalStatusEffects.tick()
         particles.tick()
@@ -695,6 +701,36 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
         val scheduleTime = System.currentTimeMillis() + inMillis
         scheduledBulletEffects.add(BulletEffect(scheduleTime, bullet, action))
+    }
+
+    /**
+     * Registers a new bullet effect to the event handler.
+     * Make sure to call [BulletEffects.BulletEffectDefinition.stopEffect] at the end
+     * of the effect, so it can be removed from the handler.
+     *
+     * Registers the bullet when the bullet entity has not been registered yet.
+     *
+     * Does not register the effect when no bullet meta was given or found.
+     *
+     * @param everyNTicks How often the effect should tick, 1L for every ticks, 2L for every 2nd tick etc.
+     * @param bullet The entity that acts as bullet.
+     * @param bulletMeta The meta information to apply to the bullet, or `null` to use the bullet meta that has already
+     * been registered.
+     * @param effect The effect to execute, calling [BulletEffects.BulletEffectDefinition.stopEffect] at the end of the
+     * effect.
+     */
+    fun addBulletEffect(
+        everyNTicks: Long,
+        bullet: Entity,
+        bulletMeta: BulletMeta?,
+        effect: BulletEffects.BulletEffectDefinition.(Long) -> Unit
+    ) {
+        val metaToUse = bulletMeta ?: bullets[bullet] ?: return
+        if (bullet !in bullets) {
+            registerBullet(bullet, metaToUse)
+        }
+        val definition = bulletEffects.BulletEffectDefinition(bullet, metaToUse)
+        bulletEffects.addEffect(definition, everyNTicks, effect)
     }
 
     /**

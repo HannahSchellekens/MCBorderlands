@@ -92,6 +92,7 @@ object LauncherParts {
 
         // Unique barrels.
 
+        ANGRY_BIRD(Manufacturer.TORGUE, "Angry Bird", behaviours = listOf(AngryBird())),
         AVATAR_STATE(Manufacturer.MALIWAN, "Avatar State", behaviours = listOf(AvatarState())),
         BADABOOM(Manufacturer.BANDIT, "Badaboom", behaviours = listOf(Badaboom())),
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),

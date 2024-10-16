@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.sniper
 
+import maliwan.mcbl.entity.checkOnGround
 import maliwan.mcbl.util.Probability
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
@@ -35,7 +36,7 @@ open class LongestYard : UniqueGun, PostGenerationBehaviour, PostGunShotBehaviou
         bullets: List<Entity>,
         player: Player
     ) {
-        if (player.location.subtract(0.0, 0.2, 0.0).block.type.isSolid.not()) {
+        if (player.checkOnGround().not()) {
             bullets.forEach {
                 val meta = handler.bullets[it] ?: return@forEach
                 meta.damage *= 1.5
