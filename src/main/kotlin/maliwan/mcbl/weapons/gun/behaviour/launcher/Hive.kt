@@ -68,6 +68,7 @@ open class Hive : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, P
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

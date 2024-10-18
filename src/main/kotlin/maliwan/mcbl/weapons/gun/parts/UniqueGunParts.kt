@@ -63,6 +63,7 @@ object UniqueGunParts {
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.STINGER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SHREDIFIER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.SNIPER, SniperParts.Barrel.LYUDMILA),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.LAUNCHER, LauncherParts.Barrel.BARRAGE),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.LAUNCHER, LauncherParts.Barrel.MONGOL),
     )
 

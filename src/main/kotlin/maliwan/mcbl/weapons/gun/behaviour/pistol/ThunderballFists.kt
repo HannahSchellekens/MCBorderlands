@@ -46,6 +46,7 @@ open class ThunderballFists : UniqueGun, PostGenerationBehaviour, UpdateAssembly
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

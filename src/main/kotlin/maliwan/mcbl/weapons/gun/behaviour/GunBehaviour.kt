@@ -109,6 +109,7 @@ interface PostBulletLandBehaviour : GunBehaviour {
     /**
      * Gets called whenever a bullet lands.
      *
+     * @param handler The weapon handler for the plugin.
      * @param bullet The bullet entity that landed.
      * @param meta The meta information about the bullet.
      * @param hitLocation The location where the bullet hit something.
@@ -116,6 +117,7 @@ interface PostBulletLandBehaviour : GunBehaviour {
      * @param isCriticalHit Whether the shot is a critical hit or not.
      */
     fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,
@@ -132,12 +134,9 @@ interface BulletEffectBehaviour : GunBehaviour {
     /**
      * Schedules a new bullet effect.
      *
-     * @param handler
-     *          The weapon handler for the plugin.
-     * @param bullet
-     *          The bullet that was shot.
-     * @param bulletMeta
-     *          Metadata for this bullet.
+     * @param handler The weapon handler for the plugin.
+     * @param bullet The bullet that was shot.
+     * @param bulletMeta Metadata for this bullet.
      */
     fun scheduleEffects(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta)
 }

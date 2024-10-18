@@ -4,6 +4,7 @@ import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Elemental
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
 import maliwan.mcbl.weapons.gun.WeaponAssembly
@@ -34,6 +35,7 @@ open class TorgueBarrelAssaultRifle : PostGenerationBehaviour, PostBulletLandBeh
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

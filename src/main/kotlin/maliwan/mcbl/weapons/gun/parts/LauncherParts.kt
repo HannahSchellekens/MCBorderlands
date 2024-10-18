@@ -95,6 +95,7 @@ object LauncherParts {
         ANGRY_BIRD(Manufacturer.TORGUE, "Angry Bird", behaviours = listOf(AngryBird())),
         AVATAR_STATE(Manufacturer.MALIWAN, "Avatar State", behaviours = listOf(AvatarState())),
         BADABOOM(Manufacturer.BANDIT, "Badaboom", behaviours = listOf(Badaboom())),
+        BARRAGE(Manufacturer.VLADOF, "Barrage", behaviours = listOf(Barrage())),
         CREAMER(Manufacturer.MALIWAN, "Greed", behaviours = listOf(Creamer())),
         CRYOPHOBIA(Manufacturer.MALIWAN, "Cryophobia", behaviours = listOf(Cryophobia())),
         HIVE(Manufacturer.MALIWAN, "Hive", behaviours = listOf(Hive())),

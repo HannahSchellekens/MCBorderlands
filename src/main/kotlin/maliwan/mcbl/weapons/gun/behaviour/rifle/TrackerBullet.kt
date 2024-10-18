@@ -27,6 +27,7 @@ open class TrackerBullet : PostGenerationBehaviour, PostBulletLandBehaviour, Pos
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

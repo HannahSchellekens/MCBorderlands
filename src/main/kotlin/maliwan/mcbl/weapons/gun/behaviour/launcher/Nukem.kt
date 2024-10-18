@@ -1,6 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.launcher
 
 import maliwan.mcbl.weapons.BulletMeta
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
@@ -28,6 +29,7 @@ open class Nukem : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour {
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

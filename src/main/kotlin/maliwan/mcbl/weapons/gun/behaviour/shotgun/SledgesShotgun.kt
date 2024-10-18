@@ -41,6 +41,7 @@ open class SledgesShotgun : UniqueGun, PostGenerationBehaviour, PostGunShotBehav
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,

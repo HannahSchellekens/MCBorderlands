@@ -409,10 +409,9 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         if (bulletMeta.directDamage.not()) {
             // Just splash damage: is handled by ProjectileHitEvent.
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-                it.afterBulletLands(bullet, bulletMeta, null, null, false)
+                it.afterBulletLands(this, bullet, bulletMeta, null, null, false)
             }
 
-            println("Remove bullet.")
             bullets.remove(bullet)
             return
         }
@@ -509,7 +508,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         bulletMeta.shooter.heal(healAmount)
 
         bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-            it.afterBulletLands(bullet, bulletMeta, hitLocation, targetEntity, isCritical && critMultiplier > 1.01)
+            it.afterBulletLands(this, bullet, bulletMeta, hitLocation, targetEntity, isCritical && critMultiplier > 1.01)
         }
 
         bullets.remove(bullet)
@@ -572,7 +571,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             splashDamage(plugin, hitLocation, bulletMeta)
 
             bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-                it.afterBulletLands(bullet, bulletMeta, hitLocation, null, false)
+                it.afterBulletLands(this, bullet, bulletMeta, hitLocation, null, false)
             }
 
             bullet.remove()

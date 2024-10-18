@@ -3,6 +3,7 @@ package maliwan.mcbl.weapons.gun.behaviour.sniper
 import maliwan.mcbl.util.showFlameParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.ElementalStatusEffects
+import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostBulletLandBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
@@ -30,6 +31,7 @@ open class Volcano : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour
     }
 
     override fun afterBulletLands(
+        handler: WeaponEventHandler,
         bullet: Entity,
         meta: BulletMeta,
         hitLocation: Location?,
