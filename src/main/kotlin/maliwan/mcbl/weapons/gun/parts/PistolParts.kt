@@ -478,6 +478,7 @@ object PistolParts {
         // Unique accessories.
 
         MAGGIE(Manufacturer.JAKOBS, "Maggie", behaviours = listOf(Maggie())),
+        UNFORGIVEN(Manufacturer.JAKOBS, "Unforgiven", behaviours = listOf(Unforgiven()))
         ;
 
         override val partTypeName: String = "Acc."
