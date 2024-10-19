@@ -109,6 +109,7 @@ object SniperParts {
         BUFFALO(Manufacturer.JAKOBS, "Buffalo", behaviours = listOf(Buffalo())),
         CHERE_AMIE(Manufacturer.HYPERION, "Chère-Amie", behaviours = listOf(ChereAmie())),
         COBRA(Manufacturer.JAKOBS, "Cobra", behaviours = listOf(Cobra())),
+        GODFINGER(Manufacturer.JAKOBS, "Godfinger", behaviours = listOf(Godfinger())),
         LONGBOW(Manufacturer.HYPERION, "Longbow", behaviours = listOf(Longbow())),
         LONGEST_YARD(Manufacturer.HYPERION, "LongestYard", behaviours = listOf(LongestYard())),
         LYUDMILA(Manufacturer.VLADOF, "Lyudmila", behaviours = listOf(Lyudmila())),
