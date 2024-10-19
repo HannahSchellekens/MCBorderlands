@@ -554,6 +554,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             if (event.hitEntity == null && event.hitBlock != null && event.hitBlockFace != null && bulletMeta.bouncesLeft > 0) {
                 val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
                 event.isCancelled = true
+                newBullet.setGravity(false) // TODO
                 bulletMeta.bouncesLeft--
                 replaceScheduledEffects(bullet, newBullet)
 
