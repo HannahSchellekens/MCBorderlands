@@ -44,7 +44,11 @@ object UniqueGunParts {
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.PISTOL, PistolParts.Accessory.MAGGIE),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.PISTOL, PistolParts.Barrel.LUCK_CANNON),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.HAMMER_BUSTER),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.JAKOBS,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.HAMMER_BUSTER
+        ),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SHOTGUN, ShotgunParts.Barrel.STRIKER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.AMIGO_SINCERO),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.SNIPER, SniperParts.Barrel.SKULLMASHER),
@@ -67,7 +71,11 @@ object UniqueGunParts {
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.INFINITY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.PISTOL, PistolParts.Barrel.STINGER),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SHREDIFIER),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.VLADOF,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.SHREDIFIER
+        ),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.SNIPER, SniperParts.Barrel.LYUDMILA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.LAUNCHER, LauncherParts.Barrel.BARRAGE),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.LAUNCHER, LauncherParts.Barrel.MONGOL),
@@ -110,12 +118,32 @@ object UniqueGunParts {
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Grip.CHOPPER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SCORPIO),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.DAMNED_COWBOY),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.STINKPOT),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.STOMPER),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.TORGUE, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.BOOM_PUPPY),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.JAKOBS,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.DAMNED_COWBOY
+        ),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.JAKOBS,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.STINKPOT
+        ),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.JAKOBS,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.STOMPER
+        ),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.TORGUE,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.BOOM_PUPPY
+        ),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.HAIL),
-        UniqueGunPart.UniqueWeaponPart(Manufacturer.VLADOF, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.ICE_SCREAM),
+        UniqueGunPart.UniqueWeaponPart(
+            Manufacturer.VLADOF,
+            WeaponClass.ASSAULT_RIFLE,
+            AssaultRifleParts.Barrel.ICE_SCREAM
+        ),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.BOGANELLA),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.SHOTGUN, ShotgunParts.Barrel.DOG),
