@@ -28,3 +28,7 @@ fun Location.showElementalParticle(r: Int, g: Int, b: Int, amount: Int, size: Fl
 fun Location.showFlameParticle() = clone().add(0.5, 0.5, 0.5).let {
     world?.playEffect(it, Effect.MOBSPAWNER_FLAMES, 0)
 }
+
+fun Location.showSmokeParticle() = clone().add(0.5, 0.5, 0.5).let {
+    world?.playEffect(it, Effect.SMOKE, 0)
+}

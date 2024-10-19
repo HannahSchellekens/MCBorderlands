@@ -44,8 +44,7 @@ open class Nukem : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour {
             val angle = PI / 4 * it
             val x = radius * cos(angle)
             val z = radius * sin(angle)
-            /* TODO: No large explosion in 1.21, how to solve this? */
-            world.spawnParticle(Particle.EXPLOSION, Location(world, location.x + x, location.y + 0.5, location.z + z), 1)
+            world.spawnParticle(Particle.EXPLOSION_EMITTER, Location(world, location.x + x, location.y + 0.5, location.z + z), 1)
         }
     }
 

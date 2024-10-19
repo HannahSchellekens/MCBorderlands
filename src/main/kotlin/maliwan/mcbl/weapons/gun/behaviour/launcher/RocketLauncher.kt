@@ -45,7 +45,7 @@ open class RocketLauncher : PostGenerationBehaviour, PreGunShotBehaviour, PostBu
         targetEntity: LivingEntity?,
         isCriticalHit: Boolean
     ) {
-        val particle = if (meta.splashRadius > 2.75) Particle.EXPLOSION else Particle.EXPLOSION /* TODO: No large explosion in 1.21, how to solve this? */
+        val particle = if (meta.splashRadius > 2.75) Particle.EXPLOSION else Particle.EXPLOSION_EMITTER
         bullet.world.spawnParticle(particle, bullet.location, 1)
         bullet.world.playSound(bullet.location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 12f, 1f)
     }
