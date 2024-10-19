@@ -39,7 +39,6 @@ open class Stinger : UniqueGun, PostGenerationBehaviour, PostBulletBounceBehavio
     companion object {
 
         val statModifiers = statModifierList {
-            divide(1.25, StatModifier.Property.FIRE_RATE)
             add(0.015, StatModifier.Property.ACCURACY)
         }
     }
