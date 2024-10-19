@@ -11,6 +11,8 @@ import maliwan.mcbl.weapons.gun.WeaponPart
 object UniqueGunParts {
 
     val pearlescentParts: List<UniqueGunPart> = listOf(
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.ASSAULT_RIFLE, AssaultRifleParts.Barrel.SAWBAR),
+
         UniqueGunPart.UniqueWeaponPart(Manufacturer.HYPERION, WeaponClass.SHOTGUN, ShotgunParts.Barrel.BUTCHER),
 
         UniqueGunPart.UniqueWeaponPart(Manufacturer.JAKOBS, WeaponClass.PISTOL, PistolParts.Accessory.UNFORGIVEN),

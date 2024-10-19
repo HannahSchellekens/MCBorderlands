@@ -71,7 +71,7 @@ open class ThunderballFists : UniqueGun, PostGenerationBehaviour, UpdateAssembly
             splashDamage(
                 plugin,
                 location,
-                meta.copy(splashDamage = meta.splashDamage * 1.5, splashRadius = meta.splashRadius * 1.75)
+                meta.copy(splashDamage = meta.splashDamage * 1.5, splashRadius = meta.splashRadius * 2.0)
             )
         }
     }

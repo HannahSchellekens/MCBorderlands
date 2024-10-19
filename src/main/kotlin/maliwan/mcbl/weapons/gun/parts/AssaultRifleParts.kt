@@ -192,6 +192,7 @@ object AssaultRifleParts {
         HAIL(Manufacturer.DAHL, "Hail", behaviours = listOf(Hail())),
         HAMMER_BUSTER(Manufacturer.JAKOBS, "Hammer Buster", behaviours = listOf(HammerBuster())),
         ICE_SCREAM(Manufacturer.VLADOF, "Ice Scream", behaviours = listOf(IceScream(), Spinigun())),
+        SAWBAR(Manufacturer.BANDIT, "Sawbar", behaviours = listOf(Sawbar())),
         SCORPIO(Manufacturer.JAKOBS, "Scorpio", behaviours = listOf(Scorpio())),
         SHREDIFIER(Manufacturer.VLADOF, "Shredifier", behaviours = listOf(Shredifier(), Spinigun())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
