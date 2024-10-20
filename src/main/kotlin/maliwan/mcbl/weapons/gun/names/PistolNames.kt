@@ -28,10 +28,11 @@ object PistolNames {
     fun nameOf(
         manufacturer: Manufacturer,
         barrel: PistolParts.Barrel,
+        grip: PistolParts.Grip,
         accessory: PistolParts.Accessory? = null,
         capacitor: Capacitor? = null
     ): String {
-        val customName = barrel.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
+        val customName = barrel.customBaseName() ?: grip.customBaseName() ?: accessory?.customBaseName() ?: capacitor?.customBaseName()
         val baseName = customName ?: nameTable[barrel.manufacturer, manufacturer]
             ?: throw IllegalArgumentException("No name found for manufacturer $manufacturer and barrel $barrel")
 

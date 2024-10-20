@@ -10,7 +10,7 @@ enum class Rarity(
     val displayName: String,
     val colourPrefix: String,
     val color: Color
-) {
+) : Comparable<Rarity> {
 
     COMMON("Common", ChatColor.WHITE.toString(), Color.WHITE),
     UNCOMMON("Uncommon", ChatColor.GREEN.toString(), Color.fromRGB(5635925)),

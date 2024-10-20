@@ -9,6 +9,7 @@ import maliwan.mcbl.weapons.gun.StatModifier.Property
 import maliwan.mcbl.weapons.gun.WeaponPart
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.pistol.*
+import maliwan.mcbl.weapons.gun.behaviour.rifle.Dumpster
 import maliwan.mcbl.weapons.gun.statModifierList
 
 /**
@@ -228,6 +229,7 @@ object PistolParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         ATLAS(
@@ -363,6 +365,10 @@ object PistolParts {
                 divide(1.3, Property.RELOAD_SPEED)
             }
         ),
+
+        // Unique Grips
+
+        DUMPSTER(Manufacturer.BANDIT, "Dumpster", behaviours = listOf(Dumpster()))
         ;
 
         override val partTypeName: String = "Grip"
