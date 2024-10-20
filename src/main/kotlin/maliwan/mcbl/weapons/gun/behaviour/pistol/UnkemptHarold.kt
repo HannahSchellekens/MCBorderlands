@@ -14,6 +14,7 @@ import maliwan.mcbl.weapons.gun.behaviour.UniqueGun
 import maliwan.mcbl.weapons.gun.parts.PistolParts
 import maliwan.mcbl.weapons.gun.pattern.SequentialBulletPattern
 import org.bukkit.entity.Entity
+import kotlin.math.min
 
 /**
  * @author Hannah Schellekens
@@ -35,7 +36,7 @@ open class UnkemptHarold : UniqueGun, PostGenerationBehaviour, BulletEffectBehav
 
         properties.splashDamage = properties.baseDamage
         properties.gravity = 0.0
-        properties.accuracy = Probability(0.98.modifyRandom(0.05))
+        properties.accuracy = Probability(min(1.0, 0.98.modifyRandom(0.05)))
     }
 
     override fun scheduleEffects(handler: WeaponEventHandler, bullet: Entity, bulletMeta: BulletMeta) {

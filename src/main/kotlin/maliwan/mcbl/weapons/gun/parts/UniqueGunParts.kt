@@ -102,6 +102,7 @@ object UniqueGunParts {
 
     val rareParts: List<UniqueGunPart> = listOf(
         UniqueGunPart.UniqueCapacitor(Manufacturer.BANDIT, WeaponClass.PISTOL, Capacitor.TINDERBOX),
+        UniqueGunPart.UniqueWeaponPart(Manufacturer.BANDIT, WeaponClass.PISTOL, PistolParts.Grip.DUMPSTER),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.GWENS_HEAD),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.MAYDAY),
         UniqueGunPart.UniqueWeaponPart(Manufacturer.DAHL, WeaponClass.PISTOL, PistolParts.Barrel.TEAPOT),
@@ -180,19 +181,27 @@ object UniqueGunParts {
     /**
      * Get all unique gun parts that match the given parameters.
      *
-     * @param rarity
-     *          The rarity of the gun part.
-     * @param weaponClass
-     *          `null` for all classes, or select just parts for a specific weapon class.
-     * @param manufacturer
-     *          `null` for all manufacturers, or select just parts for a specific manufacturer.
+     * @param rarity The rarity of the gun part.
+     * @param weaponClass `null` for all classes, or select just parts for a specific weapon class.
+     * @param manufacturer `null` for all manufacturers, or select just parts for a specific manufacturer.
+     * @param allowLowerRarity Whether lower rarity parts are allowed
      */
     fun partsFor(
         rarity: Rarity,
         weaponClass: WeaponClass? = null,
-        manufacturer: Manufacturer? = null
+        manufacturer: Manufacturer? = null,
+        allowLowerRarity: Boolean = false
     ): List<UniqueGunPart> {
-        val baseParts = when (rarity) {
+        val baseParts = if (allowLowerRarity) {
+            when (rarity) {
+                Rarity.PEARLESCENT -> pearlescentParts + legendaryParts + epicParts + rareParts
+                Rarity.LEGENDARY -> legendaryParts + epicParts + rareParts
+                Rarity.EPIC -> epicParts + rareParts
+                Rarity.RARE -> rareParts
+                else -> emptyList()
+            }
+        }
+        else when (rarity) {
             Rarity.PEARLESCENT -> pearlescentParts
             Rarity.LEGENDARY -> legendaryParts
             Rarity.EPIC -> epicParts

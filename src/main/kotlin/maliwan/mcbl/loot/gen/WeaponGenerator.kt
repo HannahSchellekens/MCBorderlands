@@ -82,7 +82,7 @@ open class WeaponGenerator(
 
         // Small chance for it to generate as a hybrid weapon.
         val hybridAssembly = if (kotlin.random.Random.nextDouble() < 0.05) {
-            val allEligibleParts = eligibleParts +
+            val allEligibleParts = UniqueGunParts.partsFor(Rarity.PEARLESCENT, ofType, allowLowerRarity = true) +
                     UniqueGunParts.partsFor(Rarity.LEGENDARY, ofType, ofManufacturer) +
                     UniqueGunParts.partsFor(Rarity.EPIC, ofType, ofManufacturer) +
                     UniqueGunParts.partsFor(Rarity.RARE, ofType, ofManufacturer)
@@ -114,7 +114,7 @@ open class WeaponGenerator(
 
         // Small chance for it to generate as a hybrid weapon.
         val hybridAssembly = if (kotlin.random.Random.nextDouble() < 0.05) {
-            val allEligibleParts = eligibleParts +
+            val allEligibleParts = UniqueGunParts.partsFor(Rarity.LEGENDARY, ofType, allowLowerRarity = true) +
                     UniqueGunParts.partsFor(Rarity.EPIC, ofType, ofManufacturer) +
                     UniqueGunParts.partsFor(Rarity.RARE, ofType, ofManufacturer)
             forgeHybrid(updatedAssembly, legendaryPart, allEligibleParts)

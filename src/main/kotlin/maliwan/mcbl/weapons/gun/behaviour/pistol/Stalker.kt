@@ -10,7 +10,7 @@ import maliwan.mcbl.weapons.gun.parts.PistolParts
  */
 open class Stalker : UniqueGun, PostGenerationBehaviour {
 
-    override val baseName = "Stinger"
+    override val baseName = "Stalker"
     override val redText = "You can run, but you can't hide."
 
     override fun onFinishGeneration(properties: GunProperties, assembly: WeaponAssembly) {
