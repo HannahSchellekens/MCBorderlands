@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.launcher
 
-import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.util.showSmokeParticle
+import maliwan.mcbl.util.spigot.scheduleTask
+import maliwan.mcbl.util.spigot.showSmokeParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

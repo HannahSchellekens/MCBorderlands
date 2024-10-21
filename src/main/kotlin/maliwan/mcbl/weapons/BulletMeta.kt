@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.gun.WeaponAssembly
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity

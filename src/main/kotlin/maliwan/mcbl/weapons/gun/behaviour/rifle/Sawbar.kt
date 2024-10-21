@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.rifle
 
 import maliwan.mcbl.util.VECTOR_UP
-import maliwan.mcbl.util.showFlameParticle
-import maliwan.mcbl.util.spawnBullet
+import maliwan.mcbl.util.spigot.showFlameParticle
+import maliwan.mcbl.util.spigot.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

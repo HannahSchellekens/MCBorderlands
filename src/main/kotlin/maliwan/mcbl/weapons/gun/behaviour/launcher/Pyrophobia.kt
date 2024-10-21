@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.launcher
 
-import maliwan.mcbl.util.showFlameParticle
+import maliwan.mcbl.util.spigot.showFlameParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.ElementalStatusEffects
 import maliwan.mcbl.weapons.WeaponEventHandler

@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.sniper
 
 import maliwan.mcbl.entity.checkOnGround
-import maliwan.mcbl.util.Probability
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.launcher
 
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.spigot.showElementalParticle
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.BulletEffectBehaviour

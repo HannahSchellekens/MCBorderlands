@@ -3,7 +3,11 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
-import maliwan.mcbl.util.*
+import maliwan.mcbl.util.modifyRandom
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Ticks
+import maliwan.mcbl.util.spigot.showElementalParticle
+import maliwan.mcbl.util.spigot.showFlameParticle
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity

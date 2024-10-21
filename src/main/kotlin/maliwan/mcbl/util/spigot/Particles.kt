@@ -1,5 +1,6 @@
-package maliwan.mcbl.util
+package maliwan.mcbl.util.spigot
 
+import maliwan.mcbl.util.modifyRandom
 import org.bukkit.Color
 import org.bukkit.Effect
 import org.bukkit.Location

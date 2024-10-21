@@ -1,10 +1,10 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
+import maliwan.mcbl.util.spigot.scheduleTask
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.CustomGrenadeManager.CustomGrenade
 import maliwan.mcbl.weapons.Elemental

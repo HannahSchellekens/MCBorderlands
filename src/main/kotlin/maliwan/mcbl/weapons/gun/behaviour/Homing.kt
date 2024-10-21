@@ -3,7 +3,7 @@ package maliwan.mcbl.weapons.gun.behaviour
 import maliwan.mcbl.Keys
 import maliwan.mcbl.entity.headLocation
 import maliwan.mcbl.util.setLength
-import maliwan.mcbl.util.simulateBulletArc
+import maliwan.mcbl.util.spigot.simulateBulletArc
 import maliwan.mcbl.weapons.BulletMeta
 import org.bukkit.Location
 import org.bukkit.entity.Entity

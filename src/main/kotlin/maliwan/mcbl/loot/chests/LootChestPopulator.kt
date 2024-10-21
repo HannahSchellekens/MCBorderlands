@@ -5,7 +5,7 @@ import maliwan.mcbl.inventory.SDU
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.ammo.AmmoPack
 import maliwan.mcbl.loot.gen.WeaponGenerator
-import maliwan.mcbl.util.isInDungeon
+import maliwan.mcbl.util.spigot.isInDungeon
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.event.EventHandler

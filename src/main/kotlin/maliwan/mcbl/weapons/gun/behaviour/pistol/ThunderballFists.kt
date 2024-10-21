@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.pistol
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.spigot.scheduleTask
+import maliwan.mcbl.util.spigot.showElementalParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.ElementalStatusEffects
 import maliwan.mcbl.weapons.WeaponEventHandler

@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour
 
-import maliwan.mcbl.util.Probability
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.CustomGrenadeManager
 import maliwan.mcbl.weapons.WeaponEventHandler
@@ -19,7 +19,7 @@ import org.bukkit.entity.*
 interface GunBehaviour
 
 /**
- * When a gun adds a specific kind of execution implementation.
+ * When a gun adds a specific kind of [GunExecution] implementation.
  */
 interface CustomGunExecutionBehaviour<T : GunExecution> {
 
@@ -69,6 +69,8 @@ interface PostGunShotBehaviour : GunBehaviour {
 
 /**
  * Use a custom bullet pattern for the gun.
+ *
+ * See the [maliwan.mcbl.weapons.gun.pattern] package for available bullet patterns.
  */
 interface BulletPatternProvider : GunBehaviour {
 
@@ -128,6 +130,8 @@ interface PostBulletLandBehaviour : GunBehaviour {
 
 /**
  * Adds effects to firing the bullet.
+ *
+ * Used in combination with [WeaponEventHandler.scheduleEffect] to schedule a delayed bullet effect.
  */
 interface BulletEffectBehaviour : GunBehaviour {
 
@@ -142,7 +146,7 @@ interface BulletEffectBehaviour : GunBehaviour {
 }
 
 /**
- * Functionality for after a bullet bounces.
+ * Add functionality for after a bullet bounces.
  */
 interface PostBulletBounceBehaviour : GunBehaviour {
 
@@ -161,7 +165,7 @@ interface PostBulletBounceBehaviour : GunBehaviour {
 }
 
 /**
- * Post processor for after the gun execution has been initialized.
+ * Post processor for after the [GunExecution] has been initialized.
  */
 interface GunExecutionInitializationBehaviour : GunBehaviour {
 
@@ -192,7 +196,8 @@ interface UpdateAssemblyBehaviour : GunBehaviour {
 }
 
 /**
- * Gets called after the gun has been generated.
+ * Adds behaviour for after the gun has been generated.
+ * This behaviour is used by almost all gun behaviour to modify the base stats of the gun.
  */
 interface PostGenerationBehaviour : GunBehaviour {
 
@@ -208,7 +213,7 @@ interface PostGenerationBehaviour : GunBehaviour {
 }
 
 /**
- * Determines which type of projectile the gun shoots.
+ * Determine which type of projectile the gun shoots.
  */
 interface BulletTypeProvider : GunBehaviour {
 
@@ -220,7 +225,7 @@ interface BulletTypeProvider : GunBehaviour {
 }
 
 /**
- * Determines which sound to play when the gun fires.
+ * Determine which sound to play when the gun fires.
  */
 interface BulletSoundProvider : GunBehaviour {
 
@@ -231,7 +236,8 @@ interface BulletSoundProvider : GunBehaviour {
 }
 
 /**
- * Gun has a custom base name.
+ * Overrides the default gun name by this name.
+ * Multiple gun parts with a custom name (should..) join all custom names together.
  */
 interface CustomBaseNameProvider : GunBehaviour {
 
@@ -242,7 +248,7 @@ interface CustomBaseNameProvider : GunBehaviour {
 }
 
 /**
- * Gun has custom red text.
+ * Provides cyan flavour text for the weapon card.
  */
 interface RedTextProvider : GunBehaviour {
 
@@ -253,7 +259,7 @@ interface RedTextProvider : GunBehaviour {
 }
 
 /**
- * Gun has custom cyan text.
+ * Provides cyan flavour text for the weapon card.
  */
 interface CyanTextProvider : GunBehaviour {
 
@@ -264,7 +270,7 @@ interface CyanTextProvider : GunBehaviour {
 }
 
 /**
- * Gun has unique properties.
+ * A unique gun has a custom name and rex text: a combination of [CustomBaseNameProvider] and [RedTextProvider].
  */
 interface UniqueGun : CustomBaseNameProvider, RedTextProvider
 
@@ -281,7 +287,7 @@ interface DefaultPrefixProvider : GunBehaviour {
 }
 
 /**
- * Behaviour before a player reloaded.
+ * Adds behaviour before and/or after a gun gets reloaded.
  */
 interface ReloadBehaviour : GunBehaviour {
 
@@ -308,7 +314,8 @@ interface ReloadBehaviour : GunBehaviour {
 }
 
 /**
- * Updates the custom grenade that is being thrown on a Tediore-reload.
+ * Provides a modified [CustomGrenadeManager.CustomGrenade] that is being thrown on a Tediore-reload
+ * (see[GrenadeOnReload]).
  */
 interface UpdateReloadGrenadeBehaviour : GunBehaviour {
 
@@ -320,7 +327,7 @@ interface UpdateReloadGrenadeBehaviour : GunBehaviour {
 }
 
 /**
- * Makes the gun talk when firing.
+ * Makes the gun talk (send chag messages) when firing.
  */
 interface TalkWhenFiring : GunBehaviour {
 
@@ -344,7 +351,7 @@ interface TalkWhenFiring : GunBehaviour {
 }
 
 /**
- * Makes the gun talk when reloading.
+ * Makes the gun talk (send chag messages) when reloading.
  */
 interface TalkWhenReloading : GunBehaviour {
 
@@ -368,7 +375,7 @@ interface TalkWhenReloading : GunBehaviour {
 }
 
 /**
- * Modifies the visuals on the weapon card to show false information.
+ * Makes the visuals on the weapon card show false information.
  */
 interface FibWeaponCard : GunBehaviour {
 
@@ -390,7 +397,8 @@ interface FibWeaponCard : GunBehaviour {
 }
 
 /**
- * Modifies the name of the manufacturer shown on the weapon card.
+ * Provides a differnt name for the manufacturer shown on the weapon card.
+ * This is purely visual. The actual manufacturer does not change.
  */
 interface OverrideManufacturerOnWeaponCard : GunBehaviour {
 

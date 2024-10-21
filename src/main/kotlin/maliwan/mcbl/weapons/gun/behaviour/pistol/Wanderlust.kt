@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.pistol
 
-import maliwan.mcbl.util.Probability
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

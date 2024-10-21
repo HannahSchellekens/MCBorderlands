@@ -1,7 +1,7 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.spigot.scheduleTask
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity

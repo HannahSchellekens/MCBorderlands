@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.spigot.showElementalParticle
 import org.bukkit.Effect
 
 /**

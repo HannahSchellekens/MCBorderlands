@@ -1,8 +1,8 @@
 package maliwan.mcbl.entity
 
 import maliwan.mcbl.MCBorderlandsPlugin
-import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.spigot.scheduleTask
+import maliwan.mcbl.util.spigot.showElementalParticle
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.entity.Item

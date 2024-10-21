@@ -1,4 +1,4 @@
-package maliwan.mcbl.util
+package maliwan.mcbl.util.spigot
 
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Elemental

@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.shotgun
 
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity

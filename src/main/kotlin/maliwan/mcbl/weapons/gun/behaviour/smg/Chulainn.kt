@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.smg
 
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

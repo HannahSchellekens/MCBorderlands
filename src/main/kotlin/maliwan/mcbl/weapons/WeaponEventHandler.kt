@@ -4,7 +4,9 @@ import maliwan.mcbl.Keys
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
-import maliwan.mcbl.util.*
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.compareTo
+import maliwan.mcbl.util.spigot.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
 import org.bukkit.ChatColor

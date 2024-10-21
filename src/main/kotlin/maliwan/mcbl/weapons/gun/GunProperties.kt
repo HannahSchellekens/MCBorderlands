@@ -1,7 +1,12 @@
 package maliwan.mcbl.weapons.gun
 
 import maliwan.mcbl.Keys
-import maliwan.mcbl.util.*
+import maliwan.mcbl.util.GSON
+import maliwan.mcbl.util.formatPercentage
+import maliwan.mcbl.util.modifyRandom
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.*
 import maliwan.mcbl.weapons.gun.behaviour.FibWeaponCard
 import maliwan.mcbl.weapons.gun.behaviour.OverrideManufacturerOnWeaponCard

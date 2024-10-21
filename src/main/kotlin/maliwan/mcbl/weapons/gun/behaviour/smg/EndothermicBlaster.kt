@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.smg
 
 import maliwan.mcbl.loot.ammo.AmmoPack
-import maliwan.mcbl.util.Ticks
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.plugin.Ticks
+import maliwan.mcbl.util.spigot.scheduleTask
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.WeaponEventHandler

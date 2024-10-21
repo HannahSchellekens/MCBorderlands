@@ -4,7 +4,7 @@ import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.EnemyLevel
 import maliwan.mcbl.entity.enemyLevel
 import maliwan.mcbl.loot.gen.WeaponGenerator
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.spigot.scheduleTask
 import maliwan.mcbl.weapons.Rarity
 import maliwan.mcbl.weapons.gun.gunProperties
 import org.bukkit.FireworkEffect

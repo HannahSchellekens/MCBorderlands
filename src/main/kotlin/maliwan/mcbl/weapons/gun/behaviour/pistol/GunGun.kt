@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.pistol
 
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.CustomGrenadeManager
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

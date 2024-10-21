@@ -2,8 +2,8 @@ package maliwan.mcbl.weapons.gun.behaviour.shotgun
 
 import maliwan.mcbl.util.modifyAccuracy
 import maliwan.mcbl.util.rotateRelative
-import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.util.spawnBullet
+import maliwan.mcbl.util.spigot.scheduleTask
+import maliwan.mcbl.util.spigot.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.WeaponEventHandler

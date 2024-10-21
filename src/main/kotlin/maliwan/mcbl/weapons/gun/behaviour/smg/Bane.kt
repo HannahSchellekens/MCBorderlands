@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.smg
 
-import maliwan.mcbl.util.scheduleTask
+import maliwan.mcbl.util.spigot.scheduleTask
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

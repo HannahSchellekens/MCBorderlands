@@ -3,10 +3,10 @@ package maliwan.mcbl.weapons
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
-import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.modifyRandom
-import maliwan.mcbl.util.nearbyEntities
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.spigot.nearbyEntities
+import maliwan.mcbl.util.spigot.showElementalParticle
 import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity

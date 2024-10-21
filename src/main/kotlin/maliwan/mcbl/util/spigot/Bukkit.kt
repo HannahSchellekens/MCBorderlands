@@ -1,6 +1,5 @@
-package maliwan.mcbl.util
+package maliwan.mcbl.util.spigot
 
-import org.bukkit.Server
 import org.bukkit.plugin.java.JavaPlugin
 
 fun JavaPlugin.scheduleTask(delay: Long, runnable: Runnable) {

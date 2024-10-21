@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.sniper
 
-import maliwan.mcbl.util.showFlameParticle
+import maliwan.mcbl.util.spigot.showFlameParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.ElementalStatusEffects
 import maliwan.mcbl.weapons.WeaponEventHandler

@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.shotgun
 
-import maliwan.mcbl.util.Probability
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour
 import maliwan.mcbl.weapons.gun.behaviour.TalkWhenFiring

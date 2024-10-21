@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.smg
 
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

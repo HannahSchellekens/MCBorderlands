@@ -1,9 +1,9 @@
 package maliwan.mcbl.weapons.gun.behaviour.pistol
 
-import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.modifyRandom
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.util.rotateRelative
-import maliwan.mcbl.util.spawnBullet
+import maliwan.mcbl.util.spigot.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

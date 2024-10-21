@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.sniper
 
-import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.VECTOR_UP
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

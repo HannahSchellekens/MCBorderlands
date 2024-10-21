@@ -4,9 +4,9 @@ import maliwan.mcbl.loot.LootPool
 import maliwan.mcbl.loot.ManufacturerTable
 import maliwan.mcbl.loot.RarityTable
 import maliwan.mcbl.loot.WeaponClassTable
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.Probability
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Probability
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.Rarity

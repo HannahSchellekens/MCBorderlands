@@ -1,9 +1,9 @@
 package maliwan.mcbl.weapons.gun
 
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.Ticks
 import maliwan.mcbl.util.asList
-import maliwan.mcbl.util.toChance
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.plugin.Ticks
+import maliwan.mcbl.util.plugin.toChance
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max

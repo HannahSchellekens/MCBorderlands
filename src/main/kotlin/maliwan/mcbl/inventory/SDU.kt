@@ -1,6 +1,6 @@
 package maliwan.mcbl.inventory
 
-import maliwan.mcbl.util.updateItemMeta
+import maliwan.mcbl.util.spigot.updateItemMeta
 import maliwan.mcbl.weapons.Rarity
 import org.bukkit.ChatColor
 import org.bukkit.Material

@@ -1,7 +1,7 @@
 package maliwan.mcbl.weapons.gun.behaviour.rifle
 
 import maliwan.mcbl.loot.gen.CapacitorTable
-import maliwan.mcbl.util.spawnBullet
+import maliwan.mcbl.util.spigot.spawnBullet
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*

@@ -1,4 +1,4 @@
-package maliwan.mcbl.util
+package maliwan.mcbl.util.plugin
 
 import kotlin.math.max
 import kotlin.math.min

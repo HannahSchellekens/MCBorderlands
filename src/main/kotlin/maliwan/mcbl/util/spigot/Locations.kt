@@ -1,4 +1,4 @@
-package maliwan.mcbl.util
+package maliwan.mcbl.util.spigot
 
 import org.bukkit.Location
 import org.bukkit.Material

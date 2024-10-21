@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons.gun.behaviour.rifle
 
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties

@@ -1,6 +1,6 @@
 package maliwan.mcbl.weapons
 
-import maliwan.mcbl.util.Ticks
+import maliwan.mcbl.util.plugin.Ticks
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.entity.EntityType

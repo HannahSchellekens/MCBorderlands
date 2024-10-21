@@ -2,7 +2,7 @@ package maliwan.mcbl.loot.ammo
 
 import maliwan.mcbl.Keys
 import maliwan.mcbl.util.GSON
-import maliwan.mcbl.util.updateItemMeta
+import maliwan.mcbl.util.spigot.updateItemMeta
 import maliwan.mcbl.weapons.WeaponClass
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack

@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.shotgun
 
-import maliwan.mcbl.util.Probability
 import maliwan.mcbl.util.VECTOR_UP
 import maliwan.mcbl.util.modifyAccuracy
+import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.PostGenerationBehaviour

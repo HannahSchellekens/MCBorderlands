@@ -1,8 +1,8 @@
 package maliwan.mcbl.weapons.gun.behaviour.launcher
 
-import maliwan.mcbl.util.Damage
-import maliwan.mcbl.util.scheduleTask
-import maliwan.mcbl.util.showElementalParticle
+import maliwan.mcbl.util.plugin.Damage
+import maliwan.mcbl.util.spigot.scheduleTask
+import maliwan.mcbl.util.spigot.showElementalParticle
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.WeaponEventHandler
