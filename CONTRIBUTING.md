@@ -30,7 +30,7 @@ We will get notified directly if you post something there and we try to get back
 
 
 ## Contributing
-Make sure to read the [Contribution section at the wiki](https://github.com/HannahSchellekens/MCBorderlands/discussions) before submitting a contribution.
+Make sure to read the [Contribution section at the wiki](https://github.com/HannahSchellekens/MCBorderlands/wiki#contributing) before submitting a contribution.
 
 If you have another issue or idea in mind, that's great too!
 Be sure to run your idea by us (see [here](#i-just-have-a-question) how to do this).
