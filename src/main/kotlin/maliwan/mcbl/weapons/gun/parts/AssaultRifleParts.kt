@@ -326,6 +326,7 @@ object AssaultRifleParts {
         // Unique Grips.
 
         CHOPPER(Manufacturer.VLADOF, "CHOPPER", behaviours = listOf(Chopper())),
+        VAMPIRE(Manufacturer.VLADOF, "Vampire", behaviours = listOf(Vampire())),
         ;
 
         override val partTypeName: String = "Grip"

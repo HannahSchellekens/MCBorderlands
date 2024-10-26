@@ -476,6 +476,16 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         temporarilyDisableVanillaEntityHandling(targetEntity)
         event.damage = calculateBulletDamage(targetEntity, bulletMeta, isCritical).damage
 
+        // Call post kill hook
+        if (targetEntity.health <= event.damage) {
+            (bulletMeta.shooter as? Player)?.let { player ->
+                val execution = obtainGunExecutionFromInventory(player)
+                execution?.forEachBehaviour<PostKillBehaviour> {
+                    it.afterKill(this, player, targetEntity, execution, WeaponDamageType.DIRECT)
+                }
+            }
+        }
+
         // Apply elemental effect.
         rollElementalDot(plugin, targetEntity, bulletMeta)
 
@@ -649,7 +659,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val damager = event.damager as? Player
         val gun = damager?.gunProperties()
         // Prevent elemental damage to increase damage output.
-        if (event.entity.lastDamageCause?.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
+        val cause = event.entity.lastDamageCause?.cause
+        if (cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
 
         // Cryo damage bonus.
         val target = event.entity as? LivingEntity
@@ -659,6 +670,18 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         val newDamage = max(event.damage, (event.damage + (gun?.meleeDamage?.damage ?: 0.0)) * cryoMultiplier)
         event.damage = newDamage
+
+        // Call post kill behaviour hook
+        if (target != null && target.health <= event.damage) {
+            damager?.let { player ->
+                gun?.let { properties ->
+                    val execution = obtainGunExecution(player, properties)
+                    execution.forEachBehaviour<PostKillBehaviour> {
+                        it.afterKill(this, player, target, execution, WeaponDamageType.MELEE)
+                    }
+                }
+            }
+        }
 
         // Don't show particles for melee, because otherwise they are registered twice - showing twice as much
         // damage than is actually inflicted.

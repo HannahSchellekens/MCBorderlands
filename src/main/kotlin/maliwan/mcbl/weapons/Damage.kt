@@ -7,9 +7,12 @@ import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.util.spigot.nearbyEntities
 import maliwan.mcbl.util.spigot.showElementalParticle
+import maliwan.mcbl.weapons.gun.behaviour.PostKillBehaviour
+import maliwan.mcbl.weapons.gun.forEachBehaviour
 import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 
 /**
  * Calculates whether splash damage must occur, and applies it.
@@ -49,6 +52,16 @@ fun splashDamage(plugin: MCBorderlandsPlugin, location: Location, bulletMeta: Bu
             target.damage(totalDamage, bulletMeta.shooter)
             rollElementalDot(plugin, target, bulletMeta)
             target.showHealthBar(plugin)
+
+            // Call post kill hook
+            if (target.isDead) {
+                (bulletMeta.shooter as? Player)?.let { player ->
+                    val execution = plugin.weaponEventHandler.obtainGunExecutionFromInventory(player)
+                    execution?.forEachBehaviour<PostKillBehaviour> {
+                        it.afterKill(plugin.weaponEventHandler, player, target, execution, WeaponDamageType.SPLASH_ELEMENTAL)
+                    }
+                }
+            }
 
             if (totalDamage > 0.01) {
                 plugin.damageParticles.showDotDamageDisplay(
@@ -108,6 +121,15 @@ fun splashDamageExplosive(plugin: MCBorderlandsPlugin, location: Location, bulle
             target.temporarilyDisableIframes(plugin)
             target.damage(totalDamage, bulletMeta.shooter)
             target.showHealthBar(plugin)
+
+            if (target.isDead) {
+                (bulletMeta.shooter as? Player)?.let { player ->
+                    val execution = plugin.weaponEventHandler.obtainGunExecutionFromInventory(player)
+                    execution?.forEachBehaviour<PostKillBehaviour> {
+                        it.afterKill(plugin.weaponEventHandler, player, target, execution, WeaponDamageType.SPLASH_EXPLOSIVE)
+                    }
+                }
+            }
 
             // Heal when transfusion effect is active. Does not account for armour.
             // Might not even be that big of a deal.

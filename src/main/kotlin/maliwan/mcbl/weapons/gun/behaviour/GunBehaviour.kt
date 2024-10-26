@@ -3,6 +3,7 @@ package maliwan.mcbl.weapons.gun.behaviour
 import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.CustomGrenadeManager
+import maliwan.mcbl.weapons.WeaponDamageType
 import maliwan.mcbl.weapons.WeaponEventHandler
 import maliwan.mcbl.weapons.gun.GunExecution
 import maliwan.mcbl.weapons.gun.GunProperties
@@ -65,6 +66,29 @@ interface PostGunShotBehaviour : GunBehaviour {
      *          Who shot the gun.
      */
     fun afterGunShot(handler: WeaponEventHandler, execution: GunExecution, bullets: List<Entity>, player: Player)
+}
+
+/**
+ * Adds behaviour after a weapon kills an entity.
+ */
+interface PostKillBehaviour : GunBehaviour {
+
+    /**
+     * Gets called after an entity is killed or will be killed the next game tick.
+     *
+     * @param handler Weapon handler of the plugin that handled this shot
+     * @param killer Who killed.
+     * @param target Who got killed.
+     * @param gunExecution The gun execution of the weapon that is used to kill.
+     * @param damageType What kind of damage ended up killing the target.
+     */
+    fun afterKill(
+        handler: WeaponEventHandler,
+        killer: Player,
+        target: LivingEntity,
+        gunExecution: GunExecution,
+        damageType: WeaponDamageType
+    )
 }
 
 /**

@@ -8,9 +8,12 @@ import maliwan.mcbl.util.plugin.Damage
 import maliwan.mcbl.util.plugin.Ticks
 import maliwan.mcbl.util.spigot.showElementalParticle
 import maliwan.mcbl.util.spigot.showFlameParticle
+import maliwan.mcbl.weapons.gun.behaviour.PostKillBehaviour
+import maliwan.mcbl.weapons.gun.forEachBehaviour
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.random.Random
@@ -205,6 +208,16 @@ open class ElementalStatusEffects(val plugin: MCBorderlandsPlugin) {
                 entity.temporarilyDisableKnockback(plugin)
                 entity.temporarilyDisableIframes(plugin)
                 entity.damage(totalDamage, cause)
+
+                // Call post kill hook.
+                if (entity.isDead) {
+                    (effect.inflictedBy as? Player)?.let { player ->
+                        val execution = plugin.weaponEventHandler.obtainGunExecutionFromInventory(player)
+                        execution?.forEachBehaviour<PostKillBehaviour> {
+                            it.afterKill(plugin.weaponEventHandler, player, entity, execution, WeaponDamageType.OVER_TIME)
+                        }
+                    }
+                }
 
                 plugin.damageParticles.scheduleDisplay(
                     DamageParticles.DamageParticleEntry(
