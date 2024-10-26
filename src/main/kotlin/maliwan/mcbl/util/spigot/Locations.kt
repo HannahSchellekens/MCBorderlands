@@ -44,15 +44,17 @@ fun Location.modifyRandom(maxModifier: Double) = Location(
  * Generates a random location in a horizontal circle around this location.
  *
  * @param maxRadius The maximum distance from the source location the new location can generate.
+ * @param yRandom The maximum amount of Y-level to randomize.
  */
-fun Location.modifyRandomCircle(maxRadius: Double): Location {
+fun Location.modifyRandomCircle(maxRadius: Double, yRandom: Double = 0.0): Location {
     val radius = Random.nextDouble() * maxRadius
     val angle = Random.nextDouble() * Math.PI * 2
 
     val newX = x + radius * cos(angle)
+    val newY = y + Random.nextDouble() * yRandom
     val newZ = z + radius * sin(angle)
 
-    return Location(world, newX, y, newZ)
+    return Location(world, newX, newY, newZ)
 }
 
 /**

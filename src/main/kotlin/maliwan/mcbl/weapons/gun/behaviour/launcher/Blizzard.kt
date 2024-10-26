@@ -52,7 +52,7 @@ open class Blizzard : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviou
             handler.plugin.scheduleTask(Random.nextLong(3L, 7L) * (it + 1)) {
                 val explosionLocation = baseLocation.modifyRandomCircle(meta.splashRadius * 2)
                 splashDamage(handler.plugin, explosionLocation, meta)
-                explosionLocation.world?.playSound(explosionLocation, Sound.BLOCK_SNOW_STEP, 1f, 1f)
+                explosionLocation.world?.playSound(explosionLocation, Sound.BLOCK_SNOW_STEP, 6f, 1f)
             }
         }
     }

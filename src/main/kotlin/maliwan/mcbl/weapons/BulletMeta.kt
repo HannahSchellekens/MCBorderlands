@@ -36,7 +36,7 @@ data class BulletMeta(
     /**
      * How long the bullet stays alive.
      */
-    val lifespanSeconds: Double = 4.5,
+    val lifespanSeconds: Double = 6.5,
 
     /**
      * When the bullet is created.
