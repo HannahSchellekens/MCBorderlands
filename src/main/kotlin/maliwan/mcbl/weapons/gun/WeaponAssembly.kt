@@ -1,5 +1,6 @@
 package maliwan.mcbl.weapons.gun
 
+import maliwan.mcbl.weapons.BulletMeta
 import maliwan.mcbl.weapons.Manufacturer
 import maliwan.mcbl.weapons.WeaponClass
 import maliwan.mcbl.weapons.gun.behaviour.CustomBaseNameProvider
@@ -104,6 +105,14 @@ sealed class WeaponAssembly(
         }
         return parts?.find { it::class.isSubclassOf(klass) } as? T
     }
+}
+
+inline fun <reified T> GunExecution.forEachBehaviour(crossinline action: (T) -> Unit) {
+    assembly?.forEachBehaviour(action)
+}
+
+inline fun <reified T> BulletMeta.forEachBehaviour(crossinline action: (T) -> Unit) {
+    assembly?.forEachBehaviour(action)
 }
 
 inline fun <reified T> WeaponAssembly.forEachBehaviour(action: (T) -> Unit) {

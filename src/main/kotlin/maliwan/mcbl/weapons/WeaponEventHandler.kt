@@ -4,15 +4,13 @@ import maliwan.mcbl.Keys
 import maliwan.mcbl.MCBorderlandsPlugin
 import maliwan.mcbl.entity.*
 import maliwan.mcbl.gui.DamageParticles
+import maliwan.mcbl.util.plugin.Damage
 import maliwan.mcbl.util.plugin.Probability
 import maliwan.mcbl.util.plugin.compareTo
 import maliwan.mcbl.util.spigot.*
 import maliwan.mcbl.weapons.gun.*
 import maliwan.mcbl.weapons.gun.behaviour.*
-import org.bukkit.ChatColor
-import org.bukkit.Material
-import org.bukkit.Sound
-import org.bukkit.SoundCategory
+import org.bukkit.*
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
@@ -130,65 +128,65 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val execution = obtainGunExecution(event.player, gunProperties)
 
         event.player.apply {
-            if (isShotCooldownOver()) {
-                val fireRate = execution.fireRate
+            if (isShotCooldownOver().not()) return@apply
 
-                // Fire Rate: for regular clicking there is a max fire rate of 6 shots per second.
-                // Use scheduled bursts to fake a higher fire rate.
-                // Burst Count: 001 002 003 004 005 006 ...
-                //   Fire rate:  6   12  18  24  30  36 ...
-                // All for 1 tick scheduling delay.
-                // Strategy:
-                // 1) Pick the base burst count from the table above (6.0 shots/second per burst count)
-                // 2) Calculate the chance of excess fire rate out of 6.0 as random chance for a burst shot.
-                // 3) Profit.
-                val baseBurstCount = floor(fireRate / 6.0).toInt()
-                val excess = fireRate - baseBurstCount * 6.0
-                val scheduleProbability = Probability(max(0.0, excess / 6.0))
-                val fireRateBursts = baseBurstCount + if (Random.nextDouble() < scheduleProbability) 1 else 0
+            val fireRate = execution.fireRate
 
-                fun executeGunBurst() {
-                    // Bursts
-                    repeat(execution.burstCount) { burstIndex ->
-                        // Determine beforehand if the gun will be shot.
-                        val inventory = plugin.inventoryManager[this]
-                        val ammoLeft = inventory[execution.weaponClass]
-                        val enoughAmmo = execution.clip > 0 && ammoLeft > 0
+            // Fire Rate: for regular clicking there is a max fire rate of 6 shots per second.
+            // Use scheduled bursts to fake a higher fire rate.
+            // Burst Count: 001 002 003 004 005 006 ...
+            //   Fire rate:  6   12  18  24  30  36 ...
+            // All for 1 tick scheduling delay.
+            // Strategy:
+            // 1) Pick the base burst count from the table above (6.0 shots/second per burst count)
+            // 2) Calculate the chance of excess fire rate out of 6.0 as random chance for a burst shot.
+            // 3) Profit.
+            val baseBurstCount = floor(fireRate / 6.0).toInt()
+            val excess = fireRate - baseBurstCount * 6.0
+            val scheduleProbability = Probability(max(0.0, excess / 6.0))
+            val fireRateBursts = baseBurstCount + if (Random.nextDouble() < scheduleProbability) 1 else 0
 
-                        // First one must not be scheduled:
-                        if (burstIndex == 0) {
-                            if (execution.extraShotProbability.roll()) {
-                                shootGun(this, execution, consumeAmmo = false)
-                            }
+            fun executeGunBurst() {
+                // Bursts
+                repeat(execution.burstCount) { burstIndex ->
+                    // Determine beforehand if the gun will be shot.
+                    val inventory = plugin.inventoryManager[this]
+                    val ammoLeft = inventory[execution.weaponClass]
+                    val enoughAmmo = execution.clip > 0 && ammoLeft > 0
 
-                            shootGun(this, execution, consumeAmmo = execution.freeShotProbability.roll().not())
-                        }
-                        // Subsequent ones must be scheduled by burst delay:
-                        else {
-                            plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
-                                shootGun(this, execution, consumeAmmo = execution.freeShotProbability.roll().not())
-                            }
+                    // First one must not be scheduled:
+                    if (burstIndex == 0) {
+                        if (execution.extraShotProbability.roll()) {
+                            shootGun(this, execution, mustConsumeAmmo = false)
                         }
 
-                        // Make sure the recoil angle is not applied when there are no shots
-                        // left.
-                        if (enoughAmmo) {
-                            plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
-                                applyRecoil(execution)
-                            }
+                        shootGun(this, execution, mustConsumeAmmo = execution.freeShotProbability.roll().not())
+                    }
+                    // Subsequent ones must be scheduled by burst delay:
+                    else {
+                        plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
+                            shootGun(this, execution, mustConsumeAmmo = execution.freeShotProbability.roll().not())
                         }
                     }
-                    execution.consecutiveShots++
+
+                    // Make sure the recoil angle is not applied when there are no shots
+                    // left.
+                    if (enoughAmmo) {
+                        plugin.scheduleTask(execution.burstDelay.long * burstIndex) {
+                            applyRecoil(execution)
+                        }
+                    }
                 }
+                execution.consecutiveShots++
+            }
 
-                // Fake fire rate bursts
-                repeat(max(1, fireRateBursts)) { fireRateBurstIndex ->
-                    if (fireRateBurstIndex == 0) {
-                        executeGunBurst()
-                    }
-                    else plugin.scheduleTask(fireRateBurstIndex.toLong() * 2L) {
-                        executeGunBurst()
-                    }
+            // Fake fire rate bursts
+            repeat(max(1, fireRateBursts)) { fireRateBurstIndex ->
+                if (fireRateBurstIndex == 0) {
+                    executeGunBurst()
+                }
+                else plugin.scheduleTask(fireRateBurstIndex.toLong() * 2L) {
+                    executeGunBurst()
                 }
             }
         }
@@ -198,39 +196,41 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
     /**
      * Executes one gunshot from the given gun execution.
+     *
+     * @param player The player that shoots the gun.
+     * @param gunExecution The gun execution of the gun that is being fired.
+     * @param mustConsumeAmmo Whether ammo must be removed from the inventory for shooting or not.
+     * @param triggerAfterGunShot Whether after gun shot events must trigger after firing the gun or not.
      */
-    fun shootGun(player: Player, gunExecution: GunExecution, consumeAmmo: Boolean = true, triggerAfterGunShot: Boolean = true) {
-        val inventory = plugin.inventoryManager[player]
-        val ammoLeft = inventory[gunExecution.weaponClass]
-        if (gunExecution.clip <= 0 || ammoLeft <= 0) {
-            return
-        }
+    fun shootGun(
+        player: Player,
+        gunExecution: GunExecution,
+        mustConsumeAmmo: Boolean = true,
+        triggerAfterGunShot: Boolean = true
+    ) {
+        if (hasEnoughAmmo(player, gunExecution).not()) return
 
-        gunExecution.assembly?.forEachBehaviour<PreGunShotBehaviour> {
-            it.beforeGunShot(gunExecution, player)
-        }
+        // Pre gun shot hooks.
+        gunExecution.forEachBehaviour<PreGunShotBehaviour> { it.beforeGunShot(gunExecution, player) }
 
-        // Shoot for each pellet.
+        // Shoot a bullet for each pellet.
         val bullets = ArrayList<Entity>()
         repeat(gunExecution.pelletCount) { _ ->
             shootGunBullet(player, gunExecution)?.let { bullets.add(it) }
         }
 
-        // Play gun sound.
-        val soundProvider = gunExecution.assembly?.behaviours
-            ?.firstOrNull { it is BulletSoundProvider } as? BulletSoundProvider
-        val sound = soundProvider?.shootSound ?: Sound.ENTITY_FIREWORK_ROCKET_BLAST
-        player.playSound(player.location, sound, SoundCategory.PLAYERS, 5.0f, 1.0f)
+        playGunSound(player, gunExecution)
 
-        if (consumeAmmo) {
+        if (mustConsumeAmmo) {
             removeAmmo(player, gunExecution)
         }
 
+        // Post gun shot hooks.
         if (triggerAfterGunShot) {
-            gunExecution.assembly?.forEachBehaviour<PostGunShotBehaviour> {
+            gunExecution.forEachBehaviour<PostGunShotBehaviour> {
                 it.afterGunShot(this, gunExecution, bullets, player)
             }
-            gunExecution.assembly?.forEachBehaviour<TalkWhenFiring> {
+            gunExecution.forEachBehaviour<TalkWhenFiring> {
                 player.sendGunMessage(gunExecution, it.messageFiring())
             }
         }
@@ -243,6 +243,30 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             player.noActionTicks = (20 * (gunExecution.burstCount / gunExecution.fireRate)).toInt()
             player.setCooldown(Material.BOW, player.noActionTicks)
         }
+    }
+
+    /**
+     * Plays the sound for firing a gun.
+     *
+     * @param player The player who shoots the gun.
+     * @param gunExecution The gun execution of the gun that is being fired.
+     */
+    fun playGunSound(player: Player, gunExecution: GunExecution) {
+        val soundProvider = gunExecution.assembly?.behaviours
+            ?.firstOrNull { it is BulletSoundProvider } as? BulletSoundProvider
+        val sound = soundProvider?.shootSound ?: Sound.ENTITY_FIREWORK_ROCKET_BLAST
+        player.playSound(player.location, sound, SoundCategory.PLAYERS, 5.0f, 1.0f)
+    }
+
+    /**
+     * Checks whether the player has enough ammo to shoot the given gun.
+     *
+     * @return `true` if enough ammo, `false` if not enough ammo.
+     */
+    fun hasEnoughAmmo(player: Player, gunExecution: GunExecution): Boolean {
+        val inventory = plugin.inventoryManager[player]
+        val ammoLeft = inventory[gunExecution.weaponClass]
+        return gunExecution.clip > 0 && ammoLeft > 0
     }
 
     /**
@@ -272,10 +296,11 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             return
         }
 
-        gunExecution.assembly?.forEachBehaviour<ReloadBehaviour> {
+        // Reload GunBehaviour hooks.
+        gunExecution.forEachBehaviour<ReloadBehaviour> {
             it.beforeReload(player, gunExecution)
         }
-        gunExecution.assembly?.forEachBehaviour<TalkWhenReloading> {
+        gunExecution.forEachBehaviour<TalkWhenReloading> {
             player.sendGunMessage(gunExecution, it.messageReloading())
         }
 
@@ -289,20 +314,39 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         player.sendTitle("", "${ChatColor.RED}Reloading...", 5, reloadTicks - 10, 5)
         player.playSound(player.location, Sound.BLOCK_GRAVEL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f)
 
-        repeat(reloadTicks / 10) {
-            plugin.scheduleTask(it * 10L) {
-                player.playSound(player.location, Sound.BLOCK_GRAVEL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f)
-            }
-        }
+        playReloadSound(player, reloadTicks)
+        scheduleClipRefill(player, gunExecution, reloadTicks)
 
+        gunExecution.forEachBehaviour<ReloadBehaviour> { it.afterReload(player, gunExecution) }
+    }
+
+    /**
+     * Schedules refilling the clip of a magazine.
+     *
+     * @param player The player that reloads the gun.
+     * @param gunExecution The gun execeution of the gun that is being refilled.
+     * @param reloadTicks After how many ticks the clip must be filled.
+     */
+    fun scheduleClipRefill(player: Player, gunExecution: GunExecution, reloadTicks: Int) {
         plugin.scheduleTask(reloadTicks.toLong()) {
-            gunExecution.clip = min(gunExecution.magazineSize, plugin.inventoryManager[player][gunExecution.weaponClass])
+            gunExecution.clip = min(
+                gunExecution.magazineSize,
+                plugin.inventoryManager[player][gunExecution.weaponClass]
+            )
             player.playSound(player.location, Sound.ENTITY_ARROW_HIT_PLAYER, SoundCategory.PLAYERS, 0.7f, 1.0f)
             reload.remove(player to gunExecution.properties)
         }
+    }
 
-        gunExecution.assembly?.forEachBehaviour<ReloadBehaviour> {
-            it.afterReload(player, gunExecution)
+    /**
+     * Plays a sound while reloading a gun.
+     *
+     * @param player The player tha reloads the gun.
+     * @param reloadTicks The length of the period to play the reload sound in ticks.
+     */
+    fun playReloadSound(player: Player, reloadTicks: Int) = repeat(reloadTicks / 10) {
+        plugin.scheduleTask(it * 10L) {
+            player.playSound(player.location, Sound.BLOCK_GRAVEL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f)
         }
     }
 
@@ -326,7 +370,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         return if (now >= threshold) {
             shotTimestamps.remove(this)
             true
-        } else false
+        }
+        else false
     }
 
     /**
@@ -355,7 +400,8 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val direction = initialDirection.add(directionDelta ?: Vector())
 
         val originLocation = player.eyeLocation
-        val bullet = player.shootBullet(originLocation, direction, gunExecution, bulletType, accuracyModifier) ?: return null
+        val bullet = player.shootBullet(originLocation, direction, gunExecution, bulletType, accuracyModifier)
+            ?: return null
         val bulletMeta = gunExecution.bulletMeta(player)
         bulletMeta.originLocation = originLocation
         bulletMetaTransform?.let { it(bulletMeta) }
@@ -365,7 +411,7 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val nextShotAllowedOn = System.currentTimeMillis() + millisDelay
         shotTimestamps[player] = nextShotAllowedOn
 
-        gunExecution.assembly?.behaviours?.forEachType<BulletEffectBehaviour> {
+        gunExecution.forEachBehaviour<BulletEffectBehaviour> {
             it.scheduleEffects(this, bullet, bulletMeta)
         }
 
@@ -400,17 +446,20 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // Determine critical hit
         val hitLocation = (bullet as? Projectile)?.determineHitLocation(targetEntity)
-        val head = targetEntity.headLocation
-        val distance = hitLocation?.distance(head) ?: Double.MAX_VALUE
-        val isCritical = distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
+        val isCritical = hitLocation?.let { isCriticalHit(targetEntity, it) } ?: false
+        val critMultiplier = if (isCritical && bulletMeta.canCrit) {
+            2.0 + (bulletMeta.bonusCritMultiplier ?: 0.0)
+        }
+        else 1.0
 
-        bulletMeta.assembly?.forEachBehaviour<PreBulletLandBehaviour> {
+        // Call Gun Behaviour hooks before bullet lands.
+        bulletMeta.forEachBehaviour<PreBulletLandBehaviour> {
             it.beforeBulletLands(bullet, bulletMeta, hitLocation, targetEntity, isCritical)
         }
 
         if (bulletMeta.directDamage.not()) {
             // Just splash damage: is handled by ProjectileHitEvent.
-            bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
+            bulletMeta.forEachBehaviour<PostBulletLandBehaviour> {
                 it.afterBulletLands(this, bullet, bulletMeta, null, null, false)
             }
 
@@ -420,26 +469,57 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
 
         // Track target if applicable.
         if (bulletMeta.isTrackerBullet) {
-            val pdc = targetEntity.persistentDataContainer
-            pdc.set(Keys.homingTarget, PersistentDataType.BOOLEAN, true)
-
-            // Tracked status lasts for 8 seconds: after that return to normal.
-            // Maybe not hardcode this later. Whatever, works for now.
-            plugin.scheduleTask(160L) {
-                pdc.remove(Keys.homingTarget)
-            }
+            trackTarget(targetEntity)
         }
 
-        // Disable iframes for bullets, save old values to restore them later.
-        val oldNoDamageTicks = targetEntity.noDamageTicks
-        val oldNoDamageTicksMax = targetEntity.maximumNoDamageTicks
+        // Apply damage to target.
+        temporarilyDisableVanillaEntityHandling(targetEntity)
+        event.damage = calculateBulletDamage(targetEntity, bulletMeta, isCritical).damage
 
-        targetEntity.noDamageTicks = 0
-        targetEntity.maximumNoDamageTicks = 0
+        // Apply elemental effect.
+        rollElementalDot(plugin, targetEntity, bulletMeta)
 
-        // Set damage to gun damage.
-        val effectivenessType = EffectivenessType.typeOf(event.entityType)
-        val elementalModifier = bulletMeta.elements.fold(1.0) { acc, elemental ->
+        // Show damage and critical hit particles.
+        val particleLocation = targetEntity.location.add(0.0, targetEntity.height, 0.0)
+        plugin.damageParticles.scheduleDisplay(
+            DamageParticles.DamageParticleEntry(
+                targetEntity, hitLocation?.clone() ?: particleLocation.clone(), Elemental.PHYSICAL, event.damage
+            )
+        )
+        if (isCritical && critMultiplier > 1.01) {
+            plugin.damageParticles.showCritDisplay(particleLocation.clone())
+        }
+
+        plugin.scheduleTask(1L) { targetEntity.showHealthBar(plugin) }
+
+        transfusion(bulletMeta, Damage(event.finalDamage))
+
+        // Post bullet land hook
+        bulletMeta.forEachBehaviour<PostBulletLandBehaviour> {
+            it.afterBulletLands(
+                this,
+                bullet,
+                bulletMeta,
+                hitLocation,
+                targetEntity,
+                isCritical && critMultiplier > 1.01
+            )
+        }
+
+        bullets.remove(bullet)
+    }
+
+    /**
+     * Calculates how much damage a bullet should do.
+     */
+    fun calculateBulletDamage(
+        targetEntity: LivingEntity,
+        bulletMeta: BulletMeta,
+        isCritical: Boolean,
+    ): Damage {
+        // Calculate elemental type effectiveness to target.
+        val effectivenessType = EffectivenessType.typeOf(targetEntity.type)
+        val modifierElemental = bulletMeta.elements.fold(1.0) { acc, elemental ->
             val elementDamageModifier = effectivenessType.damageMultiplier(elemental, targetEntity.armorPoints.toInt())
             acc * elementDamageModifier
         }
@@ -456,42 +536,58 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         }
         else 1.0
 
-        val particleLocation = targetEntity.location.add(0.0, targetEntity.height, 0.0)
-        if (isCritical && critMultiplier > 1.01) {
-            plugin.damageParticles.showCritDisplay(particleLocation.clone())
-        }
-
-        // Apply damage
-        event.damage = bulletMeta.damage.damage * elementalModifier * cryoMultiplier *
-                elementalStatusEffects.slagMultiplier(targetEntity) * critMultiplier
+        // Calculate total amount of damage.
+        val calculatedDamage = bulletMeta.damage *
+                modifierElemental *
+                cryoMultiplier *
+                elementalStatusEffects.slagMultiplier(targetEntity) *
+                critMultiplier
 
         // Apply armor.
-        val damageClasses = DamageClass.damageClassesOf(bulletMeta)
-        val armorPoints = targetEntity.armorPoints
-        val toughness = targetEntity.armorToughness
-        val enchants = targetEntity.enchantmentProtectionFactor(damageClasses)
-        val armourModifier = armorDamageMultiplier(event.damage, armorPoints, toughness, enchants)
+        val armourModifier = calculateArmourModifier(targetEntity, bulletMeta, calculatedDamage)
 
         // (partially) revert modifier when the bullets penetrate armour.
         val armourModifierAfterPenetration = armourModifier + (1.0 - armourModifier) * bulletMeta.armourPenetration
 
         // And apply shock damage multiplier when there is armour present.
-        val shockModifier = if (armorPoints > 0.00001 && Elemental.SHOCK in bulletMeta.elements) {
+        val shockModifier = if (targetEntity.armorPoints > 0.00001 && Elemental.SHOCK in bulletMeta.elements) {
             2.0
         }
         else 1.0
-        event.damage *= armourModifierAfterPenetration * shockModifier
 
-        // Apply elemental effect.
-        rollElementalDot(plugin, targetEntity, bulletMeta)
+        return calculatedDamage * armourModifierAfterPenetration * shockModifier
+    }
 
-        // Show damage amount as particle.
-        plugin.damageParticles.scheduleDisplay(DamageParticles.DamageParticleEntry(
-            targetEntity,
-            hitLocation?.clone() ?: particleLocation.clone(),
-            Elemental.PHYSICAL,
-            event.damage
-        ))
+    /**
+     * Calculate armour damage reduction.
+     *
+     * @param targetEntity The target that wears the armour.
+     * @param bulletMeta The bullet that has been shot.
+     * @param damage How much damage the bullet should inflict (after modifiers).
+     * @return A multiplier to apply to the base damage amount.
+     */
+    fun calculateArmourModifier(targetEntity: LivingEntity, bulletMeta: BulletMeta, damage: Damage): Double {
+        val damageClasses = DamageClass.damageClassesOf(bulletMeta)
+        val armorPoints = targetEntity.armorPoints
+        val toughness = targetEntity.armorToughness
+        val enchants = targetEntity.enchantmentProtectionFactor(damageClasses)
+        return armorDamageMultiplier(damage.damage, armorPoints, toughness, enchants)
+    }
+
+    /**
+     * Temporarily disables all minecraft entity properties that cause unwanted effects when firing the gun:
+     * - Disable invincibility frames so multiple bullets can apply damage.
+     * - Disable knockback.
+     * Enables it again the next game tick.
+     *
+     * @param targetEntity The entity that should be altered.
+     */
+    fun temporarilyDisableVanillaEntityHandling(targetEntity: LivingEntity) {
+        val oldNoDamageTicks = targetEntity.noDamageTicks
+        val oldNoDamageTicksMax = targetEntity.maximumNoDamageTicks
+
+        targetEntity.noDamageTicks = 0
+        targetEntity.maximumNoDamageTicks = 0
 
         // Disable knockback for guns.
         targetEntity.setKnockbackResistance(1.0)
@@ -500,20 +596,52 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
             targetEntity.noDamageTicks = oldNoDamageTicks
             targetEntity.maximumNoDamageTicks = oldNoDamageTicksMax
             targetEntity.setKnockbackResistance()
-
-            // Update health bar after the damage has been dealt.
-            targetEntity.showHealthBar(plugin)
         }
+    }
 
-        // Transfusion effect.
-        val healAmount = event.finalDamage * bulletMeta.transfusion
-        bulletMeta.shooter.heal(healAmount)
+    /**
+     * Applies the transfusion (heal) effect on the shooter.
+     *
+     * @param meta The meta information of the bullet that causes the transfusion effect.
+     * @param damage The amount of damage dealt by the weapon.
+     */
+    fun transfusion(meta: BulletMeta, damage: Damage) {
+        transfusion(meta.shooter, damage, meta.transfusion)
+    }
 
-        bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-            it.afterBulletLands(this, bullet, bulletMeta, hitLocation, targetEntity, isCritical && critMultiplier > 1.01)
+    /**
+     * Applies the transfusion (heal) effect on the shooter.
+     *
+     * @param shooter Who shot the gun and should receive the transfusion healing effect.
+     * @param damage The amount of damage dealt by the weapon.
+     * @param transfusionPercentage The percentage of damage to heal.
+     */
+    fun transfusion(shooter: LivingEntity, damage: Damage, transfusionPercentage: Double) {
+        val healAmount = damage.damage * transfusionPercentage
+        shooter.heal(healAmount)
+    }
+
+    /**
+     * Checks whether a hit at `hitLocation` must score a critical hit on `targetEntity`.
+     */
+    fun isCriticalHit(targetEntity: LivingEntity, hitLocation: Location): Boolean {
+        val head = targetEntity.headLocation
+        val distance = hitLocation.distance(head)
+        return distance < targetEntity.headshotRange * 1.15 /* make it slightly easier to hit headshots */
+    }
+
+    /**
+     * Marks the `targetEntity` that bullets should home onto it.
+     */
+    fun trackTarget(targetEntity: LivingEntity) {
+        val pdc = targetEntity.persistentDataContainer
+        pdc.set(Keys.homingTarget, PersistentDataType.BOOLEAN, true)
+
+        // Tracked status lasts for 8 seconds: after that return to normal.
+        // Maybe not hardcode this later. Whatever, works for now.
+        plugin.scheduleTask(160L) {
+            pdc.remove(Keys.homingTarget)
         }
-
-        bullets.remove(bullet)
     }
 
     @EventHandler
@@ -543,57 +671,55 @@ class WeaponEventHandler(val plugin: MCBorderlandsPlugin) : Listener, Runnable {
         val location = bullet.location
         val direction = bullet.velocity
 
-        val bulletMeta = bullets[bullet]
-        if (bulletMeta != null) {
-            val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
-            val hitLocation = bullet.determineHitLocation(boundingBox) ?: location
+        val bulletMeta = bullets[bullet] ?: return
+        val boundingBox = event.hitEntity?.boundingBox ?: event.hitBlock?.boundingBox ?: return
+        val hitLocation = bullet.determineHitLocation(boundingBox) ?: location
 
-            bulletMeta.assembly?.forEachBehaviour<PreBulletLandBehaviour> {
-                it.beforeBulletLands(bullet, bulletMeta, hitLocation, null, false)
-            }
+        bulletMeta.forEachBehaviour<PreBulletLandBehaviour> {
+            it.beforeBulletLands(bullet, bulletMeta, hitLocation, null, false)
+        }
 
-            // Bounce if bounces are left:
-            if (event.hitEntity == null && event.hitBlock != null && event.hitBlockFace != null && bulletMeta.bouncesLeft > 0) {
-                val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
-                event.isCancelled = true
-                newBullet.setGravity(false)
-                bulletMeta.bouncesLeft--
-                replaceScheduledEffects(bullet, newBullet)
-
-                bullet.remove()
-                bullets.remove(bullet)
-                bullets[newBullet] = bulletMeta
-
-                bulletMeta.assembly?.forEachBehaviour<PostBulletBounceBehaviour> {
-                    it.afterBulletBounce(this, newBullet, bulletMeta)
-                }
-
-                return
-            }
-
-            splashDamage(plugin, hitLocation, bulletMeta)
-
-            bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
-                it.afterBulletLands(this, bullet, bulletMeta, hitLocation, null, false)
-            }
+        // Bounce if bounces are left:
+        if (event.hitEntity == null && event.hitBlock != null && event.hitBlockFace != null && bulletMeta.bouncesLeft > 0) {
+            val newBullet = bounceBullet(bullet, event.hitBlockFace!!)
+            event.isCancelled = true
+            newBullet.setGravity(false)
+            bulletMeta.bouncesLeft--
+            replaceScheduledEffects(bullet, newBullet)
 
             bullet.remove()
+            bullets.remove(bullet)
+            bullets[newBullet] = bulletMeta
 
-            // Only remove the bullet when not hitting a living entity because
-            // the damage event requires this bullet data to apply correct damage calculations.
-            if (bulletMeta.assembly is LauncherAssembly || event.hitEntity !is LivingEntity) {
-                bullets.remove(bullet)
+            bulletMeta.assembly?.forEachBehaviour<PostBulletBounceBehaviour> {
+                it.afterBulletBounce(this, newBullet, bulletMeta)
             }
 
-            // Check if bullet must pierce, if so, create new bullet.
-            if (event.hitEntity != null && bulletMeta.isPiercing) {
-                // Continue slightly ahead to prevent getting stuck in the target.
-                val target = event.hitEntity!!
-                val size = max(target.boundingBox.widthX, target.boundingBox.widthZ) * 1.3
-                val ahead = location.add(direction.clone().normalize().multiply(max(size, target.height)))
-                val newBullet = world.spawnBullet(ahead, direction, direction.length(), type = bullet.type)
-                registerBullet(newBullet, bulletMeta.copy())
-            }
+            return
+        }
+
+        splashDamage(plugin, hitLocation, bulletMeta)
+
+        bulletMeta.assembly?.forEachBehaviour<PostBulletLandBehaviour> {
+            it.afterBulletLands(this, bullet, bulletMeta, hitLocation, null, false)
+        }
+
+        bullet.remove()
+
+        // Only remove the bullet when not hitting a living entity because
+        // the damage event requires this bullet data to apply correct damage calculations.
+        if (bulletMeta.assembly is LauncherAssembly || event.hitEntity !is LivingEntity) {
+            bullets.remove(bullet)
+        }
+
+        // Check if bullet must pierce, if so, create new bullet.
+        if (event.hitEntity != null && bulletMeta.isPiercing) {
+            // Continue slightly ahead to prevent getting stuck in the target.
+            val target = event.hitEntity!!
+            val size = max(target.boundingBox.widthX, target.boundingBox.widthZ) * 1.3
+            val ahead = location.add(direction.clone().normalize().multiply(max(size, target.height)))
+            val newBullet = world.spawnBullet(ahead, direction, direction.length(), type = bullet.type)
+            registerBullet(newBullet, bulletMeta.copy())
         }
     }
 
