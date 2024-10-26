@@ -197,6 +197,7 @@ object AssaultRifleParts {
         SHREDIFIER(Manufacturer.VLADOF, "Shredifier", behaviours = listOf(Shredifier(), Spinigun())),
         STINKPOT(Manufacturer.TORGUE, "Stinkpot", behaviours = listOf(Stinkpot())),
         STOMPER(Manufacturer.JAKOBS, "Stomper", behaviours = listOf(Stomper())),
+        THE_MONARCH(Manufacturer.VLADOF, "The Monarch", behaviours = listOf(TheMonarch())),
         VERUC(Manufacturer.DAHL, "Veruc", behaviours = listOf(Veruc())),
         ;
 
