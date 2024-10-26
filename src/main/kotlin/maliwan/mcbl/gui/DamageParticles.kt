@@ -1,8 +1,10 @@
 package maliwan.mcbl.gui
 
+import maliwan.mcbl.Keys
 import maliwan.mcbl.util.average
 import maliwan.mcbl.util.modifyRandom
 import maliwan.mcbl.weapons.Elemental
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.Display
@@ -10,6 +12,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 import org.bukkit.event.Listener
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.util.Vector
 
 /**
@@ -60,6 +63,7 @@ open class DamageParticles : Listener, Runnable {
             alignment = TextDisplay.TextAlignment.CENTER
             billboard = Display.Billboard.CENTER
             brightness = Display.Brightness(15, 15)
+            persistentDataContainer.set(Keys.damageParticle, PersistentDataType.BOOLEAN, true)
         }
         apply(display)
 
@@ -121,6 +125,19 @@ open class DamageParticles : Listener, Runnable {
     }
 
     private fun Location.fuzz(amount: Double = 0.18) = add(0.0.modifyRandom(amount), 0.0, 0.0.modifyRandom(amount))
+
+    companion object {
+
+        /**
+         * Removes all damage particles from all worlds.
+         */
+        fun removeAllParticles() = Bukkit.getWorlds().forEach { world ->
+            world .entities.asSequence()
+                .filter { it.type == EntityType.TEXT_DISPLAY }
+                .filter { it.persistentDataContainer.getOrDefault(Keys.damageParticle, PersistentDataType.BOOLEAN, false) }
+                .forEach { it.remove() }
+        }
+    }
 
     /**
      * @author Hannah Schellekens

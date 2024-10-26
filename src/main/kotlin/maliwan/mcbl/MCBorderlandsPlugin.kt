@@ -102,6 +102,10 @@ class MCBorderlandsPlugin : JavaPlugin() {
         // Grenades
         server.scheduler.scheduleSyncRepeatingTask(this, customGrenadeManager, 1L, 1L)
 
+        // Cleanup previous mess.
+        // Particles can stay on forced reload.
+        DamageParticles.removeAllParticles()
+
         logger.info("Enabled!")
     }
 

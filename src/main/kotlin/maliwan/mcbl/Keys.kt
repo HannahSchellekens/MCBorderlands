@@ -31,6 +31,9 @@ object Keys {
     lateinit var homingTarget: NamespacedKey
         private set
 
+    lateinit var damageParticle: NamespacedKey
+        private set
+
     fun initialize(plugin: MCBorderlandsPlugin) {
         gunProperties = NamespacedKey(plugin, "gun-properties")
         ammoDrop = NamespacedKey(plugin, "ammo-drop")
@@ -40,5 +43,6 @@ object Keys {
         recipeSduLegendary = NamespacedKey(plugin, "recipe-sdu-legendary")
         recipeSduPearlescent = NamespacedKey(plugin, "recipe-sdu-pearlescent")
         homingTarget = NamespacedKey(plugin, "homing-target")
+        damageParticle = NamespacedKey(plugin, "dmg-particle")
     }
 }
