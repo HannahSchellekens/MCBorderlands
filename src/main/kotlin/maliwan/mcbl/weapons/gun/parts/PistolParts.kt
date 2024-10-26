@@ -170,10 +170,8 @@ object PistolParts {
         FIBBER_SHOTGUN(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberShotgun())),
         FIBBER_RICOCHET(Manufacturer.BANDIT, "Fibber", behaviours = listOf(FibberRicochet())),
         GLOBBER(Manufacturer.HYPERION, "Globber", behaviours = listOf(Globber())),
-        GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
         GUB(Manufacturer.BANDIT, "Gub", behaviours = listOf(Gub())),
         GUN_GUN(Manufacturer.TEDIORE, "Gun Gun", behaviours = listOf(GunGun())),
-        GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
         HARD_REBOOT(Manufacturer.MALIWAN, "Hard Reboot", behaviours = listOf(HardReboot())),
         HECTORS_PARADISE(Manufacturer.DAHL, "Hector's Paradise", behaviours = listOf(HectorsParadise())),
         HELLSHOCK(Manufacturer.MALIWAN, "Hellshock", behaviours = listOf(Hellshock())),
@@ -185,7 +183,6 @@ object PistolParts {
         LAW(Manufacturer.DAHL, "Law", behaviours = listOf(Law())),
         LOGANS_GUN(Manufacturer.HYPERION, "Logan's Gun", behaviours = listOf(LogansGun())),
         LUCK_CANNON(Manufacturer.JAKOBS, "Luck Cannon", behaviours = listOf(LuckCannon())),
-        MAYDAY(Manufacturer.DAHL, "Mayday", behaviours = listOf(Mayday())),
         POCKET_ROCKET(Manufacturer.TORGUE, "Pocket Rocket", behaviours = listOf(PocketRocket())),
         REX(Manufacturer.JAKOBS, "Rex", behaviours = listOf(Rex())),
         RUBI(Manufacturer.MALIWAN, "Rubi", behaviours = listOf(Rubi())),
@@ -368,7 +365,10 @@ object PistolParts {
 
         // Unique Grips
 
-        DUMPSTER(Manufacturer.BANDIT, "Dumpster", behaviours = listOf(Dumpster()))
+        DUMPSTER(Manufacturer.BANDIT, "Dumpster", behaviours = listOf(Dumpster())),
+        GREED(Manufacturer.JAKOBS, "Greed", behaviours = listOf(Greed())),
+        GWENS_HEAD(Manufacturer.HYPERION, "Gwen's Head", behaviours = listOf(GwensHead())),
+        MAYDAY(Manufacturer.DAHL, "Mayday", behaviours = listOf(Mayday())),
         ;
 
         override val partTypeName: String = "Grip"

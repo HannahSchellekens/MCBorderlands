@@ -110,14 +110,11 @@ object ShotgunParts {
         BOGANELLA(Manufacturer.BANDIT, "Boganella", behaviours = listOf(Boganella())),
         BOOMACORN(Manufacturer.JAKOBS, "Boomacorn", behaviours = listOf(Boomacorn())),
         BULLPUP(Manufacturer.HYPERION, "Bullpup", behaviours = listOf(Bullpup())),
-        BUTCHER(Manufacturer.HYPERION, "Butcher", behaviours = listOf(Butcher())),
         DOG(Manufacturer.BANDIT, "Dog", behaviours = listOf(Dog())),
         FLAKKER(Manufacturer.TORGUE, "Flakker", behaviours = listOf(Flakker())),
         HEART_BREAKER(Manufacturer.HYPERION, "Heart Breaker", behaviours = listOf(HeartBreaker())),
         HYDRA(Manufacturer.JAKOBS, "Hydra", behaviours = listOf(Hydra())),
         ORPHAN_MAKER(Manufacturer.JAKOBS, "Orphan Maker", behaviours = listOf(OrphanMaker())),
-        OVERCOMPENSATOR(Manufacturer.HYPERION, "Overcompensator", behaviours = listOf(Overcompensator())),
-        ROKSALT(Manufacturer.JAKOBS, "RokSalt", behaviours = listOf(RokSalt())),
         SLEDGES_SHOTGUN(Manufacturer.JAKOBS, "Sledge's", behaviours = listOf(SledgesShotgun())),
         STRIKER(Manufacturer.JAKOBS, "Striker", behaviours = listOf(Striker())),
         ;
@@ -147,6 +144,7 @@ object ShotgunParts {
         override val partName: String,
         override val statModifiers: List<StatModifier> = emptyList(),
         override val manufacturerStatModifiers: List<StatModifier> = emptyList(),
+        override val behaviours: List<GunBehaviour> = emptyList()
     ) : WeaponPart {
 
         BANDIT(
@@ -221,6 +219,12 @@ object ShotgunParts {
                 divide(1.3, Property.RELOAD_SPEED)
             }
         ),
+
+        // Unique grips.
+
+        BUTCHER(Manufacturer.HYPERION, "Butcher", behaviours = listOf(Butcher())),
+        OVERCOMPENSATOR(Manufacturer.HYPERION, "Overcompensator", behaviours = listOf(Overcompensator())),
+        ROKSALT(Manufacturer.JAKOBS, "RokSalt", behaviours = listOf(RokSalt())),
         ;
 
         override val partTypeName: String = "Grip"

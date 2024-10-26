@@ -48,6 +48,7 @@ open class Wanderlust : UniqueGun, PostGenerationBehaviour, BulletEffectBehaviou
             multiply(1.3, StatModifier.Property.MAGAZINE_SIZE)
             divide(2.5, StatModifier.Property.PROJECTILE_SPEED)
             multiply(1.2, StatModifier.Property.ELEMENTAL_CHANCE)
+            multiply(1.3, StatModifier.Property.BASE_DAMAGE)
         }
     }
 }

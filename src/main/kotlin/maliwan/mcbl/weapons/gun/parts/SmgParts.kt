@@ -120,7 +120,6 @@ object SmgParts {
         BONE_SHREDDER(Manufacturer.BANDIT, "Bone Shredder", behaviours = listOf(BoneShredder())),
         CHULAINN(Manufacturer.TEDIORE, "Chulainn", behaviours = listOf(Chulainn())),
         COMMERCE(Manufacturer.TEDIORE, "Commerce", behaviours = listOf(Commerce())),
-        CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         DOUBLE_ANARCHY(Manufacturer.TEDIORE, "Double Anarchy", behaviours = listOf(DoubleAnarchy())),
         EMPEROR(Manufacturer.DAHL, "Emperor", behaviours = listOf(Emperor())),
         ENDOTHERMIC_BLASTER(Manufacturer.MALIWAN, "EndoBlaster", behaviours = listOf(EndothermicBlaster())),
@@ -226,6 +225,7 @@ object SmgParts {
 
         // Unique barrels.
 
+        CRIT(Manufacturer.HYPERION, "Crit", behaviours = listOf(Crit())),
         EMPTINESS(Manufacturer.MALIWAN, "Emptiness", behaviours = listOf(Emptiness())),
         ;
 
