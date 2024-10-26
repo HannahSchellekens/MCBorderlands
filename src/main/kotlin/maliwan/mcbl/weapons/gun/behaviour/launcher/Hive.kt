@@ -139,8 +139,9 @@ open class Hive : UniqueGun, PostGenerationBehaviour, UpdateAssemblyBehaviour, P
 
                     if (tick % 2 == 0L) {
                         // Give particle effects to the hive while it is shooting.
+                        val element = childMeta.elements.randomOrNull() ?: Elemental.CORROSIVE
                         hiveLocation.showElementalParticle(
-                            Elemental.CORROSIVE.color, Random.nextInt(0, 2), 1f, 0.6
+                            element.color, Random.nextInt(0, 2), 1f, 0.6
                         )
                     }
 
