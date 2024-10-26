@@ -2,6 +2,7 @@ package maliwan.mcbl.weapons.gun.parts
 
 import maliwan.mcbl.weapons.Elemental
 import maliwan.mcbl.weapons.gun.behaviour.GunBehaviour
+import maliwan.mcbl.weapons.gun.behaviour.launcher.Blizzard
 import maliwan.mcbl.weapons.gun.behaviour.launcher.Roaster
 import maliwan.mcbl.weapons.gun.behaviour.pistol.Defiler
 import maliwan.mcbl.weapons.gun.behaviour.pistol.Tinderbox
@@ -24,8 +25,9 @@ enum class Capacitor(elemental: Elemental, val partName: String, vararg behaviou
     CRYO(Elemental.CRYO, "Cryo"),
 
     // Unique capacitors.
-    HELLFIRE(Elemental.INCENDIARY, "HellFire", HellFire()), /* SMG */
+    BLIZZARD(Elemental.CRYO, "Blizzard", Blizzard()), /* LAUNCHER */
     DEFILER(Elemental.CORROSIVE, "Defiler", Defiler()), /* PISTOL */
+    HELLFIRE(Elemental.INCENDIARY, "HellFire", HellFire()), /* SMG */
     TINDERBOX(Elemental.INCENDIARY, "Tinderbox", Tinderbox()), /* PISTOL */
     ROASTER_SHOCK(Elemental.SHOCK, "Roaster", Roaster(Elemental.SHOCK)), /* LAUNCHER */
     ROASTER_INCENDIARY(Elemental.INCENDIARY, "Roaster", Roaster(Elemental.INCENDIARY)), /* LAUNCHER */
