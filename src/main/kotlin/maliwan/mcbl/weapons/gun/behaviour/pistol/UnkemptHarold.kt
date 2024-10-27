@@ -59,7 +59,7 @@ open class UnkemptHarold : UniqueGun, PostGenerationBehaviour, BulletEffectBehav
 
         val statModifiers = statModifierList {
             add(2, StatModifier.Property.PELLET_COUNT)
-            add(2, StatModifier.Property.AMMO_PER_SHOT)
+            multiply(3, StatModifier.Property.AMMO_PER_SHOT)
             add(1, StatModifier.Property.MAGAZINE_SIZE)
             subtract(25, StatModifier.Property.PROJECTILE_SPEED)
         }
