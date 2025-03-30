@@ -29,7 +29,7 @@ open class GrenadeOnReload : ReloadBehaviour {
 
     override fun beforeReload(player: Player, gunExecution: GunExecution) {
         val display = player.world.spawn(player.eyeLocation, ItemDisplay::class.java).apply {
-            itemStack = ItemStack(Material.BOW, 1)
+            setItemStack(ItemStack(Material.BOW, 1))
             billboard = Display.Billboard.VERTICAL
             brightness = Display.Brightness(15, 15)
         }

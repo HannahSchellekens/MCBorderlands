@@ -29,7 +29,7 @@ open class EnemySpawner(val plugin: MCBorderlandsPlugin) : Listener {
 
         val multiplier = enemyLevel.healthMultiplier * if (inDungeon) 0.5 else 1.0
 
-        val maxHealth = living.getAttribute(Attribute.GENERIC_MAX_HEALTH) ?: return
+        val maxHealth = living.getAttribute(Attribute.MAX_HEALTH) ?: return
         val newBaseValue = max(0.0, min(2024.0, maxHealth.baseValue * multiplier))
         maxHealth.baseValue = newBaseValue
         living.health = newBaseValue

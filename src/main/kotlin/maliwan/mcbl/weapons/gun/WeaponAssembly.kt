@@ -157,7 +157,7 @@ class ShotgunAssembly(
         get() = listOfNotNull(barrel, grip, stock, accessory)
 
     override val gunName: String
-        get() = ShotgunNames.nameOf(manufacturer, barrel, accessory, capacitor)
+        get() = ShotgunNames.nameOf(manufacturer, barrel, grip, accessory, capacitor)
 
     override fun toString(): String {
         return "ShotgunAssembly(body=$body, barrel=$barrel, grip=$grip, stock=$stock, accessory=$accessory)"

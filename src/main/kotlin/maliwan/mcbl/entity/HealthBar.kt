@@ -32,7 +32,7 @@ fun LivingEntity.showHealthBar(
         it.chatColor + count + it.symbol
     }
 
-    val maxHealth = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: return
+    val maxHealth = getAttribute(Attribute.MAX_HEALTH)?.baseValue ?: return
     val barLength = if (maxHealth <= smallThreshold) smallLength else largeLength
     val percentage = health / maxHealth
     val bars = max(0, ceil(percentage * barLength).toInt())

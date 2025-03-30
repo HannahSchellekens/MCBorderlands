@@ -68,7 +68,11 @@ open class GunExecution(
     properties.homingTargetDistance,
     properties.homingTargetRadius,
     properties.homingStrength,
-    properties.armourPenetration
+    properties.armourPenetration,
+    properties.continuousDamageBonus,
+    properties.continuousDamageMaxShots,
+    properties.continuousDamageDelay,
+    properties.continuousDamageDecay
 ) {
 
     val originalFireRate: Double = properties.fireRate
@@ -122,7 +126,7 @@ open class GunExecution(
 
             val extra = if (assembly?.weaponClass == WeaponClass.SHOTGUN) {
                 val shotgun = assembly as ShotgunAssembly
-                if (shotgun.barrel == ShotgunParts.Barrel.BUTCHER) {
+                if (shotgun.grip == ShotgunParts.Grip.BUTCHER) {
                     -0.052
                 }
                 else 0.0

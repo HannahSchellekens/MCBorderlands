@@ -242,6 +242,31 @@ open class GunProperties(
      * 0.0 means that the regular armour reduction is applied.
      */
     var armourPenetration: Double = 0.0,
+
+    /**
+     * Maximum continuous damage bonus.
+     * This is a bonus percentage of damage when at the max amount of supported consecutive hits
+     * (see [continuousDamageMaxShots]).
+     * `0.0` means no damage bonus.
+     * E.g. `1.3` means +130% damage bonus.
+     */
+    var continuousDamageBonus: Double = 0.0,
+
+    /**
+     * The maximum amount of consecutive shots required to reach the max [continuousDamageBonus].
+     */
+    var continuousDamageMaxShots: Int = 20,
+
+    /**
+     * The amount of milliseconds after which the continuous damage bonus decreases again.
+     */
+    var continuousDamageDelay: Int = 500,
+
+    /**
+     * With how much the value of the continuous damage counter decreases every second after the
+     * [continuousDamageDelay] has expired.
+     */
+    var continuousDamageDecay: Double = 0.6
 ) {
 
     /**
@@ -557,6 +582,10 @@ open class GunProperties(
         if (homingTargetRadius != other.homingTargetRadius) return false
         if (homingStrength != other.homingStrength) return false
         if (armourPenetration != other.armourPenetration) return false
+        if (continuousDamageBonus != other.continuousDamageBonus) return false
+        if (continuousDamageDelay != other.continuousDamageDelay) return false
+        if (continuousDamageMaxShots != other.continuousDamageMaxShots) return false
+        if (continuousDamageDecay != other.continuousDamageDecay) return false
 
         return true
     }
@@ -603,6 +632,11 @@ open class GunProperties(
         result = 31 * result + homingTargetRadius.hashCode()
         result = 31 * result + homingStrength.hashCode()
         result = 31 * result + armourPenetration.hashCode()
+        result = 31 * result + continuousDamageBonus.hashCode()
+        result = 31 * result + continuousDamageDelay.hashCode()
+        result = 31 * result + continuousDamageMaxShots.hashCode()
+        result = 31 * result + continuousDamageDecay.hashCode()
+
         return result
     }
 

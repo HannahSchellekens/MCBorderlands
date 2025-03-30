@@ -17,6 +17,7 @@ repositories {
     mavenCentral()
 
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://oss.sonatype.org/content/repositories/central")
 }
@@ -25,8 +26,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
-    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
-    testCompileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
 }
 
@@ -34,7 +34,7 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 spigot {
@@ -43,7 +43,7 @@ spigot {
         version("${project.version}")
         authors("Hannah Schellekens")
         main("maliwan.mcbl.MCBorderlandsPluginKt")
-        apiVersion("1.20")
+        apiVersion("1.21")
         prefixed("MCBL")
     }
 }

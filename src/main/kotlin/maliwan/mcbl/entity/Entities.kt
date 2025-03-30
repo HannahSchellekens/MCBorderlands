@@ -15,19 +15,19 @@ import kotlin.math.min
  * [Attribute.GENERIC_MAX_HEALTH]
  */
 val LivingEntity.genericMaxHealth: Double
-    get() = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 0.0
+    get() = getAttribute(Attribute.MAX_HEALTH)?.value ?: 0.0
 
 /**
  * How many armor points the given entity has: 0 if not applicable.
  */
 val Entity.armorPoints: Double
-    get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: 0.0
+    get() = (this as? LivingEntity)?.getAttribute(Attribute.ARMOR)?.value ?: 0.0
 
 /**
  * How many toughness points the given entity's armour has: 0 if not applicable.
  */
 val Entity.armorToughness: Double
-    get() = (this as? LivingEntity)?.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)?.value ?: 0.0
+    get() = (this as? LivingEntity)?.getAttribute(Attribute.ARMOR_TOUGHNESS)?.value ?: 0.0
 
 /**
  * Checks if the entity is on the ground or not.
@@ -40,7 +40,7 @@ fun Entity.checkOnGround() = location.subtract(0.0, 0.2, 0.0).block.type.isSolid
  * Set the scale of the living entity where 1.0 is the regular size.
  */
 fun LivingEntity.setScale(scale: Double) {
-    val attribute = getAttribute(Attribute.GENERIC_SCALE)
+    val attribute = getAttribute(Attribute.SCALE)
     attribute?.baseValue = scale
 }
 
@@ -48,7 +48,7 @@ fun LivingEntity.setScale(scale: Double) {
  * Heals the target with the given amount of health.
  * Will never apply a negative amount of health or set the health above the health limit.
  */
-fun LivingEntity.heal(amount: Double) {
+fun LivingEntity.healAmount(amount: Double) {
     val minHealth = 0.0
     val maxHealth = genericMaxHealth
     val newAmount = health + amount
@@ -61,7 +61,7 @@ fun LivingEntity.heal(amount: Double) {
  * `null` is reset.
  */
 fun LivingEntity.setKnockbackResistance(knockbackValue: Double? = null) {
-    val knockback = getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
+    val knockback = getAttribute(Attribute.KNOCKBACK_RESISTANCE)
     if (knockback != null) {
         knockback.baseValue = knockbackValue ?: knockback.defaultValue
     }
