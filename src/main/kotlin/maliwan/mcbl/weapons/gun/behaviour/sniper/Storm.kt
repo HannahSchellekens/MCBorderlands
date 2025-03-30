@@ -59,14 +59,14 @@ open class Storm : UniqueGun, PostGenerationBehaviour, PostBulletLandBehaviour, 
         }
 
         // All orbs proc 4 times
-        val splashDamage = meta.copy(splashDamage = meta.splashDamage * 0.25, splashRadius = 1.4)
+        val splashDamage = meta.copy(splashDamage = meta.splashDamage * 0.4, splashRadius = 1.4)
 
         repeat(4) { orbIndex ->
             val angle = Random.nextDouble() * Math.PI * 2
             val orbLocation = Location(
                 baseLocation.world,
                 baseLocation.x + (3.2 + Random.nextDouble()) * cos(angle),
-                baseLocation.y + 0.5 + Random.nextDouble() * 1.5 - 0.75,
+                baseLocation.y + Random.nextDouble() * 1.5 - 0.75,
                 baseLocation.z + (3.2 + Random.nextDouble()) * sin(angle)
             )
 
