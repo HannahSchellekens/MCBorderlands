@@ -44,7 +44,6 @@ open class Dog : UniqueGun, PostGenerationBehaviour, DefaultPrefixProvider, Post
 
         val sounds = listOf(
             Sound.ENTITY_WOLF_GROWL,
-            Sound.ENTITY_WOLF_HOWL,
             Sound.ENTITY_WOLF_PANT,
             Sound.ENTITY_WOLF_WHINE,
             Sound.ENTITY_WOLF_AMBIENT,

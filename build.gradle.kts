@@ -26,7 +26,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
 }
 

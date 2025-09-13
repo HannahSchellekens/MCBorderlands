@@ -176,6 +176,7 @@ object PistolParts {
         HECTORS_PARADISE(Manufacturer.DAHL, "Hector's Paradise", behaviours = listOf(HectorsParadise())),
         HELLSHOCK(Manufacturer.MALIWAN, "Hellshock", behaviours = listOf(Hellshock())),
         HORNET(Manufacturer.DAHL, "Hornet", behaviours = listOf(Hornet())),
+        INFECTION(Manufacturer.MALIWAN, "Infection", behaviours = listOf(Infection())),
         INFINITY(Manufacturer.VLADOF, "Infinity", behaviours = listOf(Infinity())),
         JUDGE(Manufacturer.TEDIORE, "Judge", behaviours = listOf(Judge())),
         LADY_FINGER(Manufacturer.DAHL, "Lady Finger", behaviours = listOf(LadyFinger())),
